@@ -1,0 +1,64 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx} % Required for inserting images
+%packages utilisés pour les équations
+\usepackage{mathptmx}
+\usepackage{mathtools}
+\usepackage{mathrsfs}
+\usepackage{amsmath}%Pour équations multi-lignes
+\usepackage{envmath}%Pour système d'équations
+\usepackage{appendix}%Pour les annexes
+\usepackage{enumerate}%Pour les énumérations
+\usepackage{hyperref}%Pour les liens
+\usepackage{wrapfig}
+\usepackage[paper=a4paper,hmargin=2cm,vmargin=2cm]{geometry}
+\usepackage{listings}
+\usepackage{subfiles}
+\renewcommand{\appendixpagename}{Annexes}
+\renewcommand{\appendixtocname}{Annexes}
+\usepackage[backend=biber,
+bibstyle=apa,citestyle=apa,sorting=anyt]{biblatex}%Pour la biblio C'EST ICI QU'ON MODIFIE LE FORMAT A MODIFIER
+
+\usepackage{csquotes}%pour les citations
+\addbibresource{Biblio_stage.bib}%Pour la biblio
+\usepackage{xspace}%commandes personnalisees
+\usepackage[french,english]{babel}
+\usepackage{lipsum} %Pour tester la mise en page
+\usepackage{subcaption}%placement d'image
+\usepackage{multicol}%
+\usepackage{multirow}%POur écrire du texte sur plusieurs lignes dans un tableau
+%commandes utiles
+\newcommand{\moy}[1]{\operatorname{\langle#1\rangle}}%moyenne entre crochets
+\newcommand{\degC}{$^\circ C$}%degrés Celsius
+\newcommand{\degrees}{$^\circ$}%degrés
+\newcommand{\RomanNumeralCaps}[1]{\MakeUppercase{\romannumeral #1}}%chiffres romains en majuscule
+\newcommand{\divergence}[1]{\mathrm{div}#1}
+\newcommand{\dT}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\dZ}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\citeP}[1]{(\cite{#1})}%Pour mettre une référence entre parenthèses
+\newcommand{\citeB}[1]{[\cite{#1}]}%Pour mettre une référence entre crochets
+\newcommand{\guillemets}[1]{\og #1 \fg{}}%Pour mettre du texte entre guillemets
+\newcommand{\abs}[1]{\operatorname{\lvert #1\rvert}}
+\numberwithin{equation}{section}%Pour numéroter les équations par section
+
+\title{ Rapport de stage M2 }
+\author{Evan \textsc{LEMUR} }
+\date{Mai-octobre 2026}
+%\AtBeginDocument{\vspace*{1cm minus 1cm}}
+%\AtEndDocument{\vspace{1cm minus 1cm}}
+\begin{document}
+	\selectlanguage{french}
+	\maketitle
+	\newpage
+	\section*{abstract}
+	\subfile{abstract}
+	\newpage
+	\setcounter{tocdepth}{3}%Sommaire  : affiche les sections et sous-sections
+	\tableofcontents
+	\newpage
+	\section{Introduction}
+	\subfile{Introduction}
+	\section{État de l'art}
+	\subfile{Etat_de_lart}
+\end{document}
