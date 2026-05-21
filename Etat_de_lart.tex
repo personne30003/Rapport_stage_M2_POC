@@ -1,29 +1,7 @@
-\subsection{Modèle Thermal Shallow Water}
-\textbf{Expliquer les équations TRSW (\parencite{Warneford2013}), justifier les termes de pression. Equilibre Geostrophique (cf \parencite{Gouzien2017})). Leur intéret, les invariants (pseudo-énergie, PV). Eventuellement les re-dériver en annexe. Après, la formulation varie selon les auteurs.}
-\begin{align}
-	\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
-	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = - \kappa(h\Theta - H_0 \Theta_0) \\
-	\dT{\Vec{u}}+(\Vec{u}\cdot \grad)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-\grad h\Theta+\frac{1}{2}h\grad \Theta
-\end{align}
-\subsection{Modèle Thermal Quasi-Geostrophic (TQG)}
-\textbf{Re-dériver le modèle TQG par expansion en puissance du nombre de Rossby (si c'est trop long, mettre en Annexe). Caractéristiques du modèle (Invariants, solutions). Exemple d'utilisation (cf \parencite{Carton2025}). La formulation étant différente selon les auteurs, on se basera sur celle de \cite{Warneford2013}. }
-Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation claire si la bathymétrie est variable) : 
-\begin{align}
-	\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
-	\dT{\theta}+\mathrm{J}(\psi, \theta) = -\lambda(\theta+\psi) \\
-	q = \Delta_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + f_0 + \beta y
-\end{align}
-Où $\lambda$ est un terme de refroidissement, qu'on prendra nul.
-
-Propriétés (démontre celles qui sont simples) : 
-\begin{itemize}
-	\item Conservation de la pseudo-énergie (du moins sans dissipation)
-	\item Conservation de la PV intégrée (\textbf{si le contour délimitant la surface est une isotherme})
-\end{itemize}
-\subsection{Comparaison avec les modèles QG et SQG}
-\textbf{S'appuyer sur \parencite{Carton2025}, \parencite{Held1995}, \parencite{Lapeyre2017} et d'autres.}
-\subsection{Couplage avec l'atmosphère dans un modèle SQG}
-\textbf{Se baser sur \parencite{Vic2024}. Influence des couplages mécaniques et thermiques, dans le cadre d'un modèle d'Eady}
+\subsection{modèles simplifiés QG et SQG}
+\textbf{Introduire QG : dynamique lente, simplifications, avantages et inconvénients sur le plan numérique. Instabilités (barotropes et baroclines) et turbulence. Puis Modèle SQG (le seul à décrire la température en surface d'une couche}
+\subsection{Couplage océan-atmosphère}
+\textbf{Se baser sur \parencite{Vic2024}. Influence des couplages mécaniques et thermiques, dans le cadre d'un modèle d'Eady. Incidemment, on utilisera ces couplages. Introduit d'abord un peu le couplage océan-atmosphère : Eddy-killing, pompage d'Ekman, effet d'une atmosphère sur les écoulements méso-subméso-échelle}
 L'océan et l'atmosphère échangent à la fois de la chaleur et de la quantité de mouvement. \parencite{Vic2024} a étudié le couplage océan-atmosphère pour le problème d'Eady \textbf{référence vers travail original} dans le cadre d'un modèle SQG 2 couches. Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
 \begin{align}
 	\frac{D_h \theta_a}{Dt} = C_o(\theta_o - \theta_o) + F_a \\
@@ -45,4 +23,72 @@ Si la vitesse du vent est bien supérieure à celle du courant de surface ($\Vec
 \begin{equation}
 	\Vec{\tau_o} = D_a (\Vec{u_o} - \Vec{u_a})
 \end{equation}
-\textbf{Comparaison avec modèle Eady original. Réviser d'abord le cours de GFD1 que je maitrise pas (mais alors pas du tout en fait) !}
+\textbf{Effet des couplages thermiques/mécaniques}
+
+\subsection{Modèle Thermal Shallow Water}
+\textbf{Expliquer les équations TRSW (\parencite{Warneford2013}), justifier les termes de pression. Equilibre Geostrophique (cf \parencite{Gouzien2017})). Leur intéret, les invariants (pseudo-énergie, PV). Eventuellement les re-dériver en annexe. Après, la formulation varie selon les auteurs. Stabilité des écoulements}
+\begin{align}
+	\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
+	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = - \kappa(h\Theta - H_0 \Theta_0) \\
+	\dT{\Vec{u}}+(\Vec{u}\cdot \grad)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-\grad h\Theta+\frac{1}{2}h\grad \Theta
+\end{align}
+\subsection{Modèle Thermal Quasi-Geostrophic (TQG)}
+\textbf{Re-dériver le modèle TQG par expansion en puissance du nombre de Rossby (si c'est trop long, mettre en Annexe). Caractéristiques du modèle (Invariants, solutions). Exemple d'utilisation (cf \parencite{Carton2025}). La formulation étant différente selon les auteurs, on se basera sur celle de \cite{Warneford2013}. }
+Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation claire si la bathymétrie est variable) : 
+\begin{align}
+	\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
+	\dT{\theta}+\mathrm{J}(\psi, \theta) = -\lambda(\theta+\psi) \\
+	q = \Delta_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + f_0 + \beta y
+\end{align}
+Où $\lambda$ est un terme de refroidissement, qu'on prendra nul.
+
+\subsubsection{Preuve (adaptée de mes notes perso et de \cite{Warneford2013})}
+ On utilise le scaling suivant : 
+ \begin{align}
+ 	x = L\tilde{x} \\
+ 	u = U\tilde{u} \\
+ 	t = \frac{L}{U} \tilde{t}
+ \end{align} 
+Pour la flottabilité $\Theta$ et la hauteur de couche $h$, l'équilibre géostrophique donne $f_0 U \approx \frac{\eta\Theta_0}{L}$, de telle sorte que 
+\begin{align}
+	h\approx H_0(1+\frac{f_0 U L}{\Theta_0 H_0}\tilde{eta}) \\
+	\Theta \approx \Theta_0 (1+2\frac{f_0 U L}{\Theta_0 H_0}\theta)
+\end{align}
+Les équations TRSW s'écrivent donc ( pour $\lambda =0$ ) : 
+\begin{align}
+	\mathrm{Ro}\[ \frac{\partial\tilde{\eta}}{\partial \tilde{t}} + \tilde{\div}\tilde{\eta}\tilde{\Vec{u}} \] +\mathrm{Bu}\cdot\tilde{\div} \tilde{\Vec{u}} =0 \\
+	\frac{\partial \tilde{\theta}}{\partial \tilde{t}} + \tilde{\Vec{u}}\cdot \grad \tilde{\theta} = 0 \\
+	\mathrm{Ro}\[ \frac{\partial \tilde{\Vec{u}}}{\partial \tilde{t}} +(\tilde{\Vec{u}}\cdot \tilde{\grad})\tilde{\Vec{u}}\]+ (1+\tilde{\beta}\tilde{y})\Vec{z}\VecProd\tilde{\Vec{u}} = - \tilde{\grad}{\tilde{\eta}+\tilde{\theta}}-\frac{\mathrm{Ro}}{\mathrm{Bu}}\[ 2\tilde{\theta}\tilde{\grad}\tilde{\eta}+\tilde{\eta}\tilde{\grad}\tilde{\theta}\]
+\end{align}
+Avec $\mathrm{Ro} = \frac{U}{f_0L}$, $\mathrm{Bu}=\frac{\Theta_0 H_0}{f_0 L^2} =(\frac{R_d}{L})^2$, $\tilde{\beta} = \frac{\beta L}{f_0}$. Par la suite, on arrêtera d'utiliser les $\tilde{}$, pour ne pas alourdir les notations. Sachant que $\mathrm{Ro} \ll 1$, on peut développer le champ de vitesse en puissances de $\mathrm{Ro}$ : 
+\begin{equation}
+	\Vec{u}= \Vec{u_0} + \mathrm{Ro}\Vec{u_1} +\mathrm{Ro}^2\Vec{u_2} + ...
+\end{equation}
+On suppose aussi que $\tilde{\beta} \approx \mathrm{Ro}$. A l'ordre zéro, on a 
+\begin{align}
+	\div \Vec{u_0} = 0 \\
+	\dT{\theta} + \Vec{u_0}\cdot \grad\theta = 0 \\
+	\Vec{z}\VecProd \Vec{u_0} = - \grad{\eta+\theta}
+\end{align}
+La première relation implique l'existence d'une fonction de courant $\psi$ telle que $u_0 = -\frac{\partial \psi}{\partial y}$ et $v_0 = \frac{\partial \psi}{\partial x}$. La troisième est simplement l'équilibre géostrophique. Afin d'obtenir une équation d'évolution pour $\Vec{u_0}$, on passe à l'ordre 1, ce qui donne 
+\begin{align}
+	\dT{\eta}+\div{\eta\Vec{u_0}} +\mathrm{Bu}\cdot \div{\Vec{u_1}} = 0 \\
+	\Vec{u_1}\cdot\grad \theta  = \frac{\theta\eta}{\mathrm{Bu}} \\
+	\dT{\Vec{u_0}}+(\Vec{u_0}\grad)\Vec{u_0} + \Vec{z}\VecProd \Vec{u_1} +\beta y \Vec{z}\VecProd\Vec{u_0} = \frac{1}{\mathrm{Bu}}\[ 2\theta \grad \theta +\eta\grad\theta\]\label{eq:dT_u0}
+\end{align}
+Pour obtenir la vorticité absolue, il suffit de prendre le rotationnel de l'équation \ref{eq:dT_u0}. En utilisant les relations $\Vec{mathrm{rot}} f \Vec{A} = \grad f\VecProd \Vec{A} + f \Vec{\mathrm{rot}}\Vec{A}$ et $\Vec{\mathrm{rot}} = \Vec{z}\div \Vec{A} - \dZ{Vec{A}}$. On a donc, en projetant selon $\Vec{z}$ : 
+\begin{equation}
+	\dT{\eta_a} +\div Vec{u_1 } = -\frac{1}{\mathrm{Bu}}\(\frac{\partial \theta}{\partial x}\frac{\partial \eta}{\partial y}-\frac{\partial \theta}{\partial xy}\frac{\partial \eta}{\partial x}\)
+\end{equation}
+$\Vec{u_1}$ s'élimine simplement puisque $\div\Vec{u_1} = -\frac{1}{\mathrm{Bu}} ( \dT{\eta} +\Vec{u_0}\cdot\grad\eta )$, et d'après l'équilibre géostrophique, $\eta = \psi - \theta$. On en déduit donc les équations TQG : 
+\begin{align}
+\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
+\dT{\theta}+\mathrm{J}(\psi, \theta) =0 \\
+q = \Delta_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + 1 + \tilde{\beta} y\\
+\end{align}
+Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D
+Propriétés (démontre celles qui sont simples) : 
+\begin{itemize}
+	\item Conservation de la pseudo-énergie (du moins sans dissipation)
+	\item Conservation de la PV intégrée (\textbf{si le contour délimitant la surface est une isotherme})
+\end{itemize}
