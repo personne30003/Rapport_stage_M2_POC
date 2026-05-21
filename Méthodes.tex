@@ -1,0 +1,13 @@
+\subsection{Couplage océan-atmosphère}
+couplage thermique de la forme
+\begin{align}
+	\frac{D \theta_a}{Dt} = - C_t (\theta_a - \theta_o)\\
+	\frac{D \theta_b}{Dt} = - C_t (\theta_o - \theta_a)
+\end{align}
+\textbf{Ecrire couplage mécanique (à voir si je le fais, possiblement que oui) et système total sans dissipation ($\lambda =0$)}
+\subsection{Résolution numérique du système}
+\subsubsection{Domaine}
+\textbf{Grille régulière (sans blague !). CLs : à voir, mais ce sera du pseudo-spectral (donc CLs périodiques), du moins je l'espère.}
+\subsubsection{Schéma temporel}
+\textbf{Rien n'est fixé, mais on sera probablement sur du Euler-LeapFrog, avec filtre d'Asselin. Le pas de temps sera soir fixe, soit réglé automatiquement avec nombre CFL (choisi par l'utilisateur)}
+\subsubsection{Architecture du code (facultatif, c'est "que" de l'ingénierie ; à la limite un lien vers Github suffit)}
