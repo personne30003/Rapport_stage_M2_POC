@@ -4,7 +4,8 @@
 *.blg
 *.fdb_latexmk
 *.fls
-*.txt
+*.log
 *.out
-*.run
+*.run.xml
 *.toc
+*.synctex
