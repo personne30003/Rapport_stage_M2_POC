@@ -1,0 +1,48 @@
+\subsection{Modèle Thermal Shallow Water}
+\textbf{Expliquer les équations TRSW (\parencite{Warneford2013}), justifier les termes de pression. Equilibre Geostrophique (cf \parencite{Gouzien2017})). Leur intéret, les invariants (pseudo-énergie, PV). Eventuellement les re-dériver en annexe. Après, la formulation varie selon les auteurs.}
+\begin{align}
+	\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
+	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = - \kappa(h\Theta - H_0 \Theta_0) \\
+	\dT{\Vec{u}}+(\Vec{u}\cdot \grad)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-\grad h\Theta+\frac{1}{2}h\grad \Theta
+\end{align}
+\subsection{Modèle Thermal Quasi-Geostrophic (TQG)}
+\textbf{Re-dériver le modèle TQG par expansion en puissance du nombre de Rossby (si c'est trop long, mettre en Annexe). Caractéristiques du modèle (Invariants, solutions). Exemple d'utilisation (cf \parencite{Carton2025}). La formulation étant différente selon les auteurs, on se basera sur celle de \cite{Warneford2013}. }
+Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation claire si la bathymétrie est variable) : 
+\begin{align}
+	\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
+	\dT{\theta}+\mathrm{J}(\psi, \theta) = -\lambda(\theta+\psi) \\
+	q = \Delta_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + f_0 + \beta y
+\end{align}
+Où $\lambda$ est un terme de refroidissement, qu'on prendra nul.
+
+Propriétés : 
+\begin{itemize}
+	\item Conservation de la pseudo-énergie (du moins sans dissipation)
+	\item Conservation de la PV intégrée (\textbf{si le contour délimitant la surface est une isotherme})
+\end{itemize}
+\subsection{Comparaison avec les modèles QG et SQG}
+\textbf{S'appuyer sur \parencite{Carton2025}, \parencite{Held1995}, \parencite{Lapeyre2017} et d'autres.}
+\subsection{Couplage avec l'atmosphère dans un modèle SQG}
+\textbf{Se baser sur \parencite{Vic2024}. Influence des couplages mécaniques et thermiques, dans le cadre d'un modèle d'Eady}
+L'océan et l'atmosphère échangent à la fois de la chaleur et de la quantité de mouvement. \parencite{Vic2024} a étudié le couplage océan-atmosphère pour le problème d'Eady \textbf{référence vers travail original} dans le cadre d'un modèle SQG 2 couches. Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
+\begin{align}
+	\frac{D_h \theta_a}{Dt} = C_o(\theta_o - \theta_o) + F_a \\
+	\frac{D_h \theta_o}{Dt} = C_a(\theta_a - \theta_o) + F_b
+\end{align}
+
+Couplage mécanique : 
+\begin{align}
+	\frac{D_h \theta_a}{Dt}+w_a N_o =F_a \\
+	\frac{D_h \theta_o}{Dt}+w_o N_o =F_o \, \mathrm{et} \\
+	w_3 = \frac{1}{\rho_o f_0} \Vec{rot}\Vec{\tau_2}_z = \frac{1}{\rho_o f_0} (\partial_x \tau_2^y - \partial\tau_2^x)
+\end{align}
+En général, la friction du vent est paramétrisée de la manière suivante : 
+\begin{equation}
+	\Vec{\tau_o} = \rho_a C_d \abs{ \Vec{u_a} - \Vec{u_o} }(\Vec{u_o} - \Vec{u_a})
+\end{equation}
+Si la vitesse du vent est bien supérieure à celle du courant de surface ($\Vec{u_a} \gg \Vec{u_o}$), la relation précédente peut être linéarisée, de telle sorte que : 
+\begin{equation}
+	\Vec{\tau_o} = D_a (\Vec{u_o} - \Vec{u_a})
+\end{equation}
+
+

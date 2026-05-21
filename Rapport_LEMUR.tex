@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx} % Required for inserting images
@@ -29,17 +29,25 @@ bibstyle=apa,citestyle=apa,sorting=anyt]{biblatex}%Pour la biblio C'EST ICI QU'O
 \usepackage{multicol}%
 \usepackage{multirow}%POur écrire du texte sur plusieurs lignes dans un tableau
 %commandes utiles
-\newcommand{\moy}[1]{\operatorname{\langle#1\rangle}}%moyenne entre crochets
 \newcommand{\degC}{$^\circ C$}%degrés Celsius
 \newcommand{\degrees}{$^\circ$}%degrés
 \newcommand{\RomanNumeralCaps}[1]{\MakeUppercase{\romannumeral #1}}%chiffres romains en majuscule
-\newcommand{\divergence}[1]{\mathrm{div}#1}
+%Maths
+\renewcommand{\div}[1]{\mathrm{div}#1}
+\renewcommand{\Vec}[1]{\mathbf{#1}}
+\newcommand{\VecProd}{\Vec{\times}}
+\newcommand{\grad}{\mathrm{\mathbf{grad}}}
+	
+	
 \newcommand{\dT}[1]{\frac{\partial #1}{\partial t}}
 \newcommand{\dZ}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\abs}[1]{\operatorname{\lvert #1\rvert}}
+\newcommand{\moy}[1]{\operatorname{\langle#1\rangle}}%moyenne entre crochets
+
 \newcommand{\citeP}[1]{(\cite{#1})}%Pour mettre une référence entre parenthèses
 \newcommand{\citeB}[1]{[\cite{#1}]}%Pour mettre une référence entre crochets
 \newcommand{\guillemets}[1]{\og #1 \fg{}}%Pour mettre du texte entre guillemets
-\newcommand{\abs}[1]{\operatorname{\lvert #1\rvert}}
+
 \numberwithin{equation}{section}%Pour numéroter les équations par section
 
 \title{ Rapport de stage M2 }
