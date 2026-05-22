@@ -1,12 +1,53 @@
 \subsection{modèles simplifiés QG et SQG}
-\textbf{Introduire QG : dynamique lente, simplifications, avantages et inconvénients sur le plan numérique. Instabilités (barotropes et baroclines) et turbulence. Puis Modèle SQG (le seul à décrire la température en surface d'une couche}
+\textbf{Introduire QG : dynamique lente, simplifications, avantages et inconvénients sur le plan numérique. Se référer à l'excellent cours de Hall et Illig. Instabilités (barotropes et baroclines) et turbulence. Puis Modèle SQG (le seul à décrire la température en surface d'une couche}
+Le modèles quasi-géotrophique a été à la fin des années 1940, afin de décrire une dynamique "lente" ($T\gg \frac{1}{f_0}$).
+
+Modèle QG : 
+\begin{align}
+\dT{q} + \mathrm{J}(\psi, q) =0 \\
+q = \Delta_\mathrm{h} \psi +\frac{\partial}{\partial z}\(\frac{f_0}{N^2}\rho \dZ{\psi}\)+f_0+\beta y = 0
+\end{align}
+Grandeurs intégrées conservées : 
+\begin{itemize}
+	\item Vorticité potentielle totale $Q$
+	\item Enstrophie potentielle totale $Z$
+	\item Energie totale
+\end{itemize}
+
+Inconvénients : la thermodynamique n'est pas prise en compte
+
+\textbf{Décrire les instabilités possibles : barotropes (instabilité de cisaillement 2D, en présence d'effet $\beta$) et baroclines (En gros, comme la précédente, mais avec stratification). Se baser sur le cours de GFD1 (que je maitrise pas du tout !)}
+Modèle SQG \cite{Lapeyre2017}: 
+\begin{align}
+	\dT{\theta}+\Vec{u_s}\cdot\grad \theta = 0 \\
+	b_s = \left. \dZ{\psi}\right|_{z=0}\\
+	\frac{\partial^2 \psi}{\partial x^2}+\frac{\partial^2 \psi}{\partial y^2}+\frac{\partial^2 \psi}{\partial z^2}=0\\
+	 \lim\limits_{z\rightarrow\infty}\dZ{\psi} = 0\\
+	\Vec{u_s} = \( - \left.\frac{\partial \psi}{\partial y}\right|_{z=0}, \left.\frac{\partial \psi}{\partial x}\right|_{z=0}\)
+\end{align}
+Invariants  : 
+\begin{itemize}
+	\item Enstrophie généralisée : \begin{equation}
+		\mathrm{P} = \frac{1}{2}\iint\theta
+	\end{equation}
+	\item Energie totale : 
+	\begin{equation}
+		E = \frac{1}{2}\iiint \(\frac{\partial \psi}{\partial x}\)^2+\(\frac{\partial \psi}{\partial y}\)^2+\(\frac{\partial \psi}{\partial x}\)^2\mathrm{d}x\mathrm{d}y\mathrm{d}z = -\frac{1}{2}\iint \psi_s\theta\mathrm{d}x\mathrm{d}y
+	\end{equation}
+\end{itemize}
+Conséquences \cite{Held1995} : 
+\begin{itemize}
+	\item Structures de petite échelle plus stables
+	\item Présence d'instabilités secondaires : autosimilarité
+\end{itemize}
 \subsection{Couplage océan-atmosphère}
-\textbf{Se baser sur \parencite{Vic2024}. Influence des couplages mécaniques et thermiques, dans le cadre d'un modèle d'Eady. Incidemment, on utilisera ces couplages. Introduit d'abord un peu le couplage océan-atmosphère : Eddy-killing, pompage d'Ekman, effet d'une atmosphère sur les écoulements méso-subméso-échelle}
+\textbf{Se baser sur \parencite{Vic2024}. Influence des couplages mécaniques et thermiques, dans le cadre d'un modèle d'Eady. Incidemment, on utilisera ces couplages. Introduit d'abord un peu le couplage océan-atmosphère : Eddy-killing, pompage d'Ekman, effet d'une atmosphère sur les écoulements méso-subméso-échelle (là par contre j'ai peur que ce soit trop général)}
 L'océan et l'atmosphère échangent à la fois de la chaleur et de la quantité de mouvement. \parencite{Vic2024} a étudié le couplage océan-atmosphère pour le problème d'Eady \textbf{référence vers travail original} dans le cadre d'un modèle SQG 2 couches. Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
 \begin{align}
 	\frac{D_h \theta_a}{Dt} = C_o(\theta_o - \theta_o) + F_a \\
 	\frac{D_h \theta_o}{Dt} = C_a(\theta_a - \theta_o) + F_b
 \end{align}
+Pour des perturbations zonales, des modes instables de grande longueur d'onde apparaissent. Si la composante méridionale de la perturbation est non nulle, ces modes sont atténués voire disparaissent. Si le rayon de déformation de l'atmosphère est bien plus élevé que celui de l'océan, les perturbations croissent bien plus vite dans l'atmosphère que dans l'océan.
 
 Couplage mécanique : 
 \begin{align}
@@ -23,7 +64,9 @@ Si la vitesse du vent est bien supérieure à celle du courant de surface ($\Vec
 \begin{equation}
 	\Vec{\tau_o} = D_a (\Vec{u_o} - \Vec{u_a})
 \end{equation}
-\textbf{Effet des couplages thermiques/mécaniques}
+Avec le couplage mécanique, les perturbations sont atténuées pour toutes les échelles(par rapport à un modèle d'Eady SQG). 
+
+Les effets de ces deux couplages s'additionnent. Ceux-ci ne font que modifier le taux de croissance de l'instabilité, sans en créer de nouvelle(s).
 
 \subsection{Modèle Thermal Shallow Water}
 \textbf{Expliquer les équations TRSW (\parencite{Warneford2013}), justifier les termes de pression. Equilibre Geostrophique (cf \parencite{Gouzien2017})). Leur intéret, les invariants (pseudo-énergie, PV). Eventuellement les re-dériver en annexe. Après, la formulation varie selon les auteurs. Stabilité des écoulements}
@@ -42,29 +85,43 @@ Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation cla
 \end{align}
 Où $\lambda$ est un terme de refroidissement, qu'on prendra nul.
 
-\subsubsection{Preuve (adaptée de mes notes perso et de \cite{Warneford2013})}
+Deux grandeurs intégrées sont conservées :
+\begin{itemize}
+	\item La pseudo-énergie (en l'absence de dissipation) \textbf{A prendre avec des pincettes, c'est pas forcément très  correct niveau dimension} : 
+	\begin{align}
+		\frac{\mathrm{D} E}{\mathrm{D}t} = 0 \\
+		E = \iint_S\frac{1}{2}((\psi-\theta)\abs{\grad\psi}^2+\theta(\psi+\theta)^2)\mathrm{d}x\mathrm{d}y
+	\end{align} 
+	\item La vorticité potentielle totale, intégrée sur un contour isotherme : 
+	\begin{equation}
+		\frac{\mathrm{D} \oiint_{S(\theta)} q \mathrm{d}x\mathrm{d}y}{\mathrm{D} t} = 0
+	\end{equation}
+\end{itemize}
+Contrairement au modèle QG, la vorticité potentielle n'est pas conservée. Celle-ci est couplée à la flottabilité, qui n'est donc plus un scalaire passif.
+
+\subsubsection{Preuve (adaptée de mes notes perso et de \cite{Warneford2013}). Mettre en annexe, c'est que de la "cuisine" !}
  On utilise le scaling suivant : 
  \begin{align}
  	x = L\tilde{x} \\
  	u = U\tilde{u} \\
  	t = \frac{L}{U} \tilde{t}
  \end{align} 
-Pour la flottabilité $\Theta$ et la hauteur de couche $h$, l'équilibre géostrophique donne $f_0 U \approx \frac{\eta\Theta_0}{L}$, de telle sorte que 
+Où $L$ et $U$ sont les échelles de longueur et de vitesse horizontales. Pour la flottabilité $\Theta$ et la hauteur de couche $h$, l'équilibre géostrophique donne $f_0 U \approx \frac{\eta\Theta_0}{L}$, de telle sorte que 
 \begin{align}
-	h\approx H_0(1+\frac{f_0 U L}{\Theta_0 H_0}\tilde{eta}) \\
+	h\approx H_0(1+\frac{f_0 U L}{\Theta_0 H_0}\tilde{\eta}) \\
 	\Theta \approx \Theta_0 (1+2\frac{f_0 U L}{\Theta_0 H_0}\theta)
 \end{align}
 Les équations TRSW s'écrivent donc ( pour $\lambda =0$ ) : 
 \begin{align}
 	\mathrm{Ro}\[ \frac{\partial\tilde{\eta}}{\partial \tilde{t}} + \tilde{\div}\tilde{\eta}\tilde{\Vec{u}} \] +\mathrm{Bu}\cdot\tilde{\div} \tilde{\Vec{u}} =0 \\
 	\frac{\partial \tilde{\theta}}{\partial \tilde{t}} + \tilde{\Vec{u}}\cdot \grad \tilde{\theta} = 0 \\
-	\mathrm{Ro}\[ \frac{\partial \tilde{\Vec{u}}}{\partial \tilde{t}} +(\tilde{\Vec{u}}\cdot \tilde{\grad})\tilde{\Vec{u}}\]+ (1+\tilde{\beta}\tilde{y})\Vec{z}\VecProd\tilde{\Vec{u}} = - \tilde{\grad}{\tilde{\eta}+\tilde{\theta}}-\frac{\mathrm{Ro}}{\mathrm{Bu}}\[ 2\tilde{\theta}\tilde{\grad}\tilde{\eta}+\tilde{\eta}\tilde{\grad}\tilde{\theta}\]
+	\mathrm{Ro}\[ \frac{\partial \tilde{\Vec{u}}}{\partial \tilde{t}} +(\tilde{\Vec{u}}\cdot \tilde{\grad})\tilde{\Vec{u}}\]+ (1+\tilde{\beta}\tilde{y})\Vec{z}\VecProd\tilde{\Vec{u}} = - \tilde{\grad}( \tilde{\eta} + \tilde{\theta} )-\frac{\mathrm{Ro}}{\mathrm{Bu}}\[ 2\tilde{\theta}\tilde{\grad}\tilde{\eta}+\tilde{\eta}\tilde{\grad}\tilde{\theta}\]
 \end{align}
 Avec $\mathrm{Ro} = \frac{U}{f_0L}$, $\mathrm{Bu}=\frac{\Theta_0 H_0}{f_0 L^2} =(\frac{R_d}{L})^2$, $\tilde{\beta} = \frac{\beta L}{f_0}$. Par la suite, on arrêtera d'utiliser les $\tilde{}$, pour ne pas alourdir les notations. Sachant que $\mathrm{Ro} \ll 1$, on peut développer le champ de vitesse en puissances de $\mathrm{Ro}$ : 
 \begin{equation}
 	\Vec{u}= \Vec{u_0} + \mathrm{Ro}\Vec{u_1} +\mathrm{Ro}^2\Vec{u_2} + ...
 \end{equation}
-On suppose aussi que $\tilde{\beta} \approx \mathrm{Ro}$. A l'ordre zéro, on a 
+On suppose aussi que $\tilde{\beta} \sim \mathrm{Ro}$. A l'ordre zéro, on a 
 \begin{align}
 	\div \Vec{u_0} = 0 \\
 	\dT{\theta} + \Vec{u_0}\cdot \grad\theta = 0 \\
@@ -76,9 +133,9 @@ La première relation implique l'existence d'une fonction de courant $\psi$ tell
 	\Vec{u_1}\cdot\grad \theta  = \frac{\theta\eta}{\mathrm{Bu}} \\
 	\dT{\Vec{u_0}}+(\Vec{u_0}\grad)\Vec{u_0} + \Vec{z}\VecProd \Vec{u_1} +\beta y \Vec{z}\VecProd\Vec{u_0} = \frac{1}{\mathrm{Bu}}\[ 2\theta \grad \theta +\eta\grad\theta\]\label{eq:dT_u0}
 \end{align}
-Pour obtenir la vorticité absolue, il suffit de prendre le rotationnel de l'équation \ref{eq:dT_u0}. En utilisant les relations $\Vec{mathrm{rot}} f \Vec{A} = \grad f\VecProd \Vec{A} + f \Vec{\mathrm{rot}}\Vec{A}$ et $\Vec{\mathrm{rot}} = \Vec{z}\div \Vec{A} - \dZ{Vec{A}}$. On a donc, en projetant selon $\Vec{z}$ : 
+Pour obtenir la vorticité absolue, il suffit de prendre le rotationnel de l'équation \ref{eq:dT_u0}. En utilisant les relations $\Vec{mathrm{rot}} f \Vec{A} = \grad f\VecProd \Vec{A} + f \Vec{\mathrm{rot}}\Vec{A}$ et $\Vec{\mathrm{rot}} = \Vec{z}\div \Vec{A} - \dZ{\Vec{A}}$. On a donc, en projetant selon $\Vec{z}$ : 
 \begin{equation}
-	\dT{\eta_a} +\div Vec{u_1 } = -\frac{1}{\mathrm{Bu}}\(\frac{\partial \theta}{\partial x}\frac{\partial \eta}{\partial y}-\frac{\partial \theta}{\partial xy}\frac{\partial \eta}{\partial x}\)
+	\dT{\eta_a} +\div \Vec{u_1 } = -\frac{1}{\mathrm{Bu}}\(\frac{\partial \theta}{\partial x}\frac{\partial \eta}{\partial y}-\frac{\partial \theta}{\partial xy}\frac{\partial \eta}{\partial x}\)
 \end{equation}
 $\Vec{u_1}$ s'élimine simplement puisque $\div\Vec{u_1} = -\frac{1}{\mathrm{Bu}} ( \dT{\eta} +\Vec{u_0}\cdot\grad\eta )$, et d'après l'équilibre géostrophique, $\eta = \psi - \theta$. On en déduit donc les équations TQG : 
 \begin{align}
@@ -86,9 +143,5 @@ $\Vec{u_1}$ s'élimine simplement puisque $\div\Vec{u_1} = -\frac{1}{\mathrm{Bu}
 \dT{\theta}+\mathrm{J}(\psi, \theta) =0 \\
 q = \Delta_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + 1 + \tilde{\beta} y\\
 \end{align}
-Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D
-Propriétés (démontre celles qui sont simples) : 
-\begin{itemize}
-	\item Conservation de la pseudo-énergie (du moins sans dissipation)
-	\item Conservation de la PV intégrée (\textbf{si le contour délimitant la surface est une isotherme})
-\end{itemize}
+Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D.
+
