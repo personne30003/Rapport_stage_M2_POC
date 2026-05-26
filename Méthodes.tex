@@ -4,10 +4,9 @@ couplage thermique de la forme
 	\frac{D \theta_a}{Dt} = - C_t (\theta_a - \theta_o)\\
 	\frac{D \theta_b}{Dt} = - C_t (\theta_o - \theta_a)
 \end{align}
-\textbf{Ecrire couplage mécanique (à voir si je le fais, aucune idée) et système total sans dissipation ($\lambda =0$). Se baser sur les travaux du post-doc (Mingkun Lyu). M'enfin de ce que j'ai compris, je pourrais utiliser le même couplage que dans \cite{Vic2024}. Directives  (si elles existent) en attente ...}
+\textbf{Ecrire couplage mécanique (à voir si je le fais, aucune idée) et système total sans dissipation ($\lambda =0$). Se baser sur les travaux du post-doc (Mingkun Lyu). M'enfin de ce que j'ai compris, je pourrais utiliser le même couplage que dans \cite{Vic2024}.}
 \subsection{Résolution numérique du système}
 \subsubsection{Domaine}
-\textbf{Grille régulière (sans blague !). CLs : à voir, mais ce sera du pseudo-spectral (donc CLs périodiques), du moins je l'espère. Calcul des dérivées  : on est en pseudo spectral, donc pas très compliqué. Dépend des directives (s'il y en a, autrement je dois les inventer tout seul) qu'on me donnera. Si c'est avec d'autres CLs (par exemple canal périodique...), voir si ça peut le faire avec du pseudo-spectral. Si c'est par différences finies, bon courage pour le solveur PCG, j'ai eu mon compte avec l'UE "projet pro" !}
+\textbf{Grille régulière (sans blague !). CLs : à voir, mais ce sera du pseudo-spectral (donc CLs périodiques), du moins je l'espère. Calcul des dérivées  : on est en pseudo spectral, donc pas très compliqué. Dépend des directives qu'on me donnera. Si c'est avec d'autres CLs (par exemple canal périodique...), voir si ça peut le faire avec du pseudo-spectral. Si c'est par différences finies, bon courage pour le solveur PCG, j'ai eu mon compte avec l'UE "projet pro" !. Note : il est possible d'utiliser des CLs non périodiques, mais pas avec des transformées de Fourier. Il y a un excellent bouquin sur les méthodes spectrales avec Matlab \cite{Trefethen2000} (codes adaptables facilement en Python). On peut tout aussi bien utiliser les polynomes de Chebychev.}
 \subsubsection{Schéma temporel}
 \textbf{Rien n'est fixé, mais on sera probablement sur du Euler-LeapFrog, avec filtre d'Asselin. Le pas de temps sera soir fixe, soit réglé automatiquement avec nombre CFL (choisi par l'utilisateur)}
-\subsubsection{Architecture du code (facultatif, c'est "que" de l'ingénierie ; à la limite un lien vers Github suffit)}

@@ -40,8 +40,20 @@ Conséquences \cite{Held1995} :
 	\item Structures de petite échelle plus stables
 	\item Présence d'instabilités secondaires : autosimilarité
 \end{itemize}
+Avantages : 
+\begin{itemize}
+\item Simplicité (la PV est la seule variable pronostique au bout du compte)
+\item Filtrage des ondes de gravité : seules les ondes de Rossby existent
+\item Représente bien la dynamique de méso-échelle
+\end{itemize}
+
+Inconvénients : 
+\begin{itemize}
+	\item Ne tient pas compte des gradients horizontaux de densité/température (fronts) -> Mauvaise description des fronts
+	\item La flottabilité reste une variable diagnostique. Pour le cas SQG, elle est seulement représentée en surface
+\end{itemize}
 \subsection{Couplage océan-atmosphère}
-\textbf{Se baser sur \parencite{Vic2024}. Influence des couplages mécaniques et thermiques, dans le cadre d'un modèle d'Eady. Incidemment, on utilisera ces couplages. Introduit d'abord un peu le couplage océan-atmosphère : Eddy-killing, pompage d'Ekman, effet d'une atmosphère sur les écoulements méso-subméso-échelle (là par contre j'ai peur que ce soit trop général)}
+
 L'océan et l'atmosphère échangent à la fois de la chaleur et de la quantité de mouvement. \parencite{Vic2024} a étudié le couplage océan-atmosphère pour le problème d'Eady \textbf{référence vers travail original} dans le cadre d'un modèle SQG 2 couches. Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
 \begin{align}
 	\frac{D_h \theta_a}{Dt} = C_o(\theta_o - \theta_o) + F_a \\
