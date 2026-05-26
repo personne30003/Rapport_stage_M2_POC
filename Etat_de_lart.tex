@@ -87,6 +87,8 @@ Les effets de ces deux couplages s'additionnent. Ceux-ci ne font que modifier le
 	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = - \kappa(h\Theta - H_0 \Theta_0) \\
 	\dT{\Vec{u}}+(\Vec{u}\cdot \grad)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-\grad h\Theta+\frac{1}{2}h\grad \Theta
 \end{align}
+
+\textbf{Note : Se référer aussi à l'excellent rapport de stage de E.Gouzien \cite{Gouzien_M2}}
 \subsection{Modèle Thermal Quasi-Geostrophic (TQG)}
 \textbf{Re-dériver le modèle TQG par expansion en puissance du nombre de Rossby (si c'est trop long, mettre en Annexe). Caractéristiques du modèle (Invariants, solutions). Exemple d'utilisation (cf \parencite{Carton2025}). La formulation étant différente selon les auteurs, on se basera sur celle de \cite{Warneford2013}. }
 Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation claire si la bathymétrie est variable) : 
@@ -110,6 +112,10 @@ Deux grandeurs intégrées sont conservées :
 	\end{equation}
 \end{itemize}
 Contrairement au modèle QG, la vorticité potentielle n'est pas conservée. Celle-ci est couplée à la flottabilité, qui n'est donc plus un scalaire passif.
+
+\cite{Carton2025} a utilisé ce modèle pour étudier la stabilité d'un vortex, avec des profils gaussiens de flottabilité  et de vorticité. Comme dans le modèle SQG, l'instabilité est plus marquée à petite échelle \textbf{Compare avec SQG, \cite{Lapeyre2017} dit des choses très intéressantes)}
+
+
 
 \subsubsection{Preuve (adaptée de mes notes perso et de \cite{Warneford2013}). Mettre en annexe, c'est que de la "cuisine" !}
  On utilise le scaling suivant : 
@@ -145,7 +151,7 @@ La première relation implique l'existence d'une fonction de courant $\psi$ tell
 	\Vec{u_1}\cdot\grad \theta  = \frac{\theta\eta}{\mathrm{Bu}} \\
 	\dT{\Vec{u_0}}+(\Vec{u_0}\grad)\Vec{u_0} + \Vec{z}\VecProd \Vec{u_1} +\beta y \Vec{z}\VecProd\Vec{u_0} = \frac{1}{\mathrm{Bu}}\[ 2\theta \grad \theta +\eta\grad\theta\]\label{eq:dT_u0}
 \end{align}
-Pour obtenir la vorticité absolue, il suffit de prendre le rotationnel de l'équation \ref{eq:dT_u0}. En utilisant les relations $\Vec{mathrm{rot}} f \Vec{A} = \grad f\VecProd \Vec{A} + f \Vec{\mathrm{rot}}\Vec{A}$ et $\Vec{\mathrm{rot}} = \Vec{z}\div \Vec{A} - \dZ{\Vec{A}}$. On a donc, en projetant selon $\Vec{z}$ : 
+Pour obtenir la vorticité absolue, il suffit de prendre le rotationnel de l'équation \ref{eq:dT_u0}. En utilisant les relations $\Vec{\mathrm{rot}} f \Vec{A} = \grad f\VecProd \Vec{A} + f \Vec{\mathrm{rot}}\Vec{A}$ et $\Vec{\mathrm{rot}} = \Vec{z}\div \Vec{A} - \dZ{\Vec{A}}$. On a donc, en projetant selon $\Vec{z}$ : 
 \begin{equation}
 	\dT{\eta_a} +\div \Vec{u_1 } = -\frac{1}{\mathrm{Bu}}\(\frac{\partial \theta}{\partial x}\frac{\partial \eta}{\partial y}-\frac{\partial \theta}{\partial xy}\frac{\partial \eta}{\partial x}\)
 \end{equation}
@@ -153,7 +159,7 @@ $\Vec{u_1}$ s'élimine simplement puisque $\div\Vec{u_1} = -\frac{1}{\mathrm{Bu}
 \begin{align}
 \dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
 \dT{\theta}+\mathrm{J}(\psi, \theta) =0 \\
-q = \Delta_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + 1 + \tilde{\beta} y\\
+q = \Delta_{\mathrm{h}}\psi - \frac{\psi - \theta}{R_d^2} + 1 + \tilde{\beta} y\\
 \end{align}
 Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D.
 
