@@ -1,7 +1,16 @@
 \subsection{modèles simplifiés QG et SQG}
-\textbf{Introduire QG : dynamique lente, simplifications, avantages et inconvénients sur le plan numérique. Se référer à l'excellent cours de Hall et Illig. Instabilités (barotropes et baroclines) et turbulence. Puis Modèle SQG (le seul à décrire la température en surface d'une couche}
-Le modèles quasi-géotrophique a été à la fin des années 1940, afin de décrire une dynamique "lente" ($T\gg \frac{1}{f_0}$).
-
+De manière générale, les modèles Quasi-Géostrophiques, supposent qu'en faisant les hypothèses suivantes \textbf{Je me base sur le cours de N.Hall et S.Illig}: 
+\begin{itemize}
+	\item L'échelle spatiale horizontale $L$ de l'écoulement est petite par rapport au rayon de la Terre : $\frac{L}{R_T} \ll 1$. Cela implique que seuls les mouvements de méso/subméso-échelle sont décrits ($L \approx 10-1000$ km)
+	\item Le nombre de Rossby $\mathrm{Ro} = \frac{U}{f_0 L}$ est très petit devant 1. Les termes d'advection sont donc négligeables par rapport au terme de Coriolis.
+	\item Les termes de stratification/gravité (température, hauteur d'eau) sont du même ordre que le terme de Coriolis : $ \mathrm{Bu} =\frac{R_d}{L} \approx 1$, où $R_d$ est le rayon de déformation de Rossby. Dans le cas d'un océan de densité constante, à moyenne latitude, $R_d = \frac{\sqrt{g'H}}{f_0}$. Pour $f_0 \approx 10^{-4}\, s^{-1}$, $H\approx 1000 \, m^$, $R_d \approx 1000 km$ \textbf{J'ai pris $g'=9.81\,m^2\cdot s^{-2}$, en général c'est bien plus petit.}.
+	\item L'échelle de temps advective $T=\frac{U}{L}$ est très grande devant celle associée à la rotation de la Terre ($T_T \approx f_0^{-1}$). Cela permets ainsi de filtrer les ondes \guillemets{rapides} : marées, ondes gravito-inertielles
+\end{itemize}
+Alors, à chaque instant, l'équilibre géostrophique est respecté : 
+\begin{align}
+	f_0 v = \frac{\partial P}{\partial x}\\
+	f_0 u = -\frac{\partial P}{\partial y}
+\end{align}
 Modèle QG : 
 \begin{align}
 \dT{q} + \mathrm{J}(\psi, q) =0 \\
@@ -95,7 +104,7 @@ Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation cla
 \begin{align}
 	\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
 	\dT{\theta}+\mathrm{J}(\psi, \theta) = -\lambda(\theta+\psi) \\
-	q = \Delta_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + f_0 + \beta y
+	q = \triangle_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + f_0 + \beta y
 \end{align}
 Où $\lambda$ est un terme de refroidissement, qu'on prendra nul.
 
@@ -159,7 +168,7 @@ $\Vec{u_1}$ s'élimine simplement puisque $\div\Vec{u_1} = -\frac{1}{\mathrm{Bu}
 \begin{align}
 \dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
 \dT{\theta}+\mathrm{J}(\psi, \theta) =0 \\
-q = \Delta_{\mathrm{h}}\psi - \frac{\psi - \theta}{R_d^2} + 1 + \tilde{\beta} y\\
+q = \triangle_{\mathrm{h}}\psi - \frac{\psi - \theta}{R_d^2} + 1 + \tilde{\beta} y\\
 \end{align}
 Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D.
 
