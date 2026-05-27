@@ -1,9 +1,10 @@
 \subsection{modèles simplifiés QG et SQG}
+\subsection{Modèle QG}
 De manière générale, les modèles Quasi-Géostrophiques, supposent qu'en faisant les hypothèses suivantes \textbf{Je me base sur le cours de N.Hall et S.Illig}: 
 \begin{itemize}
-	\item L'échelle spatiale horizontale $L$ de l'écoulement est petite par rapport au rayon de la Terre : $\frac{L}{R_T} \ll 1$. Cela implique que seuls les mouvements de méso/subméso-échelle sont décrits ($L \approx 10-1000$ km)
+	\item L'échelle spatiale horizontale $L$ de l'écoulement est petite par rapport au rayon de la Terre : $\frac{L}{R_T} \ll 1$. Cela implique que seuls les mouvements de méso/subméso-échelle sont décrits ($L \approx 10-1000$ km).
 	\item Le nombre de Rossby $\mathrm{Ro} = \frac{U}{f_0 L}$ est très petit devant 1. Les termes d'advection sont donc négligeables par rapport au terme de Coriolis.
-	\item Les termes de stratification/gravité (température, hauteur d'eau) sont du même ordre que le terme de Coriolis : $ \mathrm{Bu} =\frac{R_d}{L} \approx 1$, où $R_d$ est le rayon de déformation de Rossby. Dans le cas d'un océan de densité constante, à moyenne latitude, $R_d = \frac{\sqrt{g'H}}{f_0}$. Pour $f_0 \approx 10^{-4}\, s^{-1}$, $H\approx 1000 \, m^$, $R_d \approx 1000 km$ \textbf{J'ai pris $g'=9.81\,m^2\cdot s^{-2}$, en général c'est bien plus petit.}.
+	\item Les termes de stratification/gravité (température, hauteur d'eau) sont du même ordre que le terme de Coriolis : $ \mathrm{Bu} =\frac{R_d}{L} \approx 1$, où $R_d$ est le rayon de déformation de Rossby. Dans le cas d'un océan de densité constante, à moyenne latitude, $R_d = \frac{\sqrt{g'H}}{f_0}$. Pour $f_0 \approx 10^{-4}\, s^{-1}$, $H\approx 1000 \, m$, $R_d \approx 1000 \, km$ \textbf{J'ai pris $g'=9.81\,m^2\cdot s^{-2}$, en général c'est bien plus petit. Si $L \gg R_d$, on est dans le cas d'un front}.
 	\item L'échelle de temps advective $T=\frac{U}{L}$ est très grande devant celle associée à la rotation de la Terre ($T_T \approx f_0^{-1}$). Cela permets ainsi de filtrer les ondes \guillemets{rapides} : marées, ondes gravito-inertielles
 \end{itemize}
 Alors, à chaque instant, l'équilibre géostrophique est respecté : 
@@ -11,21 +12,21 @@ Alors, à chaque instant, l'équilibre géostrophique est respecté :
 	f_0 v = \frac{\partial P}{\partial x}\\
 	f_0 u = -\frac{\partial P}{\partial y}
 \end{align}
-Modèle QG : 
+On peut montrer \textbf{Mets une référence} par un développement de $u$ et $b$ en puissances de $\mathrm{Ro}$, que la vorticité potentielle $q$ est conservée \textbf{précise un peu plus. En gros, l'équilibre est légèrement perturbé par d'autres composantes géostrophiques, d'amplitude moindre. L'intérêt de ce développement est surtout de linéariser les équations autour d'un état d'équilibre}. Pour une stratification continue \textbf{Avis : tu peux tout faire en shallow-water} , cela donne : 
 \begin{align}
 \dT{q} + \mathrm{J}(\psi, q) =0 \\
-q = \Delta_\mathrm{h} \psi +\frac{\partial}{\partial z}\(\frac{f_0}{N^2}\rho \dZ{\psi}\)+f_0+\beta y = 0
+q = \triangle_\mathrm{h} \psi +\frac{\partial}{\partial z}\(\frac{f_0}{N^2}\rho \dZ{\psi}\)+f = 0
 \end{align}
-Grandeurs intégrées conservées : 
+Où $J(A, B)= \frac{\partial A}{\partial x}\frac{\partial B}{\partial y} - \frac{\partial A}{\partial y}\frac{\partial B}{\partial x}$ et $\triangle_\mathrm{h} = \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}$ est le laplacien 2D. 
+On montre assez facilement que seules les ondes de Rossby se propagent \textbf{Critiquable. Ces ondes n'existent que du fait de la variation de $f$? Ici, tu as fait directement l'approximation de $\beta-\mathrm{plan}$. C'est pas  forcément nécessaire comme approximation, cf. modèle de Phillips (\guillemets{Je sais où tu te caches, viens ici que j'te bute, enc.lé ! -> Ta g..le viens ici sale enc.lé ! -> Salaud!}, rho c'est qu'une référence à Hitman le Cobra)}
+
+Dans ce cadre, deux types principaux d'instabilité peuvent apparaitre \textbf{Développe} : 
 \begin{itemize}
-	\item Vorticité potentielle totale $Q$
-	\item Enstrophie potentielle totale $Z$
-	\item Energie totale
+	\item L'instabilité barotrope. En gros : l'instabilité est due au cisaillement horizontal
+	\item L'instabilité barocline. En gros : elle est due à la fois au cisaillement, mais surtout à la stratification (énergie potentielle disponible)
 \end{itemize}
-
-Inconvénients : la thermodynamique n'est pas prise en compte
-
-\textbf{Décrire les instabilités possibles : barotropes (instabilité de cisaillement 2D, en présence d'effet $\beta$) et baroclines (En gros, comme la précédente, mais avec stratification). Se baser sur le cours de GFD1 (que je maitrise pas du tout !)}
+\textbf{Maintenant, aborde les limites de ce modèle : mauvaise description des fronts, et le fait que la flottabilité n'apparaisse que comme un diagnostique (dans ce modèle, c'est la PV qui dirige tout. Décris aussi les grandeurs intégrées (conservation de l'énergie, de la PV et de l'enstrophie totale)}
+\subsubsection{Modèle SQG}
 Modèle SQG \cite{Lapeyre2017}: 
 \begin{align}
 	\dT{\theta}+\Vec{u_s}\cdot\grad \theta = 0 \\
