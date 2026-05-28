@@ -1,4 +1,4 @@
-\subsection{modèles simplifiés QG et SQG}
+\subsection{Modèles simplifiés QG et SQG}
 \subsection{Modèle QG}
 Le modèle Quasi-Géostrophique, supposent qu'en faisant les hypothèses suivantes \textbf{Je me base sur \cite{Illig2025} et \cite{CushmanRoisin2011}}: 
 \begin{itemize}
@@ -11,18 +11,19 @@ Alors, à chaque instant, l'équilibre géostrophique est respecté :
 \begin{align}
 	f v = \frac{\partial P}{\partial x}\\
 	f u = -\frac{\partial P}{\partial y}
+	\label{eq:geostrf}
 \end{align}
 On peut montrer \textbf{Mets une référence} par un développement de $u$ et $b$ en puissances de $\mathrm{Ro}$, que la vorticité potentielle $q$ est conservée. L'intérêt de ce développement asymptotique est d'obtenir une équation d'évolution \guillemets{lente}. Pour une stratification continue \textbf{Avis : tu peux tout faire en shallow-water. Mais dans ce cas, on évacue le problème de la buoyancy, ce qui est moins intéressant} , cela donne (en s'arrêtant à l'ordre 1) : 
 \begin{align}
 \dT{q} + \mathrm{J}(\psi, q) =0 \\
 q = \triangle_\mathrm{h} \psi +\frac{1}{\rho}\frac{\partial}{\partial z}\(\frac{f_0}{N^2}\rho \dZ{\psi}\)+f = 0
+\label{eq:QG}
 \end{align}
-Où $J(A, B)= \frac{\partial A}{\partial x}\frac{\partial B}{\partial y} - \frac{\partial A}{\partial y}\frac{\partial B}{\partial x}$ et $\triangle_\mathrm{h} = \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}$ est le laplacien 2D. L'écoulement étant non divergent horizontalement, on définit la fonction de courant $\psi$ telle que $u = -\frac{\partial \psi}{\partial y}, \, v = \frac{\partial \psi}{\partial x} $. La flottabilité $b$ se déduit directement à partir de $\psi$ : $b = -f_0\frac{\partial \psi}{\partial z}$.
+Où $J(A, B)= \frac{\partial A}{\partial x}\frac{\partial B}{\partial y} - \frac{\partial A}{\partial y}\frac{\partial B}{\partial x}$ et $\triangle_\mathrm{h} = \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}$ est le laplacien 2D. L'écoulement étant non divergent horizontalement, on définit la fonction de courant $\psi$ telle que $u = -\frac{\partial \psi}{\partial y}, \, v = \frac{\partial \psi}{\partial x} $. La flottabilité $b$ se déduit directement à partir de $\psi$ : $b = -f_0\frac{\partial \psi}{\partial z}$. Le terme avec la dérivée en $z$ tiens compte de la compression/dilatation du fluide avec la stratification. \textbf{Détaille un peu. Bordel, faut connaitre un peu son cours de GFD parce que là ...}
 
 Le paramètre de Coriolis varie avec la latitude. Pour une échelle horizontale \guillemets{pas trop grande}, on peut effectuer un développement limité au premier ordre  : $f \approx f_0 + \beta y$. Où $f_0 = 2\Omega \sin(\lambda)$ et $\beta = \frac{2\Omega\cos \lambda}{R_T}$. \textbf{Celui là tu peux le mettre au début, limite dans l'intro quand tu introduis les equations primitives}.
 
 Les quantités totales (intégrées sur tout l'espace) conservées dans ce modèle sont la vorticité potentielle $Q = \iiint_V q \mathrm{d}V$, l'enstrophie potentielle $Z = \iiint_V q^2\mathrm{d}V$ \textbf{A voir si je trouve une autre notation}. En l'absence de dissipation, l'énergie totale $E = E_c +APE = \iiint_V\(\rho_0\ |\grad\psi |^2 +\frac{1}{2}\rho_0\frac{f_0^2}{N^2}\( \frac{\partial \psi}{\partial z}\)^2\)\mathrm{d}V$ (où $E_c$ est l'énergie cinétique et $APE$ l'énergie potentielle disponible \textbf{On va pas rentrer dans la subtilité}).
-
 
 La conservation de la vorticité potentielle implique l'existence d'ondes de Rossby  : 
 \begin{itemize}
@@ -37,7 +38,7 @@ La conservation de la vorticité potentielle implique l'existence d'ondes de Ros
 	\end{equation}
 	Avec $\Gamma > 0$. Leurs propriétés sont grandement similaires à celles des ondes de Rossby barotropes, mais leur vitesse de propagation à grande longueur d'onde est limitée par le terme $\Gamma$ \textbf{Explique pourquoi tant qu'à faire !} 
 \end{itemize}
-Dans ce cadre, deux types d'instabilité peuvent apparaitre \textbf{Développe. Succintement mais pas trop quand même. Au dis au moins la manière dont ça se manifeste, sans trop détailler. Putain, t'aurais vraiment dû bosser GFD1 ça aurait roulé tout seul !} : 
+Dans ce cadre, deux types d'instabilité peuvent apparaitre \textbf{Développe. Succintement mais pas trop quand même. Au dis au moins la manière dont ça se manifeste, sans trop détailler. Putain, t'aurais vraiment dû bosser GFD1 ça aurait roulé tout seul ! Fais ça ce Week-End au pire !} : 
 \begin{itemize}
 	\item L'instabilité barotrope a pour origine un cisaillement zonal $\frac{\partial U}{\partial z}\neq 0$. 
 	\item L'instabilité barocline est due à un gradient méridien de flottabilité
@@ -46,41 +47,19 @@ Dans ce cadre, deux types d'instabilité peuvent apparaitre \textbf{Développe. 
 Le modèle Quasi-Géostrophique repose sur l'hypothèse que les termes de gradients horizontaux soient du même ordre de grandeur que le terme de Coriolis. Si ils sont trop élevés (présence de fronts), l'approximation n'est plus valable. Enfin, ce modèle néglige complètement le rôle actif que joue la flottabilité, puisque tout repose sur la conservation de la vorticité potentielle. C'est pour cela qu'a été développé le modèle Surface-Quasi-Geostrophic (SQG) \textbf{Mal formulé comme paragraphe, le modèle SQG suppose aussi $\mathrm{Bu} \approx 1$}.
 
 \subsubsection{Modèle SQG}
-Modèle SQG \cite{Lapeyre2017}: 
+Afin d'inverser l'équation \ref{eq:QG}, il est nécessaire d'établir des conditions aux limites sur les bords verticaux du domaine (en plus des bords horizontaux). Le modèle SQG \parencite{Lapeyre2017}\parencite{Held1995} suppose que, pour un domaine vertical semi-infini toute la dynamique est confinée en surface ($z=0$). La vorticité potentielle est donc nulle partout, à chaque instant. Dans ce cas, la flottabilité en surface est conservée, et on obtient la système suivant : 
 \begin{align}
-	\dT{\theta}+\Vec{u_s}\cdot\grad \theta = 0 \\
-	b_s = \left. \dZ{\psi}\right|_{z=0}\\
-	\frac{\partial^2 \psi}{\partial x^2}+\frac{\partial^2 \psi}{\partial y^2}+\frac{\partial^2 \psi}{\partial z^2}=0\\
+	\dT{b_s}+\Vec{u_s}\cdot\grad \theta = 0 \\
+	b_s = \left. f_0 \dZ{\psi}\right|_{z=0}\\
+	\frac{\partial^2 \psi}{\partial x^2}+\frac{\partial^2 \psi}{\partial y^2}+\frac{\partial}{\partial z}\(\frac{f_0^2}{N^2}\frac{\partial \psi}{\partial z}\)=0\\
 	 \lim\limits_{z\rightarrow\infty}\dZ{\psi} = 0\\
 	\Vec{u_s} = \( - \left.\frac{\partial \psi}{\partial y}\right|_{z=0}, \left.\frac{\partial \psi}{\partial x}\right|_{z=0}\)
+	\label{eq:PV_SQG}
 \end{align}
-Invariants  : 
-\begin{itemize}
-	\item Enstrophie généralisée : \begin{equation}
-		\mathrm{P} = \frac{1}{2}\iint\theta
-	\end{equation}
-	\item Energie totale : 
-	\begin{equation}
-		E = \frac{1}{2}\iiint \(\frac{\partial \psi}{\partial x}\)^2+\(\frac{\partial \psi}{\partial y}\)^2+\(\frac{\partial \psi}{\partial x}\)^2\mathrm{d}x\mathrm{d}y\mathrm{d}z = -\frac{1}{2}\iint \psi_s\theta\mathrm{d}x\mathrm{d}y
-	\end{equation}
-\end{itemize}
-Conséquences \cite{Held1995} : 
-\begin{itemize}
-	\item Structures de petite échelle plus stables
-	\item Présence d'instabilités secondaires : autosimilarité
-\end{itemize}
-Avantages : 
-\begin{itemize}
-\item Simplicité (la PV est la seule variable pronostique au bout du compte)
-\item Filtrage des ondes de gravité : seules les ondes de Rossby existent
-\item Représente bien la dynamique de méso-échelle
-\end{itemize}
 
-Inconvénients : 
-\begin{itemize}
-	\item Ne tient pas compte des gradients horizontaux de densité/température (fronts) -> Mauvaise description des fronts
-	\item La flottabilité reste une variable diagnostique. Pour le cas SQG, elle est seulement représentée en surface
-\end{itemize}
+Comme pour le modèle QG, la vorticité potentielle est conservée, mais sa valeur reste contrainte. De même, l'énergie totale (intégrée sur tout le volume du fluide) est conservée. En revanche, la flottabilité découle du champ de vitesse et est advectée par lui, ce qui en fait un traceur actif. Le fait qu'elle dépende verticalement de $\psi$ fait que la flottabilité de surface est reliée non-localement au champ de vitesse. Cela induit ainsi un couplage entre les structures thermiques et la circulation géostrophique. \textbf{formulation à améliorer}. Si le modèle SQG ne fais pas apparaître directement les ondes de Rossby planétaires du modèle QG classique, des ondes peuvent émerger en présence de gradients de flottabilité en surface. Ceux-ci jouent un rôle dynamique similaires à un gradient de vorticité potentielle. D'une certaine manière, le gradient horizontal de flottabilité \guillemets{remplace} l'effet $\beta$ \textbf{Il y a du vrai, mais la formulation est maladroite}. 
+
+Par analyse d'échelles, on obtient l'échelle de vorticité relative $\zeta_z \approx \frac{\theta}{H}$, où $H$ est l'échelle de hauteur verticale. \textbf{détailles plus, essaie d'expliquer pourquoi les structures de fines échelle apparaissent. Je maitrise pas encore, mais j'y suis presque ! }Le modèle SQG tend à favoriser l’émergence de structures frontales fines et de filaments de flottabilité. Contrairement au cadre barotrope, cette dynamique conduit fréquemment à des structures de petite échelle et à l’apparition d’instabilités secondaires.
 
 \subsection{Couplage océan-atmosphère}
 
