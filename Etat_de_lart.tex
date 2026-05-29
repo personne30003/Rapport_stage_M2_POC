@@ -61,6 +61,8 @@ Comme pour le modèle QG, la vorticité potentielle est conservée, mais sa vale
 
 Par analyse d'échelles, on obtient l'échelle de vorticité relative $\zeta_z \approx \frac{\theta}{H}$, où $H$ est l'échelle de hauteur verticale. \textbf{détailles plus, essaie d'expliquer pourquoi les structures de fines échelle apparaissent. Je maitrise pas encore, mais j'y suis presque ! }Le modèle SQG tend à favoriser l’émergence de structures frontales fines et de filaments de flottabilité. Contrairement au cadre barotrope, cette dynamique conduit fréquemment à des structures de petite échelle et à l’apparition d’instabilités secondaires.
 
+\textbf{A compléter quand t'en sauras plus. Au niveau des limites du modèle : similaires à celle de QG. Le fait que la vorticité potentielle soit nulle est une hypothèse très forte. Ce qu'on a gagné en rendant la flottabilité active, on l'a perdu en imposant la PV nulle. D'où l'intérêt d'avoir des équations d'évolution distinctes pour ces variables. C'est pour cela qu'on a introduit le modèle TQG. Pour rendre plus parlant, mets une simulation simple (possible d'utiliser pyQG, l'interface est pas compliquée)}
+
 \subsection{Couplage océan-atmosphère}
 
 L'océan et l'atmosphère échangent à la fois de la chaleur et de la quantité de mouvement. \parencite{Vic2024} a étudié le couplage océan-atmosphère pour le problème d'Eady \textbf{référence vers travail original} dans le cadre d'un modèle SQG 2 couches. Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
@@ -88,16 +90,53 @@ Si la vitesse du vent est bien supérieure à celle du courant de surface ($\Vec
 Avec le couplage mécanique, les perturbations sont atténuées pour toutes les échelles(par rapport à un modèle d'Eady SQG). 
 
 Les effets de ces deux couplages s'additionnent. Ceux-ci ne font que modifier le taux de croissance de l'instabilité, sans en créer de nouvelle(s).
-
+\textbf{Je vois pas trop quoi dire de plus. Reste qu'à \guillemets{emballer} le texte. De toute façon, je suis pas sûr que j'aurais le temps de traiter ça}
 \subsection{Modèle Thermal Shallow Water}
-\textbf{Expliquer les équations TRSW (\parencite{Warneford2013}), justifier les termes de pression. Equilibre Geostrophique (cf \parencite{Gouzien2017})). Leur intéret, les invariants (pseudo-énergie, PV). Eventuellement les re-dériver en annexe. Après, la formulation varie selon les auteurs. Stabilité des écoulements}
+\textbf{Pour une dérivation complète des équations RSW et TRSW, voir \cite{Zeitlin2018} et \cite{Gouzien_M2}. Ici, je me base sur \cite{Warneford2013}}
+
+Les équations Shallow Water \textbf{Explique leur intérêt !} sont obtenues en moyennant verticalement les équations primitives sur des couches de densité constante. Elles supposent que l'équilibre hydrostatique est vérifié, et que les échelles de longueur verticales sont bien inférieures à celles horizontales. \textbf{Rajoute une figure sur un modèle 1 couche}. Pour une couche de densité constante $\rho_0$, elles s'écrivent : 
+\begin{align}
+\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
+\dT{\Vec{u}}+(\Vec{u}\cdot \grad_h)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-g\grad_h h
+\end{align}
+\textbf{Demonstration adaptée de \cite{Warneford2013}, avec un modèle 1.5 couches}. Dans le modèle Thermal-Rotating-Shallow-Water (TRSW), on considère que la densité reste constante selon la verticale, mais varie horizontalement. On définit la flottabilité $\Theta = g\frac{\Delta\rho(\Vec{x}, t)}{\rho_0}$. On considère ici un modèle avec une couche active de densité $\rho(\Vec{x}, t) = \rho_0+\Delta rho(\Vec{x}, t)$, d'épaisseur $h(x, y, t)$ (figure \ref{fig:Warneford2013}). La surface est supposée rigide. En dessous de la couche active se trouve une couche passive d'épaisseur $H_0\gg h$ et de densité $\rho_0$.
+Avec la loi de l'hydrostatique, on obtient les pressions dans les couches actives et passives (notées $P$ et$P_0$) 
+\begin{align}
+	P(x,y, z, t) = P_{surf}(x, y, t)+ - g (\rho_0 - \Delta \rho)z \\
+	P_0(x, y, z, t) = P_{surf}(x,y, t) -\rho_0 g z - \Delta\rho g h
+\end{align}
+Où $P_{surf}(x, y, t)$ est la pression appliquée à la surface . Sachant que dans la couche passive, les gradients horizontaux sont nuls, la continuité des pressions donne : 
+\begin{align}
+	\grad_h P_0 = 0 \Rightarrow P_{surf}(x, y, t) = \Delta\rho g h\\
+	P(x, y, z, t) = \Delta \rho g h - (\rho_0 - \Delta \rho) g z
+\end{align} 
+Le gradient horizontal de pression dans la couche supérieure s'écrit donc : 
+\begin{equation}
+	\grad_h P = \rho_0 \(\grad_h \Theta h + \grad_h \Theta z\) = \rho_0\( \Theta \grad_h h + (h+z)\grad_h \Theta\) 
+\end{equation}
+Et en moyennant sur la hauteur de la couche active : 
+\begin{equation}
+	\begin{split}
+	\frac{1}{h}\int_{-h}^0 \grad_h P \mathrm{d}z &= \rho_0\(\int_{-h}^0 \Theta \grad_h h \mathrm{d}z + \int_{-h}^0 h\grad_h \Theta \mathrm{d}z  +\int_{-h}^0 z \grad_h \Theta \mathrm{d}z\) \\
+	&= \frac{1}{h} \rho_0 \(\Theta h \grad_h h + h^2 \grad_h \Theta -h^2\grad_h \Theta \) \\
+	&= \grad_h \Theta h -\frac{h}{2}\grad\Theta
+	\end{split}
+\end{equation}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.7\linewidth]{Figures/Warneford2013_fig1}
+	\caption{Tiré de \cite{Warneford2013}}
+	\label{fig:Warneford2013}
+\end{figure}
+Le reste de la dérivation est identique à celle pour le modèle RSW \textbf{Mettre une interprétation physique du terme de pression! en gros, le terme en $-\frac{h}{2}\grad_h\Theta$ est associé aux fronts thermiques, tandis que celui en $\grad_h \Theta h$ est similaire au gradient de pression dans RSW, mais tiens compte de la dilatation/compression de la couche}. En l'absence de dissipation, la flottabilité est conservée. On obtiens alors les équations TRSW : 
+
 \begin{align}
 	\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
-	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = - \kappa(h\Theta - H_0 \Theta_0) \\
+	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = 0 \\
 	\dT{\Vec{u}}+(\Vec{u}\cdot \grad)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-\grad h\Theta+\frac{1}{2}h\grad \Theta
+	\label{eq:TRSW}
 \end{align}
-
-\textbf{Note : Se référer aussi à l'excellent rapport de stage de E.Gouzien \cite{Gouzien_M2}}
+\textbf{Reste à parler de la conservation de la PV et des instabilités \cite{Gouzien_M2}}
 \subsection{Modèle Thermal Quasi-Geostrophic (TQG)}
 \textbf{Re-dériver le modèle TQG par expansion en puissance du nombre de Rossby (si c'est trop long, mettre en Annexe). Caractéristiques du modèle (Invariants, solutions). Exemple d'utilisation (cf \parencite{Carton2025}). La formulation étant différente selon les auteurs, on se basera sur celle de \cite{Warneford2013}. }
 Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation claire si la bathymétrie est variable) : 
@@ -166,9 +205,9 @@ Pour obtenir la vorticité absolue, il suffit de prendre le rotationnel de l'éq
 \end{equation}
 $\Vec{u_1}$ s'élimine simplement puisque $\div\Vec{u_1} = -\frac{1}{\mathrm{Bu}} ( \dT{\eta} +\Vec{u_0}\cdot\grad\eta )$, et d'après l'équilibre géostrophique, $\eta = \psi - \theta$. On en déduit donc les équations TQG \textbf{Gaffe à bien les a-dimensionner !} : 
 \begin{align}
-\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
+\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{\mathrm{Bu}}\mathrm{J}(\psi, \theta) \\
 \dT{\theta}+\mathrm{J}(\psi, \theta) =0 \\
-q = \triangle_{\mathrm{h}}\psi - \frac{\psi - \theta}{R_d^2} + 1 + \tilde{\beta} y\\
+q = \triangle_{\mathrm{h}}\psi - \frac{\psi - \theta}{\mathrm{Bu}} + \tilde{\beta} y\\
 \end{align}
 Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D.
 
