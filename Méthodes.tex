@@ -1,11 +1,18 @@
 \subsection{Problème à résoudre}
-\textbf{Ecris le système d'équations ainsi que les CLs associées (on est dans un canal, donc vitesse normale nulle), formulées proprement. On écrira d'abord un code monocouche (la version bicouche découlant de celle ci)}
-couplage thermique de la forme
+De manière générale, nous allons résoudre les équations suivantes, sur un domaine carré de longueur 1  : 
 \begin{align}
-	\frac{D \theta_a}{Dt} = - C_t (\theta_a - \theta_o)\\
-	\frac{D \theta_b}{Dt} = - C_t (\theta_o - \theta_a)
+	\dT{q_o}+\mathrm{J}(\psi_o, q_o) = \mathrm{J}(\psi_o, \theta_o) + C_{w, a} \triangle_\mathrm{h} (\psi_o - \psi_a) \, | & \, \dT{q_a}+\mathrm{J}(\psi_a, q_a) = \mathrm{J}(\psi_a, \theta_a) + C_{w, a} \triangle_\mathrm{h} (\psi_a - \psi_o)\\
+	\dT{\theta_o} + \mathrm{J}(\psi_o, \theta_o) = -C_t(\theta_a -\theta_o) \, | &\, \dT{\theta_a} + \mathrm{J}(\psi_a, \theta_a) = -C_t(\theta_o -\theta_a) \\
+	q_o = \triangle_{\mathrm{h}}\psi_o -\frac{\psi_o - \theta_o}{R_{d, o}^2} + \beta y \,|&\, q_a = \triangle_{\mathrm{h}}\psi_a -\frac{\psi_a - \theta_a}{R_{d, a}^2} + \beta y
 \end{align}
-\textbf{Ecrire couplage mécanique (à voir si je le fais, aucune idée) et système total sans dissipation ($\lambda =0$). Se baser sur les travaux du post-doc (Mingku Lyu). M'enfin de ce que j'ai compris, je pourrais utiliser le même couplage que dans \cite{Vic2024}.}
+Dans le cadre d'une configuration \guillemets{canal} zonal, la vitesse normale $v$ est nulle. Cela revient à fixer la valeur de $\psi$ : 
+\begin{equation}
+	\psi(x, 0, t) = T_0(t) \\
+	\psi(x, L, t) = 0
+\end{equation} 
+Où $T_0(t) = \int_0^L u(x, y, t) \mathrm{d}y = -\int_0^L\partial_y u(x, y, t) \mathrm{d}y = -(\psi(x, L, t) - \psi(x, 0, t))$ est le transport zonal.
+\textbf{Détailles un peu plus. Et fais l'adimensionnement de manière plus rigoureuse (surtout pour le couplage Océan Atmosphère)!}
+Pour ce qui est des CLs sur $\theta$, c'est le choix de l'utilisateur : contour isotherme (PV conservée dans ce cas), flux nul ....
 \subsection{Résolution numérique du système}
 \subsubsection{Domaine}
 \textbf{Grille régulière (sans blague !). D'après les directives, le code devra pouvoir simuler soit un canal infini (donc avec vitesses normales nulles aux bords N/S, par exemple), soit un océan fermé (vitesse normale nulle sur tous les bords). Cela implique d'utiliser des CLs de Neumann. J'ai pas envie d'utiliser un solveur PCG (c'est délicat pour ces CLs, et pas simple à implémenter ; j'en sais quelque chose). On optera pour du pseudo-spectral (soit Fourier, soit Chebyshev). En gros, pour inverser Poisson/Helmholtz sur un canal, on calcule les dérivées secondes par Fourier et/ou Chebyshev, puis on repasse en espace réel. On obtient un système linéaire qu'on résout facilement. On ajoutera un peu de dissipation numérique aussi, comme dans le code de Carton. Son rôle est d'atténuer un peu les petites échelles. En général, elle est de la forme $A\triangle \psi$ (dissipation harmonique) ou $ B\triangle^2\psi$ (dissipation biharmonique) }
