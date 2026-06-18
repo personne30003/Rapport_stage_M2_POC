@@ -1,5 +1,5 @@
 \subsection{Modèles simplifiés QG et SQG}
-\subsection{Modèle QG}
+\subsubsection{Modèle QG}
 Le modèle Quasi-Géostrophique, suppose qu'en faisant les hypothèses suivantes \parencite{Illig2025} \parencite{CushmanRoisin2011}: 
 \begin{itemize}
 	\item L'échelle spatiale horizontale $L$ de l'écoulement est petite par rapport au rayon de la Terre : $\frac{L}{R_T} \ll 1$. Cela implique que seuls les mouvements de méso/subméso-échelle sont décrits ($L \approx 10-1000$ km).
@@ -38,16 +38,30 @@ La conservation de la vorticité potentielle implique l'existence d'ondes de Ros
 	\end{equation}
 	Avec $\Gamma > 0$. Leurs propriétés sont grandement similaires à celles des ondes de Rossby barotropes, mais leur vitesse de propagation à grande longueur d'onde est limitée par le terme $\Gamma$ \textbf{Explique pourquoi tant qu'à faire !} 
 \end{itemize}
-Dans ce cadre, deux types d'instabilité peuvent apparaitre : 
+Dans ce cadre, deux types d'instabilité (figure \ref{fig:Instab_QG}) peuvent apparaitre : 
 \begin{itemize}
 	\item L'instabilité barotrope apparaît dans les écoulements parallèles présentant un cisaillement horizontal $\frac{\mathrm{d}U}{\mathrm{d}y}$. Lorsque le gradient de vorticité potentielle change de signe sur le domaine (critère de Rayleigh-Kuo), de petites perturbations peuvent extraire de l'énergie cinétique de l'écoulement moyen et croître. Cette croissance conduit à l'apparition de méandres, puis à la formation de tourbillons cohérents. Dans le cadre du plan $\beta$, les perturbations prennent généralement la forme d'ondes de Rossby barotropes.
 	\item L'instabilité barocline résulte de la présence d'une stratification stable et d'un gradient méridien de flottabilité (isopycnes inclinées). Via la relation du vent thermique, ce gradient de flottabilité induit un cisaillement vertical de l'écoulement moyen. Lorsque le gradient de vorticité potentielle satisfait certains critères de changement de signe (critères de Charney-Stern), l'écoulement devient instable. Les perturbations extraient alors de l'énergie potentielle disponible de l'état moyen, qui est convertie en énergie cinétique. Cette instabilité est à l'origine de nombreux phénomènes de méso-échelle, tels que la formation de méandres et de tourbillons.
 \end{itemize}
-\textbf{Rajoute des figures}
+\begin{figure}[!h]
+	\centering
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/Instab_BT_Cushman.png}
+		\caption{}
+		\label{fig:Instab_BT_Cushman}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/BC_instab_Illig.png}
+		\caption{}
+		\label{fig:BC_Instab_Illig}
+	\end{subfigure}
+	\caption{\ref{fig:Instab_BT_Cushman} : instabilité barotrope (tiré de \cite{CushmanRoisin2011}) ; \ref{fig:BC_Instab_Illig} : instabilité barocline (tiré de \cite{Illig2025})}
+	\label{fig:Instab_QG}
+\end{figure}
 Le modèle Quasi-Géostrophique repose sur l'hypothèse que les termes de gradients horizontaux soient du même ordre de grandeur que le terme de Coriolis. Si ils sont trop élevés (présence de fronts), l'approximation n'est plus valable. Enfin, ce modèle néglige complètement le rôle actif que joue la flottabilité (réduite à une variable diagnostique), puisque toute la dynamique repose sur la conservation de la vorticité potentielle. C'est pour cela qu'a été développé le modèle Surface-Quasi-Geostrophic (SQG) \textbf{Mal formulé comme paragraphe, le modèle SQG suppose aussi $\mathrm{Bu} \approx 1$}.
 
 \subsubsection{Modèle SQG}
-Afin d'inverser l'équation \ref{eq:QG}, il est nécessaire d'établir des conditions aux limites sur les bords verticaux du domaine (en plus des bords horizontaux). Le modèle SQG \parencite{Lapeyre2017}\parencite{Held1995} suppose que, pour un domaine vertical semi-infini toute la dynamique est confinée en surface ($z=0$). La vorticité potentielle est donc constamment nulle partout, sauf en $z=0$. Dans ce cas, la flottabilité en surface est conservée, et on obtient la système suivant : 
+Afin d'inverser l'équation \ref{eq:QG}, il est nécessaire d'établir des conditions aux limites sur les bords verticaux du domaine (en plus des bords horizontaux). Le modèle SQG \parencite{Lapeyre2017}\parencite{Held1995} suppose que, pour un domaine vertical semi-infini toute la dynamique est confinée en surface ($z=0$). La vorticité potentielle imposée nulle dans l'intérieur du domaine. Dans ce cas, la flottabilité en surface est conservée, et on obtient la système suivant : 
 \begin{align}
 	\dT{b_s}+\Vec{u_s}\cdot\grad \theta = 0 \\
 	b_s = \left. f_0 \dZ{\psi}\right|_{z=0}\\
@@ -57,13 +71,12 @@ Afin d'inverser l'équation \ref{eq:QG}, il est nécessaire d'établir des condi
 	\label{eq:PV_SQG}
 \end{align}
 
-Comme pour le modèle QG, la vorticité potentielle est conservée, mais sa valeur reste contrainte. De même, l'énergie totale (intégrée sur tout le volume du fluide) est conservée. En revanche, la flottabilité découle du champ de vitesse et est advectée par lui, ce qui en fait un traceur actif. Le fait qu'elle dépende verticalement de $\psi$ fait que la flottabilité de surface est reliée non-localement au champ de vitesse. Cela induit ainsi un couplage entre les structures thermiques et la circulation géostrophique. \textbf{formulation à améliorer}. Si le modèle SQG ne fais pas apparaître directement les ondes de Rossby planétaires du modèle QG classique, des ondes peuvent émerger en présence de gradients de flottabilité en surface. Ceux-ci jouent un rôle dynamique similaires à un gradient de vorticité potentielle. D'une certaine manière, le gradient horizontal de flottabilité \guillemets{remplace} l'effet $\beta$ \textbf{Il y a du vrai, mais la formulation est maladroite}. Dans le cas d'un modèle à deux couches (par exemple dans l'océan :  une couche de fond, et une couche de surface), l'interaction entre ces ondes donne naissance à une instabilité barocline. \textbf{préciser}.
+Comme pour le modèle QG, la vorticité potentielle est conservée, mais sa valeur reste contrainte. De même, l'énergie totale (intégrée sur tout le volume du fluide) est conservée. Néanmoins, ici, c'est la flottabilité de surface qui constitue un traceur actif. Grâce à la relation d'inversion reliant $b_s$ et $\psi$, elle détermine le champ de vitesse qui l'advecte en retour. Le fait qu'elle dépende verticalement de $\psi$ fait que la flottabilité de surface est reliée non-localement au champ de vitesse. Cela induit ainsi un couplage entre les structures thermiques et la circulation géostrophique. \textbf{formulation à améliorer}. Si le modèle SQG ne fais pas apparaître directement les ondes de Rossby planétaires du modèle QG classique, des ondes peuvent émerger en présence de gradients de flottabilité en surface. Ceux-ci jouent un rôle dynamique similaires à un gradient de vorticité potentielle.  Dans le cas d'un modèle à deux couches (par exemple dans l'océan :  une couche de fond, et une couche de surface), l'interaction entre ces ondes donne naissance à une instabilité barocline. \textbf{préciser ! }.
 
-Par analyse d'ordres de grandeur, on obtient l'échelle de vorticité relative $\zeta_z \approx \frac{\theta}{H}$, où $H$ est la hauteur verticale. La conservation de la flottabilité implique  \textbf{détailles plus, essaie d'expliquer pourquoi les structures de fines échelle apparaissent. Je maitrise pas encore, mais j'y suis presque ! }Le modèle SQG tend à favoriser l’émergence de structures frontales fines et de filaments de flottabilité. Contrairement au cadre barotrope, cette dynamique conduit fréquemment à des structures de petite échelle et à l’apparition d’instabilités secondaires.
+Le modèle SQG tend donc à favoriser l’émergence de structures frontales fines et de filaments de flottabilité. Contrairement au cadre barotrope, cette dynamique conduit fréquemment à des structures de petite échelle et à l’apparition d’instabilités secondaires.
 
 Là encore, ce modèle reste limité : certes, la flottabilité joue un rôle actif en surface, mais l'hypothèse d'une vorticité potentielle nulle à l'intérieur reste très contraignante.
 
-\textbf{A compléter quand t'en sauras plus. Au niveau des limites du modèle : similaires à celle de QG. Le fait que la vorticité potentielle soit nulle est une hypothèse très forte. Ce qu'on a gagné en rendant la flottabilité active, on l'a perdu en imposant la PV nulle. D'où l'intérêt d'avoir des équations d'évolution distinctes pour ces variables. C'est pour cela qu'on a introduit le modèle TQG. Pour rendre plus parlant, mets une simulation simple (possible d'utiliser pyQG, l'interface est pas compliquée). Indique tout de même qu'il a été utilisé pour de vrai}
 
 \subsection{Couplage océan-atmosphère dans le modèle SQG}
 
@@ -101,7 +114,7 @@ Les équations Shallow Water \textbf{Explique leur intérêt !} sont obtenues en
 \dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
 \dT{\Vec{u}}+(\Vec{u}\cdot \grad_h)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-g\grad_h h
 \end{align}
-\textbf{Demonstration adaptée de \cite{Warneford2013}, avec un modèle 1.5 couches}. Dans le modèle Thermal-Rotating-Shallow-Water (TRSW), on considère que la densité reste constante selon la verticale, mais varie horizontalement. On définit la flottabilité $\Theta = g\frac{\Delta\rho(\Vec{x}, t)}{\rho_0}$. On considère ici un modèle avec une couche active de densité $\rho(\Vec{x}, t) = \rho_0+\Delta rho(\Vec{x}, t)$, d'épaisseur $h(x, y, t)$ (figure \ref{fig:Warneford2013}). La surface est supposée rigide. En dessous de la couche active se trouve une couche passive d'épaisseur $H_0\gg h$ et de densité $\rho_0$.
+\textbf{Demonstration adaptée de \cite{Warneford2013}, avec un modèle 1.5 couches}. Dans le modèle Thermal-Rotating-Shallow-Water (TRSW), on considère que la densité reste constante selon la verticale, mais varie horizontalement. On définit la flottabilité $\Theta = g\frac{\Delta\rho(\Vec{x}, t)}{\rho_0}$. On considère ici un modèle avec une couche active de densité $\rho(\Vec{x}, t) = \rho_0+\Delta \rho(\Vec{x}, t)$, d'épaisseur $h(x, y, t)$ (figure \ref{fig:Warneford2013}). La surface est supposée rigide. En dessous de la couche active se trouve une couche passive d'épaisseur $H_0\gg h$ et de densité $\rho_0$.
 Avec la loi de l'hydrostatique, on obtient les pressions dans les couches actives et passives (notées $P$ et$P_0$) 
 \begin{align}
 	P(x,y, z, t) = P_{surf}(x, y, t)+ - g (\rho_0 - \Delta \rho)z \\
@@ -110,17 +123,17 @@ Avec la loi de l'hydrostatique, on obtient les pressions dans les couches active
 Où $P_{surf}(x, y, t)$ est la pression appliquée à la surface . Sachant que dans la couche passive, les gradients horizontaux sont nuls, la continuité des pressions donne : 
 \begin{align}
 	\grad_h P_0 = 0 \Rightarrow P_{surf}(x, y, t) = \Delta\rho g h\\
-	P(x, y, z, t) = \Delta \rho g h - (\rho_0 - \Delta \rho) g z
+	P(x, y, z, t) = \rho_0\(-gz +\Theta(h +z) \)
 \end{align} 
 Le gradient horizontal de pression dans la couche supérieure s'écrit donc : 
 \begin{equation}
-	\grad_h P = \rho_0 \(\grad_h \Theta h + \grad_h \Theta z\) = \rho_0\( \Theta \grad_h h + (h+z)\grad_h \Theta\) 
+	\grad_h P = \rho_0 \(\grad_h \Theta h + z \grad_h \Theta \) = \rho_0\( \Theta \grad_h h + (h+z)\grad_h \Theta\) 
 \end{equation}
 Et en moyennant sur la hauteur de la couche active : 
 \begin{equation}
 	\begin{split}
 	\frac{1}{h}\int_{-h}^0 \grad_h P \mathrm{d}z &= \rho_0\(\int_{-h}^0 \Theta \grad_h h \mathrm{d}z + \int_{-h}^0 h\grad_h \Theta \mathrm{d}z  +\int_{-h}^0 z \grad_h \Theta \mathrm{d}z\) \\
-	&= \frac{1}{h} \rho_0 \(\Theta h \grad_h h + h^2 \grad_h \Theta -h^2\grad_h \Theta \) \\
+	&= \frac{1}{h} \rho_0 \(\Theta h \grad_h h + h^2 \grad_h \Theta -\frac{h^2}{2}\grad_h \Theta \) \\
 	&= \grad_h \Theta h -\frac{h}{2}\grad\Theta
 	\end{split}
 \end{equation}
@@ -133,21 +146,35 @@ Et en moyennant sur la hauteur de la couche active :
 Le reste de la dérivation est identique à celle pour le modèle RSW \textbf{Mettre une interprétation physique du terme de pression! en gros, le terme en $-\frac{h}{2}\grad_h\Theta$ est associé aux fronts thermiques, tandis que celui en $\grad_h \Theta h$ est similaire au gradient de pression dans RSW, mais tiens compte de la dilatation/compression de la couche}. En l'absence de dissipation, la flottabilité est conservée. On obtiens alors les équations TRSW : 
 
 \begin{align}
-	\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
-	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = 0 \\
-	\dT{\Vec{u}}+(\Vec{u}\cdot \grad)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-\grad h\Theta+\frac{1}{2}h\grad \Theta
-	\label{eq:TRSW}
+	\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \label{eq:TRSW_h}\\
+	\dT{\Theta}+\Vec{u}\cdot\grad\Theta = 0 \label{eq:TRSW_theta}\\
+	\dT{\Vec{u}}+(\Vec{u}\cdot \grad)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-\grad h\Theta+\frac{1}{2}h\grad \Theta\label{eq:TRSW_QDM}
 \end{align}
-\textbf{Reste à parler de la conservation de la PV et des instabilités \cite{Gouzien_M2}}
+En prenant le rotationnel de \ref{eq:TRSW_QDM}, on obtiens assez simplement l'équation de conservation de la vorticité potentielle $q$ : 
+\begin{align}
+	\dT{q} + u\cdot\grad q  = \frac{1}{2h} \Vec{z} \cdot \( \grad h \mathbf{\times} \grad \Theta \) \\
+	q = \frac{\zeta + f}{h}
+\end{align}
+Contrairement au cas 2D/shallow-water, la vorticité totale n'est pas conservée. En cela, le terme de droite joue un rôle similaire au terme de \guillemets{stretching} dans le cas 3D. La vorticité potentielle totale n'est conservée que sur une surface dont le contour est isotherme \textbf{cela se démontre facilement} : 
+	\begin{equation}
+	\frac{\mathrm{D} \oiint_{S(\theta)} q \mathrm{d}x\mathrm{d}y}{\mathrm{D} t} = 0
+\end{equation}
+L'équilibre géostrophique est modifié par rapport au modèle RSW : 
+\begin{align}
+	-f v = -\partial_x h\Theta +\frac{1}{2} h \partial_x \Theta \\
+	f u = -\partial_y h\Theta +\frac{1}{2} h \partial_y \Theta\\
+\end{align}
+
+\textbf{\cite{Gouzien_M2} a écrit (dans un autre rapport) que cela implique la stationnarité de $h$ et $\Theta$ m'enfin à vrai dire, je suis pas du tout convaincu !}
+A notre connaissance, la seule étude d'instabilités date de 2016 (stage de M2 de Elie Gouzien \cite{Gouzien2017} \cite{Gouzien_M2}). Pour le cas le plus simple, c'est à dire un jet uniforme soumis à un gradient de flottabilité (et sans gradient de hauteur), celui-ci a pour effet de créer un gradient de vorticité potentielle, donc une instabilité barotrope. \textbf{Je sais pas quoi mettre comme figures, les siennes sont peu lisibles ! }
 \subsection{Modèle Thermal Quasi-Geostrophic (TQG)}
 \textbf{Re-dériver le modèle TQG par expansion en puissance du nombre de Rossby (si c'est trop long, mettre en Annexe). Caractéristiques du modèle (Invariants, solutions). Exemple d'utilisation (cf \parencite{Carton2025}). La formulation étant différente selon les auteurs, on se basera sur celle de \cite{Warneford2013}. }
 Formulation adoptée (cas d'un terrain plat, j'ai pas trouvé de dérivation claire si la bathymétrie est variable) : 
 \begin{align}
 	\dT{q}+\mathrm{J}(\psi, q) = \frac{1}{R_d^2}\mathrm{J}(\psi, \theta) \\
-	\dT{\theta}+\mathrm{J}(\psi, \theta) = -\lambda(\theta+\psi) \\
+	\dT{\theta}+\mathrm{J}(\psi, \theta) = 0 \\
 	q = \triangle_{\mathrm{h}} - \frac{\psi - \theta}{R_d^2} + f_0 + \beta y
 \end{align}
-Où $\lambda$ est un terme de refroidissement, qu'on prendra nul.
 
 Deux grandeurs intégrées sont conservées :
 \begin{itemize}
