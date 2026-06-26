@@ -11,7 +11,7 @@ Dans une configuration fermée, les vitesses normales sont nulles sur tous les b
 	u(0, y, t) = u(L_x, y, t) = 0 \Rightarrow \partial_y \psi(0, y, t) = \partial_y \psi(L_x, y, t) = 0 \\
 	v(x, 0, t) = v(x, L_y, t) = 0 \Rightarrow \partial_x \psi(x, 0, t) = \partial_y\psi(x, L_y, t) = 0  
 \end{align}
-
+Pour simplifier, on peut imposer une condition de Dirichlet : $\psi = 0$ sur tout le contour du domaine.
 Dans une configuration \guillemets{canal} zonal, seule la vitesse normale $v$ est nulle sur les bords verticaux. Cela revient à fixer la valeur de $\psi$ : 
 \begin{align}
 	\psi(x, 0, t) = T_0(t) \\
@@ -52,24 +52,64 @@ Selon la base choisie, les fonctions $\psi_k$ peuvent être définies par récur
 Où $D$ est une matrice de différenciation.
 La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes).
 
-\subsubsection{Méthodes de Fourier}
-La base de Fourier est constituée de fonctions trigonométriques, périodiques sur l'intervalle $[0, 2\pi]$ : 
+\subsubsection{base de Fourier}
+Sur un domaine périodique composé de $N$ points équidistants $x_j$ ($N$ où est pair, et $x_j \in [0,2\pi]$), une fonction discrète $f(x_j)$ (elle aussi périodique) peut être représentée dans la base de Fourier par ses coefficients spectraux $\hat{f_k}$ : 
 \begin{equation}
-	\hat{v}_k = \sum_{j=1}^N e^{-ikx_j}v_j\, , \, k = -\frac{N}{2}+1,...,\frac{N}{2},\, x\in [0, 2\pi]
+	\hat{f_k} = \sum_{j=1}^{N} e^{-ik x_j} f(x_j)
 \end{equation}
-Où $N$ est un entier pair. Le passage dans cette base s'effectue avec l'algorithme de la Transformée de Fourier Rapide (FFT). La dérivée se calcule alors facilement, puisque la matrice de différenciation dans la base de Fourier est diagonale : 
+Où $k = -\frac{N}{2}+1, ... , \frac{N}{2}$, $x_j =  \frac{2\pi}{N} ... 2\pi$. En pratique, le passage dans cette base s'effectue avec l'algorithme de la transformée de Fourier Rapide (FFT).
+La dérivée dans la base de Fourier se calcule alors assez facilement : 
 \begin{equation}
-	\hat{D}_{lm}  = ik_l\delta_{ll} 
+	\frac{\hat{\partial f_k}}{\partial x} = ik\hat{f_k}
 \end{equation}
-Soit 
+Enfin, on reviens dans la base de départ, ce qui donne : 
 \begin{equation}
-	\frac{\partial f(x_j)}{\partial x}  = \mathrm{FFT^{-1}}[ik \mathrm{FFT}[ f(x_j) ]]
+	\frac{\partial f(x_j)}{\partial x} = \mathrm{FFT^{-1}}\[ik \mathrm{FFT}(f(x_j))\]
+\end{equation} 
+Le résultat étant un nombre complexe, on ne prends que la partie réelle. Si le domaine est un intervalle quelconque $[a, b]$, 
+\textbf{Parler des limites ! comportement à petite échelle tout ça ...}
+\subsubsection{Base de Chebyshev}
+La base de Fourier n'est pas adaptée aux grilles non périodiques, du fait de l'existence du phénomène de Gibbs aux bords \textbf{préciser}. \textbf{un mot là dessus}. Une solution possible  est d'interpoler notre fonction par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
+\begin{equation}
+	T_n(x) = \cos(n\arccos{x})\, x\in [-1, 1]
 \end{equation}
-\textbf{A re-vérifier, tout cela est à prendre avec des pincettes, vu mon niveau (scandaleusement bas) en maths !}
-\subsubsection{Méthode de Chebyshev}
+En posant $x$ = $\cos z$, on en déduit les premiers polynômes : 
+\begin{align}
+	T_0(x) = 1\\
+	T_1(x) = \cos z = x \\
+	T_2(x) = \cos2z = 2\cos^2z - 1 = 2x^2-1\\
+\end{align}
+Les extremas $x_i$ tels que 
+\begin{equation}
+	x_i = \cos(\frac{\pi i}{N})\, i =0, 1, ..., N
+\end{equation}
+Sont appelés \textit{points de Gauss-Lobatto} \textbf{Ajouter une figure avec les polynomes et les points de Collocation !  J'en ai déjà une faite avec Python.}.Il est préférable d'utiliser ces points, car ils évitent les oscillations dues au phénomène de Runge, apparaissant lors de l'interpolation polynomiale sur grille uniforme. C'est la méthode de \textit{collocation}. Notre fonction interpolée s'écrit alors : 
+\begin{align}
+	f(x_i) = \sum_{k=0}^N \hat{u_k} T_k(x_j)\\ T_k(x_j) = \cos\frac{k\pi j}{N}
+\end{align}
+Dans cette approche, les dérivées sont calculées directement à partir des valeurs aux points de Gauss-Lobatto, sans calculer explicitement les coefficients spectraux. Cela conduit néanmoins à une grille irrégulière, car les points $x_i$ sont concentrés sur les bords du domaine.
 
-
+La dérivation est considérée comme une application linéaire, agissant sur les valeurs de la fonction aux points de grille.  On montre que la dérivée d'ordre $p$ s'écrit sous forme matricielle  : 
+\begin{equation}
+	f^{p}(x_i) = D^{p} f(x_i)
+\end{equation}
+Avec $D$ la matrice de différenciation de Chebyshev, de taille $(N+1)\times (N+1)$, telle que 
+\begin{align}
+	D_{00} &= \frac{2N^2+1}{6} & D_{NN} = -\frac{2N^2+1}{6} \\
+	D_{jj} &= \frac{-x_j}{2(1-x_j^2)},& j = 1,...,N-1\\
+	D_{ij} &= \frac{c_i}{c_j}\frac{(-1)^{i+j}}{(x_i-x_j)}, & i\neq j \,\, i,j=1,...,N-1\\
+	c_i  &= 
+	\begin{cases}
+		2&\text{ si } i =0, N\\
+		1&\text{sinon}	
+	\end{cases}
+\end{align}
+\textbf{Plutôt mettre le tableau de Trefethen, page 43, tu crois pas ?}
+Les conditions aux limites seront imposées lors de la construction des systèmes linéaires associés aux équations à résoudre.
 \subsubsection{Inversion de l'équation de Poisson/Helmholtz}
+Dans une configuration canal, nous passons dans la base de Fourier : 
+
+
 
 \subsubsection{Schéma temporel}
 \textbf{Rien n'est fixé, mais on sera probablement sur du Euler-LeapFrog, avec filtre d'Asselin. Le pas de temps sera soit fixe, soit réglé automatiquement avec nombre CFL (choisi par l'utilisateur). On prendra $\Delta t = \min(\Delta t_o, \Delta t_a)$.}
