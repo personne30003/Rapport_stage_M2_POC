@@ -12,7 +12,7 @@ Dans une configuration fermée, les vitesses normales sont nulles sur tous les b
 	v(x, 0, t) = v(x, L_y, t) = 0 \Rightarrow \partial_x \psi(x, 0, t) = \partial_y\psi(x, L_y, t) = 0  
 \end{align}
 Pour simplifier, on peut imposer une condition de Dirichlet : $\psi = 0$ sur tout le contour du domaine.
-Dans une configuration \guillemets{canal} zonal, seule la vitesse normale $v$ est nulle sur les bords verticaux. Cela revient à fixer la valeur de $\psi$ : 
+Dans une configuration \guillemets{canal zonal}, seule la vitesse normale $v$ est nulle sur les bords verticaux. Cela revient à fixer la valeur de $\psi$ : 
 \begin{align}
 	\psi(x, 0, t) = T_0(t) \\
 	\psi(x, L_y, t) = 0
@@ -37,7 +37,7 @@ De manière générale, pour calculer numériquement la dérivée d'une fonction
 \end{align}
 Aux bords du domaine, les opérateurs sont approximés différemment (par exemple à l'aide de points fictifs), en tenant compte des conditions aux limites.La précision d'un schéma en différences finies dépend de l'ordre du développement de Taylor utilisé. L'obtention d'une forte précision nécessite généralement d'augmenter l'ordre du schéma ou de diminuer $\Delta x$.
 
-Les méthodes pseudo-spectrales \cite{Trefethen2000}, \cite{Boyd} consistent au contraire à interpoler une fonction $f$ sur une base de fonctions $\psi_k$ (supposées orthogonales) : 
+Les méthodes pseudo-spectrales \cite{Trefethen2000} \cite{Boyd} \cite{Peyret2001},  consistent au contraire à interpoler une fonction $f$ sur une base de fonctions $\psi_k$ (supposées orthogonales) : 
 \begin{equation}
 	f(x) \approx \sum_{k=0}^N \hat{f}_k \psi_k(x_i)
 \end{equation}
@@ -107,11 +107,34 @@ Avec $D$ la matrice de différenciation de Chebyshev, de taille $(N+1)\times (N+
 \textbf{Plutôt mettre le tableau de Trefethen, page 43, tu crois pas ?}
 Les conditions aux limites seront imposées lors de la construction des systèmes linéaires associés aux équations à résoudre.
 \subsubsection{Inversion de l'équation de Poisson/Helmholtz}
-Dans une configuration canal, nous passons dans la base de Fourier : 
+Nous cherchons ici à résoudre l'équation de Helmholtz, pour une configuration \guillemets{canal zonal} : 
+\begin{align}
+	\left(\partial_y^2+\partial_x^2-\alpha^2\right)\psi(x, y, t) = S(x, y, t)\\
+\psi(x,\frac{L}{2}, t) = g_+(x, t)\\
+\psi(x,-\frac{L}{2}, t) = g_-(x, t)
+\end{align} 
+
+Nous passons ensuite dans la base de Fourier selon l'axe $x$. Le problème précédent deviens donc: 
+\begin{align}
+	\left(\partial_y^2 - k_x^2-\alpha^2 \right)\hat{\psi}(k, y, t)=\hat{S}(k, y, t)\\
+	\hat{\psi}(k_x,\frac{L}{2}, t) = \hat{g}_+(k_x, t)\\
+	\hat{\psi}(k_x,-\frac{L}{2}, t) = \hat{g}_-(k_x, t)
+\end{align}
+Avec la méthode de collocation, nous avons : 
+\begin{align}
+	\left(D^2_{j,l} -(k_{x,i}^2 +\alpha^2)\operatorname{Id}_{j,l}\right)\hat{\psi}(k_{x,i}, y_l, t) =\hat{S}(k_{x,i}, y_l, t)\\
+	\hat{\psi}(k_{x,i},y_N, t) = \hat{g}_+(k_{x,i}, t)\\
+	\hat{\psi}(k_{x,i},y_0, t) = \hat{g}_-(k_{x,i}, t)
+\end{align}
+Ainsi, il suffit d'itérer sur les $k_{x,i}$ pour que le problème 2D se ramène à une suite de problèmes 1D découplés. Nous avons donc : 
+\begin{align}
+	\hat{\psi}(k_{x,i}, y_l, t) = \left(D^2_{j,l} -(k_{x,i}^2 +\alpha^2)\operatorname{Id}_{j,l}\right)^{-1}\hat{S}(k_{x,i}, y_l, t)\\
+	\hat{\psi}(k_{x,i},y_N, t) = \hat{g}_+(k_{x,i}, t)\\
+	\hat{\psi}(k_{x,i},y_0, t) = \hat{g}_-(k_{x,i}, t)
+\end{align}
 
 
+\subsubsection{Equations d'advection}
 
-\subsubsection{Schéma temporel}
-\textbf{Rien n'est fixé, mais on sera probablement sur du Euler-LeapFrog, avec filtre d'Asselin. Le pas de temps sera soit fixe, soit réglé automatiquement avec nombre CFL (choisi par l'utilisateur). On prendra $\Delta t = \min(\Delta t_o, \Delta t_a)$.}
 \subsubsection{Architecture du code}
 \textbf{Courte section sur le code Python développé : modules principaux, lien vers un dépot git, diagnostics, sorties}
