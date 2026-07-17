@@ -96,7 +96,7 @@ Le couplage mécanique apparait dans la vitesse verticale (pompage d'Ekman) :
 \begin{align}
 	\frac{D_h \theta_a}{Dt}+w_a N_o =F_a \\
 	\frac{D_h \theta_o}{Dt}+w_o N_o =F_o \, \mathrm{et} \\
-	w_o = \frac{1}{\rho_o f_0} \Vec{rot}\Vec{\tau_o}_z = \frac{1}{\rho_o f_0} (\partial_x \tau_2^y - \partial\tau_2^x)\\
+	w_o = \frac{1}{\rho_o f_0} \Vec{rot}\Vec{\tau_o}_z = \frac{1}{\rho_o f_0} (\partial_x \tau_2^y - \partial_y\tau_2^x)\\
 	\Vec{\tau_a} = - \vec{\tau_o} \Rightarrow w_a = -\frac{\rho_o}{\rho_a}w_a
 \end{align}
 Où $N_o$ et $N_a$ sont les fréquences de  Brunt-Väisälä \textbf{A voir comment ça se passe pour le modèle TQG, car on fait des moyennes verticales ! Au pire on dit qu'elles sont constantes}. En général, la friction du vent est paramétrisée de la manière suivante : 
@@ -116,9 +116,9 @@ Les effets de ces deux couplages s'additionnent. Ceux-ci ne font que modifier le
 \subsubsection{Introduction}
 Les modèles QG et SQG reposent sur l'hypothèse d'un équilibre géostrophique permanent, mais négligent complètement les gradients horizontaux de flottabilité. Certes le modèle SQG permet d'obtenir l'évolution de la flottabilité en surface, mais au prix d'une forte contrainte sur la vorticité potentielle intérieure. Dans le modèle Thermal-Quasi-Geostrocphic (TQG)\cite{Warneford2013}\cite{Crisan2021}, l'équilibre géostrophique est modifié par la prise en compte du gradient horizontal de flottabilité. Cela conduit à deux équations séparées pour la vorticité potentielle et la flottabilité. Ce modèle peut être dérivé à partir des équations Thermal-Rotating-Shallow-Water \cite{Zeitlin2018}. \textbf{Peut-etre préciser un peu l'historique, histoire de dire que ce modèle a tout de meme été utilisé quelquefois}. Après avoir explicité ces équations, nous nous placerons dans la limite quasi-géostrophique. Enfin, nous aborderons brièvement quelque propriétés du modèle TQG.
 \subsubsection{Modèle Thermal Rotating Shallow Water}
-\textbf{Pour une dérivation complète des équations RSW et TRSW, voir \cite{Zeitlin2018} et \cite{Gouzien_M2}. Ici, je me base sur \cite{Warneford2013}}
+\textbf{Pour une dérivation complète des équations RSW et TRSW, voir \cite{Zeitlin2018} et \cite{Gouzien2016}. Ici, je me base sur \cite{Warneford2013}}
 
-Les équations Shallow Water \textbf{Explique leur intérêt !} sont obtenues en moyennant verticalement les équations primitives sur des couches de densité constante. Elles supposent que l'équilibre hydrostatique est vérifié, et que les échelles de longueur verticales sont bien inférieures à celles horizontales. \textbf{Rajoute une figure sur un modèle 1 couche}. Pour une couche de densité constante $\rho_0$, elles s'écrivent : 
+Les équations Shallow Water \textbf{Explique leur intérêt !} sont obtenues en moyennant verticalement les équations primitives sur des couches de densité constante. Elles supposent que l'équilibre hydrostatique est vérifié, et que les échelles de longueur verticales sont bien inférieures à celles horizontales.. Pour une couche de densité constante $\rho_0$,  (figure \ref{fig:Warneford2013})elles s'écrivent : 
 \begin{align}
 	\dT{h}+\div _\mathrm{h}{h\Vec{u}}=0 \\
 	\dT{\Vec{u}}+(\Vec{u}\cdot \grad_h)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u}=-g\grad_h h\\
@@ -174,8 +174,8 @@ L'équilibre géostrophique est modifié par rapport au modèle RSW :
 	f u = -\partial_y h\Theta +\frac{1}{2} h \partial_y \Theta\\
 \end{align}
 
-\textbf{\cite{Gouzien_M2} a écrit (dans un autre rapport) que cela implique la stationnarité de $h$ et $\Theta$ m'enfin à vrai dire, je suis pas tout à fait convaincu !}
-A notre connaissance, la seule étude d'instabilités date de 2016 (stage de M2 de Elie Gouzien \cite{Gouzien2017} \cite{Gouzien_M2}). Pour le cas le plus simple, c'est à dire un jet uniforme soumis à un gradient de flottabilité (et sans gradient de hauteur), celui-ci a pour effet de créer un gradient de vorticité potentielle, donc une instabilité barotrope. Dans le cas d'un vortex soumis à un gradient de hauteur et de flottabilité, plusieurs modes instables apparaissent. Ces modes ne peuvent exister que si le gradient de flottabilité peut être équilibré par la force de Coriolis, donc   \textbf{Attention, il utilise une formulation différente de la mienne}
+\textbf{\cite{Gouzien2016} a écrit (dans un autre rapport) que cela implique la stationnarité de $h$ et $\Theta$ m'enfin à vrai dire, je suis pas tout à fait convaincu !}
+A notre connaissance, la seule étude d'instabilités date de 2016 (stage de M2 de Elie Gouzien \cite{Gouzien2017} \cite{Gouzien2016}). Pour le cas le plus simple, c'est à dire un jet uniforme soumis à un gradient de flottabilité (et sans gradient de hauteur), celui-ci a pour effet de créer un gradient de vorticité potentielle, donc une instabilité barotrope. Dans le cas d'un vortex soumis à un gradient de hauteur et de flottabilité, plusieurs modes instables apparaissent. Ces modes ne peuvent exister que si le gradient de flottabilité peut être équilibré par la force de Coriolis, donc   \textbf{Attention, il utilise une formulation différente de la mienne}
 \subsubsection{Dérivation à partir du modèle TRSW}
 Comme les modèles QG et SQG, le modèle TQG est construit à partir d'un développement en puissance du nombre de Rossby. Mais contrairement à QG et TQG, seule la vitesse fait l'objet d'un développement asymptotique. Nous proposons ici une dérivation simple, basée sur \parencite{Warneford2013}. 
 
@@ -225,7 +225,7 @@ q = \triangle_{\mathrm{h}}\psi - \frac{\psi - \theta}{\mathrm{Bu}} + \tilde{\bet
 \end{align}
 Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D.
 \subsubsection{Propriétés}
-Contrairement au modèle QG, la vorticité potentielle n'est pas conservée. Celle-ci est couplée à la flottabilité, qui n'est donc plus un scalaire passif. Comme pour le modèle SQG, la flottabilité joue donc un rôle actif, mais ne dérive plus de la vorticité potentielle. 
+Contrairement au modèle QG, la vorticité potentielle n'est pas conservée. Celle-ci est couplée à la flottabilité, qui n'est donc plus un scalaire passif. Comme pour le modèle SQG, la flottabilité joue donc un rôle actif, mais ne dérive plus de la vorticité potentielle. \textbf{Phrase à améliorer}
 
 Deux grandeurs intégrées sont conservées :
 \begin{itemize}

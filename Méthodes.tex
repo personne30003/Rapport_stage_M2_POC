@@ -47,10 +47,15 @@ La dérivation est alors effectuée en dérivant analytiquement les fonctions de
 \end{equation}
 Selon la base choisie, les fonctions $\psi_k$ peuvent être définies par récurrence, et l'équation précédente deviens matricielle : 
 \begin{equation}
-	\frac{\partial f(x_i)}{\partial x} = D f(x_i)
+	\frac{\partial f(x_i)}{\partial x} = D(x_i) f(x_i)
+	\label{eq:spec_D_f}
 \end{equation}
 Où $D$ est une matrice de différenciation.
-La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes).
+La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes). Les fonctions de base sont définies dans un domaine $x_i \in [a, b]$. Si nous travaillons dans un domaine quelconque $x'_i \in [a', b']$, nous pouvons passer d'un domaine à l'autre par transformation linéaire.
+L'équation\ref{eq:spec_D_f} devient donc : 
+\begin{equation}
+	\frac{\partial f(x'_i)}{\partial x'} = \frac{\partial f(x_i)}{\partial x}\frac{\mathrm{d}x}{\mathrm{d}x'} = \frac{a-b}{a'-b'}D(x_i) f(x_i)
+\end{equation}
 
 \subsubsection{base de Fourier}
 Sur un domaine périodique composé de $N$ points équidistants $x_j$ ($N$ où est pair, et $x_j \in [0,2\pi]$), une fonction discrète $f(x_j)$ (elle aussi périodique) peut être représentée dans la base de Fourier par ses coefficients spectraux $\hat{f_k}$ : 
@@ -66,7 +71,7 @@ Enfin, on reviens dans la base de départ, ce qui donne :
 \begin{equation}
 	\frac{\partial f(x_j)}{\partial x} = \mathrm{FFT^{-1}}\[ik \mathrm{FFT}(f(x_j))\]
 \end{equation} 
-Le résultat étant un nombre complexe, on ne prends que la partie réelle. Si le domaine est un intervalle quelconque $[a, b]$, 
+Le résultat étant un nombre complexe, on ne prends que la partie réelle. 
 \textbf{Parler des limites ! comportement à petite échelle tout ça ...}
 \subsubsection{Base de Chebyshev}
 La base de Fourier n'est pas adaptée aux grilles non périodiques, du fait de l'existence du phénomène de Gibbs aux bords \textbf{préciser}. \textbf{un mot là dessus}. Une solution possible  est d'interpoler notre fonction par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
@@ -110,30 +115,77 @@ Les conditions aux limites seront imposées lors de la construction des système
 Nous cherchons ici à résoudre l'équation de Helmholtz, pour une configuration \guillemets{canal zonal} : 
 \begin{align}
 	\left(\partial_y^2+\partial_x^2-\alpha^2\right)\psi(x, y, t) = S(x, y, t)\\
-\psi(x,\frac{L}{2}, t) = g_+(x, t)\\
-\psi(x,-\frac{L}{2}, t) = g_-(x, t)
+\psi(x,\frac{L}{2}, t) = g_+(x, t),\,
+\psi(x,-\frac{L}{2}, t) = g_-(x, t),
 \end{align} 
 
 Nous passons ensuite dans la base de Fourier selon l'axe $x$. Le problème précédent deviens donc: 
 \begin{align}
-	\left(\partial_y^2 - k_x^2-\alpha^2 \right)\hat{\psi}(k, y, t)=\hat{S}(k, y, t)\\
-	\hat{\psi}(k_x,\frac{L}{2}, t) = \hat{g}_+(k_x, t)\\
-	\hat{\psi}(k_x,-\frac{L}{2}, t) = \hat{g}_-(k_x, t)
+	\left(\partial_y^2 - k_x^2-\alpha^2 \right)\widehat{\psi}(k, y, t)=\widehat{S}(k, y, t)\\
+	\widehat{\psi}(k_x,\frac{L}{2}, t) = \widehat{g}_+(k_x, t),\,
+	\widehat{\psi}(k_x,-\frac{L}{2}, t) = \widehat{g}_-(k_x, t)
 \end{align}
 Avec la méthode de collocation, nous avons : 
 \begin{align}
-	\left(D^2_{j,l} -(k_{x,i}^2 +\alpha^2)\operatorname{Id}_{j,l}\right)\hat{\psi}(k_{x,i}, y_l, t) =\hat{S}(k_{x,i}, y_l, t)\\
-	\hat{\psi}(k_{x,i},y_N, t) = \hat{g}_+(k_{x,i}, t)\\
-	\hat{\psi}(k_{x,i},y_0, t) = \hat{g}_-(k_{x,i}, t)
+	\left(D^2_{j,l} -(k_{x,i}^2 +\alpha^2)\operatorname{Id}_{j,l}\right)\widehat{\psi}(k_{x,i}, y_l, t) =\widehat{S}(k_{x,i}, y_l, t)\\
+	\widehat{\psi}(k_{x,i},y_N, t) = \widehat{g}_+(k_{x,i}, t),\,
+	\widehat{\psi}(k_{x,i},y_0, t) = \widehat{g}_-(k_{x,i}, t)
 \end{align}
-Ainsi, il suffit d'itérer sur les $k_{x,i}$ pour que le problème 2D se ramène à une suite de problèmes 1D découplés. Nous avons donc : 
-\begin{align}
-	\hat{\psi}(k_{x,i}, y_l, t) = \left(D^2_{j,l} -(k_{x,i}^2 +\alpha^2)\operatorname{Id}_{j,l}\right)^{-1}\hat{S}(k_{x,i}, y_l, t)\\
-	\hat{\psi}(k_{x,i},y_N, t) = \hat{g}_+(k_{x,i}, t)\\
-	\hat{\psi}(k_{x,i},y_0, t) = \hat{g}_-(k_{x,i}, t)
-\end{align}
+Ainsi, il suffit d'itérer sur les $k_{x,i}$ pour que le problème 2D se ramène à une suite de problèmes 1D découplés.
+Chaque système linéaire à résoudre s'écrit de la manière suivante : 
+\begin{equation}
+	\begin{bmatrix}
+		1 & 0 & 0 &...&0\\
+		a_{10} & a_{11} & a_{12} &... &a_{1N}\\
+		.&.&.&.&.\\
+		a_{j0}& ...&a_{jl}&...&a_{jN}\\
+		.&.&.&.&.\\
+		0&0&0&...& 1
+	\end{bmatrix}
+	\begin{bmatrix}
+	\widehat{\psi}_{i,0}\\
+	\widehat{\psi}_{i,1}\\
+	.\\
+	\widehat{\psi}_{i,j}\\
+	.\\
+	\widehat{\psi}_{i,N}\\
+	\end{bmatrix}
+	=\begin{bmatrix}
+		\widehat{g}_+(k_{x,i}, t)\\
+		\widehat{S}_{i,1}\\
+		.\\
+		\widehat{S}_{i,j}\\
+		.\\
+		\widehat{g}_-(k_{x,i}, t)\\
+	\end{bmatrix}
+\end{equation}
+Avec $a_{jl} = D^2_{jl}-(k_{x,i}+\alpha^2)\delta_{jl}$. Les valeurs de $\widehat{\psi}$ aux bords étant déjà connues, on peut résoudre le système sur les points intérieurs : 
+\begin{equation}
+	\begin{bmatrix}
+         a_{11} &. &a_{1l} &.&a_{1N-1}\\
+		.&.&.&.&.\\
+		. & . & a_{jl}& .& .&\\
+		.&.&.&.&.\\
+		a_{1,N-1}& .&a_{jN-1}&.&a_{N-1,N-1}\\
+	\end{bmatrix}
+	\begin{bmatrix}
 
-
+		\widehat{\psi}_{i,1}\\
+		.\\
+		\widehat{\psi}_{i,j}\\
+		.\\
+		\widehat{\psi}_{i,N-1}\\
+	\end{bmatrix}
+	=\begin{bmatrix}
+		\widehat{S}_{i,1}-a_{1,0}\widehat{g}_+(k_{x,i}, t)- a_{1,N}\widehat{g}_-(k_{x,i}, t)\\
+		.\\
+		\widehat{S}_{i,j}-a_{j,0}\widehat{g}_+(k_{x,i}, t)- a_{j,N}\widehat{g}_-(k_{x,i}, t)\\
+		.\\
+		\widehat{S}_{N-1}-a_{N-1,0}\widehat{g}_+(k_{x,i}, t)- a_{N-1,N}\widehat{g}_-(k_{x,i}, t)\\
+	\end{bmatrix}
+	\label{eq:Helmh_sys}
+\end{equation}
+Le problème est ainsi mieux conditionné, dans le sens où il est moins sensible aux erreurs numériques. Le système précédent peut être résolu à l'aide de la fonction \verb|numpy.linalg.solve|, qui utilise la méthode d'élimination de Gauss-Jordan. Afin de gagner du temps, les $Nx$ matrices de taille $Ny\times Ny$ sont factorisées par décomposition LU et stockées en mémoire lors de l'initialisation. Le système \ref{eq:Helmh_sys} est résolu $Nx$ fois à chaque pas de temps, à l'aide de la fonction \verb|scipy.linalg.lu_solve|. Nous avons ainsi gagné un facteur 3 en temps.
 \subsubsection{Equations d'advection}
 
 \subsubsection{Architecture du code}
