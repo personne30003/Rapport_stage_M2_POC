@@ -1,25 +1,21 @@
 \subsection{Problème à résoudre}
-De manière générale, nous allons résoudre les équations suivantes \textbf{Illisible, mets une seule couche !!} : 
+De manière générale, nous allons résoudre les équations suivantes \textbf{Illisible, mets une seule couche. J'ai supprimé le couplage mécanique (mais je vais l'implémenter) !!} : 
 \begin{align}
-	\dT{q_o}+\mathrm{J}(\psi_o, q_o) = \frac{1}{R_{d, o}^2}\mathrm{J}(\psi_o, \theta_o) + C_{w, a} \triangle_\mathrm{h} (\psi_o - \psi_a) \, | & \, \dT{q_a}+\mathrm{J}(\psi_a, q_a) = \frac{1}{R_{d, a}^2}\mathrm{J}(\psi_a, \theta_a) + C_{w, a} \triangle_\mathrm{h} (\psi_a - \psi_o)\\
+	\dT{q_o}+\mathrm{J}(\psi_o, q_o) = \frac{1}{R_{d, o}^2}\mathrm{J}(\psi_o, \theta_o)  | & \, \dT{q_a}+\mathrm{J}(\psi_a, q_a) = \frac{1}{R_{d, a}^2}\mathrm{J}(\psi_a, \theta_a) \\
 	\dT{\theta_o} + \mathrm{J}(\psi_o, \theta_o) = -C_t(\theta_a -\theta_o) \, | &\, \dT{\theta_a} + \mathrm{J}(\psi_a, \theta_a) = -C_t(\theta_o -\theta_a) \\
 	q_o = \triangle_{\mathrm{h}}\psi_o -\frac{\psi_o - \theta_o}{R_{d, o}^2} + \beta y \,|&\, q_a = \triangle_{\mathrm{h}}\psi_a -\frac{\psi_a - \theta_a}{R_{d, a}^2} + \beta y
 	\label{eq:sys_TQG}
 \end{align}
-Dans une configuration fermée, les vitesses normales sont nulles sur tous les bords, ce qui donne : 
-\begin{align}
-	u(0, y, t) = u(L_x, y, t) = 0 \Rightarrow \partial_y \psi(0, y, t) = \partial_y \psi(L_x, y, t) = 0 \\
-	v(x, 0, t) = v(x, L_y, t) = 0 \Rightarrow \partial_x \psi(x, 0, t) = \partial_y\psi(x, L_y, t) = 0  
-\end{align}
-Pour simplifier, on peut imposer une condition de Dirichlet : $\psi = 0$ sur tout le contour du domaine.
-Dans une configuration \guillemets{canal zonal}, seule la vitesse normale $v$ est nulle sur les bords verticaux. Cela revient à fixer la valeur de $\psi$ : 
+Dans une configuration \guillemets{canal zonal}, seule la vitesse normale $v$ est nulle sur les bords méridionaux. Cela revient à fixer la valeur de $\psi$ : 
 \begin{align}
 	\psi(x, 0, t) = T_0(t) \\
 	\psi(x, L_y, t) = 0
 \end{align} 
-Où $T_0(t) = \int_0^L u(x, y, t) \mathrm{d}y = -\int_0^L\partial_y u(x, y, t) \mathrm{d}y = -(\psi(x, L, t) - \psi(x, 0, t))$ est le transport zonal.
-\textbf{Détailles un peu plus. Et fais l'a-dimensionnement de manière plus rigoureuse (surtout pour le couplage Océan Atmosphère)!}
-Pour ce qui est des CLs sur $\theta$, c'est le choix de l'utilisateur : contour isotherme (PV conservée dans ce cas), flux nul ....
+Où $T_0(t) = \int_0^L u(x, y, t) \mathrm{d}y = -\int_0^L\partial_y u(x, y, t) \mathrm{d}y = -(\psi(x, L, t) - \psi(x, 0, t))$ est le transport zonal (que l'on fixera par défaut à zéro).
+Pour la température, soit nous imposons un flux de chaleur nul aux bords ($\partial_y \theta(x, 0, t) = \partial_y \theta(x, L_y, t) = 0$), soit nous la fixons tout simplement : 
+\begin{equation}
+	\theta(x, 0, t) = \Theta_0\,,\,\theta(x, L_y, t) = \Theta_1
+\end{equation}
 
 
 Si l'on résume le système \ref{eq:sys_TQG}, pour une couche nous avons : 2 jacobiens (donc 4 dérivées d'ordre 1), une équation elliptique (Helmholtz) à inverser, et 2 intégrations temporelles. Le traitement numérique de ces termes sera expliqué plus en détail dans les paragraphes suivants
@@ -27,8 +23,7 @@ Si l'on résume le système \ref{eq:sys_TQG}, pour une couche nous avons : 2 jac
 \subsection{Résolution numérique du système}
 
 \subsubsection{Généralités sur les méthodes pseudo-spectrales}
-\textbf{Intérêt, avantage par rapport aux différences finies, principe de base. Se baser sur \cite{Trefethen2000}. Pourquoi utiliser une base de fonctions et pas une autre ?}
-De manière générale, pour calculer numériquement la dérivée d'une fonction définie sur un intervalle discrétisé, deux techniques existent : les différences finies, et les méthodes  pseudo-spectrales.\textbf{Nous faisons abstraction des éléments/volumes finis !}.
+De manière générale, pour calculer numériquement la dérivée d'une fonction définie sur un intervalle discrétisé, deux techniques existent : les différences finies, et les méthodes  pseudo-spectrales.
 
  La méthode des différences finies consiste à estimer localement la dérivée par un développement de Taylor. Par exemple, un schéma centré (avec un développement de Taylor à l'ordre 2) donne, pour les dérivées premières et secondes :  
 \begin{align}
@@ -72,9 +67,8 @@ Enfin, on reviens dans la base de départ, ce qui donne :
 	\frac{\partial f(x_j)}{\partial x} = \mathrm{FFT^{-1}}\[ik \mathrm{FFT}(f(x_j))\]
 \end{equation} 
 Le résultat étant un nombre complexe, on ne prends que la partie réelle. 
-\textbf{Parler des limites ! comportement à petite échelle tout ça ...}
 \subsubsection{Base de Chebyshev}
-La base de Fourier n'est pas adaptée aux grilles non périodiques, du fait de l'existence du phénomène de Gibbs aux bords \textbf{préciser}. \textbf{un mot là dessus}. Une solution possible  est d'interpoler notre fonction par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
+La base de Fourier n'est pas adaptée aux CLs non périodiques : la fonction devient discontinue aux bords. L'interpolation fait apparaitre des modes parasites, de haute fréquence et d'amplitude élevée (phénomène de Gibbs).  Une solution possible  est d'interpoler notre fonction par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
 \begin{equation}
 	T_n(x) = \cos(n\arccos{x})\, x\in [-1, 1]
 \end{equation}
@@ -88,7 +82,16 @@ Les extremas $x_i$ tels que
 \begin{equation}
 	x_i = \cos(\frac{\pi i}{N})\, i =0, 1, ..., N
 \end{equation}
-Sont appelés \textit{points de Gauss-Lobatto} \textbf{Ajouter une figure avec les polynomes et les points de Collocation !  J'en ai déjà une faite avec Python.}.Il est préférable d'utiliser ces points, car ils évitent les oscillations dues au phénomène de Runge, apparaissant lors de l'interpolation polynomiale sur grille uniforme. C'est la méthode de \textit{collocation}. Notre fonction interpolée s'écrit alors : 
+Sont appelés \textit{points de Gauss-Lobatto} (figure \ref{fig:Cheb_points}).
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\linewidth]{Figures/Cheb_06_GL.png}
+	\caption{Premiers polynomes de Chebyshev et points de Gauss-Lobatto }
+	\label{fig:Cheb_points}
+\end{figure}
+
+
+Il est préférable d'utiliser ces points, car ils évitent les oscillations dues au phénomène de Runge, apparaissant lors de l'interpolation polynomiale sur grille uniforme. C'est la méthode de \textit{collocation}. Notre fonction interpolée s'écrit alors : 
 \begin{align}
 	f(x_i) = \sum_{k=0}^N \hat{u_k} T_k(x_j)\\ T_k(x_j) = \cos\frac{k\pi j}{N}
 \end{align}
@@ -109,7 +112,6 @@ Avec $D$ la matrice de différenciation de Chebyshev, de taille $(N+1)\times (N+
 		1&\text{sinon}	
 	\end{cases}
 \end{align}
-\textbf{Plutôt mettre le tableau de Trefethen, page 43, tu crois pas ?}
 Les conditions aux limites seront imposées lors de la construction des systèmes linéaires associés aux équations à résoudre.
 \subsubsection{Inversion de l'équation de Poisson/Helmholtz}
 Nous cherchons ici à résoudre l'équation de Helmholtz, pour une configuration \guillemets{canal zonal} : 
@@ -187,6 +189,6 @@ Avec $a_{jl} = D^2_{jl}-(k_{x,i}+\alpha^2)\delta_{jl}$. Les valeurs de $\widehat
 \end{equation}
 Le problème est ainsi mieux conditionné, dans le sens où il est moins sensible aux erreurs numériques. Le système précédent peut être résolu à l'aide de la fonction \verb|numpy.linalg.solve|, qui utilise la méthode d'élimination de Gauss-Jordan. Afin de gagner du temps, les $Nx$ matrices de taille $Ny\times Ny$ sont factorisées par décomposition LU et stockées en mémoire lors de l'initialisation. Le système \ref{eq:Helmh_sys} est résolu $Nx$ fois à chaque pas de temps, à l'aide de la fonction \verb|scipy.linalg.lu_solve|. Nous avons ainsi gagné un facteur 3 en temps.
 \subsubsection{Equations d'advection}
-
+\textbf{Pas encore trop bossé là dessus. Essentiellement : Impositions des CLs, stabilité du schéma temporel, adaptation du pas de temps, dealiasing}
 \subsubsection{Architecture du code}
 \textbf{Courte section sur le code Python développé : modules principaux, lien vers un dépot git, diagnostics, sorties}

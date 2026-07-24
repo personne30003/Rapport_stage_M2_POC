@@ -83,8 +83,8 @@ Le modèle SQG tend donc à favoriser l’émergence de structures frontales fin
 Là encore, ce modèle reste limité : certes, la flottabilité joue un rôle actif en surface, mais l'hypothèse d'une vorticité potentielle nulle à l'intérieur reste très contraignante.
 
 
-\subsection{Couplage océan-atmosphère dans le modèle SQG}
-
+\subsubsection{Couplage océan-atmosphère dans le modèle SQG}
+\textbf{A réduire pas mal, voire à supprimer}
 L'océan et l'atmosphère échangent à la fois de la chaleur et de la quantité de mouvement.\textbf{A retirer ? ce serait mieux dans l'intro} \parencite{Vic2024} a étudié le couplage océan-atmosphère pour le problème d'Eady \parencite{Eady1949} (écoulement zonal, cisaillé verticalement) dans le cadre d'un modèle SQG 4 couches. L'étude est basée sur une analyse de stabilité linéaire, et permet donc de déterminer l'influence du couplage sur l'instabilité barocline. Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
 \begin{align}
 	\frac{D_h \theta_a}{Dt} = C_o(\theta_o - \theta_o) + F_a \\
@@ -241,3 +241,24 @@ Deux grandeurs intégrées sont conservées :
 \end{itemize}
 
 \parencite{Carton2025} a utilisé ce modèle pour étudier la stabilité d'un vortex, avec des profils gaussiens de flottabilité  et de vorticité. Comme dans le modèle SQG, l'instabilité est plus marquée à petite échelle\textbf{Franchement, je vois pas quoi dire de plus, ça s'applique qu'aux vortex !!}.
+\subsubsection{Modèle TQG couplé océan-atmosphère}
+Afin d'étendre le modèle TQG à un système couplé océan-atmosphère, Xavier Carton \textbf{cf mail du 30 Avril 2026} a proposé deux types de couplages : thermiques et mécaniques. Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
+\begin{align}
+	\frac{D_h \theta_a}{Dt} = C_o(\theta_o - \theta_a)\\
+	\frac{D_h \theta_o}{Dt} = C_a(\theta_a - \theta_o)
+\end{align}
+Où $C_o$ et $C_a$ sont des coefficients d'échange (de l'ordre de $10^{-4} - 10^{-2}$). La formulation est similaire à celle des paramétrisations de type \guillemets{bulk}.
+
+Le couplage mécanique est représenté par la friction $\vec{\tau}$ induite par le vent : 
+\begin{equation}
+	\vec{tau} \approx \rho_a C_d |\Vec{u_a} - \Vec{u_o} |(\Vec{u_a} - \Vec{u_o})
+	\label{eq:param_tau}
+\end{equation}
+Avec $\vec{u_a}$ et $\vec{u_o}$ les vitesses à l'interface atmosphère-océan. Comme $\abs{\Vec{u_a}} \gg \abs{\Vec{u_o}}$, nous pouvons linéariser \ref{eq:param_tau} \textbf{A voir !}
+Au final, les équations de conservation de la PV s'écrivent : 
+\begin{align}
+	\dT{q_a}+\mathrm{J}(\psi_a, q_a) = \frac{1}{R_{d,\,a}^2}\mathrm{J}(\psi_a, \theta_a)-\frac{\mathrm{rot}_z\tau}{\rho_a H_a}
+	\dT{q_o}+\mathrm{J}(\psi_o, q_o) = \frac{1}{R_{d,\,o}^2}\mathrm{J}(\psi_o, \theta_o)-\frac{\mathrm{rot}_z\tau}{\rho_a H_a}
+\end{align}
+Où $\mathrm{rot}_z\tau = \partial_x\tau_y - \partial_y\tau_x$, $H_o$ et $H_a$ les échelles verticales caractéristiques de l'océan et de l'atmosphère.
+Aucun terme de couplage n'apparait dans les équations elliptiques. Ici, nous n'étudierons que le couplage thermique.
