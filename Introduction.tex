@@ -1,10 +1,11 @@
-\textbf{Parler un peu du couplage océan atmosphère, et de son impact sur la dynamique à méso-échelle : Eddy killing par exemple (cf. GFD2). Intérêt des modèles \guillemets{jouets}, comme QG, RSW, (mettre diagramme de Holm2021) : permet d'isoler quelques processus (ondes de Rossby, instabilités BC et BT etc ...), simplification d'un point de vue numérique (pas ou peu de paramétrisations), nécessite peu de ressources de calcul (à part un PC basique). Cas du TRSW (simplement SW avec gradient horizontal de densité) et de sa limite QG. Problématique pas encore bien identifiée (en gros, étude de la stabilité d'un jet), donc on écrira ça quand on sera plus avancés : }
-
+Plan envisagé
+\begin{figure}[h]
+	\includegraphics[width=0.5\linewidth]{Figures/diag_eq_holmes.png}
+	\caption{Schéma de dérivation de quelque modèles GFD. Adapté de \cite{Crisan2021} et \cite{Holmes}}
+	\label{fig:diag_eq_holmes}
+\end{figure}
 \begin{itemize}
 	\item Généralités sur la dynamique de méso-échelle : tourbillons, fronts, et impact du couplage avec l'atmosphère
-	\item petites généralités sur le couplage océan-atmosphère : chaleur, QDM (friction), nutriments, et impact sur le bilan énergétique et la circulation (circulation forcée par le vent)
-	\item Modèles simplifiés QG/SQG/TQG : historique, intérêt
-	\item Mon travail $\rightarrow$ étudier le cas le plus simple : jet zonal soumis à un gradient méridien de température, dans un modèle TQG couplé océan-atmosphère. A cet effet, j'ai développé un code pseudo-spectral.
+	\item Modèles simplifiés TRSW/RSW, QG/SQG/TQG : historique, intérêt (tant sur le plan physique que numérique).
+	\item Mon travail : Implémentation d'un modèle numérique TQG couplé océan-atmosphère, dans une configuration \guillemets{canal zonal}
 \end{itemize}
-
-

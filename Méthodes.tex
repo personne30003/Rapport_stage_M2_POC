@@ -1,9 +1,9 @@
 \subsection{Problème à résoudre}
-De manière générale, nous allons résoudre les équations suivantes \textbf{Illisible, mets une seule couche. J'ai supprimé le couplage mécanique (mais je vais l'implémenter) !!} : 
+De manière générale, nous allons résoudre les équations suivantes \textbf{Remettre en forme !!} : 
 \begin{align}
-	\dT{q_o}+\mathrm{J}(\psi_o, q_o) = \frac{1}{R_{d, o}^2}\mathrm{J}(\psi_o, \theta_o)  | & \, \dT{q_a}+\mathrm{J}(\psi_a, q_a) = \frac{1}{R_{d, a}^2}\mathrm{J}(\psi_a, \theta_a) \\
-	\dT{\theta_o} + \mathrm{J}(\psi_o, \theta_o) = -C_t(\theta_a -\theta_o) \, | &\, \dT{\theta_a} + \mathrm{J}(\psi_a, \theta_a) = -C_t(\theta_o -\theta_a) \\
-	q_o = \triangle_{\mathrm{h}}\psi_o -\frac{\psi_o - \theta_o}{R_{d, o}^2} + \beta y \,|&\, q_a = \triangle_{\mathrm{h}}\psi_a -\frac{\psi_a - \theta_a}{R_{d, a}^2} + \beta y
+	\dT{q_o}+\mathrm{J}(\psi_o, q_o) = \frac{1}{R_{d, o}^2}\mathrm{J}(\psi_o, \theta_o)  \\ \dT{q_a}+\mathrm{J}(\psi_a, q_a) = \frac{1}{R_{d, a}^2}\mathrm{J}(\psi_a, \theta_a) \\
+	\dT{\theta_o} + \mathrm{J}(\psi_o, \theta_o) = -C_t(\theta_a -\theta_o) \\ \dT{\theta_a} + \mathrm{J}(\psi_a, \theta_a) = -C_t(\theta_o -\theta_a) \\
+	q_o = \triangle_{\mathrm{h}}\psi_o -\frac{\psi_o - \theta_o}{R_{d, o}^2} + \beta y \\ q_a = \triangle_{\mathrm{h}}\psi_a -\frac{\psi_a - \theta_a}{R_{d, a}^2} + \beta y
 	\label{eq:sys_TQG}
 \end{align}
 Dans une configuration \guillemets{canal zonal}, seule la vitesse normale $v$ est nulle sur les bords méridionaux. Cela revient à fixer la valeur de $\psi$ : 
@@ -52,7 +52,7 @@ L'équation\ref{eq:spec_D_f} devient donc :
 	\frac{\partial f(x'_i)}{\partial x'} = \frac{\partial f(x_i)}{\partial x}\frac{\mathrm{d}x}{\mathrm{d}x'} = \frac{a-b}{a'-b'}D(x_i) f(x_i)
 \end{equation}
 
-\subsubsection{base de Fourier}
+\subsubsection{Base de Fourier}
 Sur un domaine périodique composé de $N$ points équidistants $x_j$ ($N$ où est pair, et $x_j \in [0,2\pi]$), une fonction discrète $f(x_j)$ (elle aussi périodique) peut être représentée dans la base de Fourier par ses coefficients spectraux $\hat{f_k}$ : 
 \begin{equation}
 	\hat{f_k} = \sum_{j=1}^{N} e^{-ik x_j} f(x_j)
@@ -91,7 +91,7 @@ Sont appelés \textit{points de Gauss-Lobatto} (figure \ref{fig:Cheb_points}).
 \end{figure}
 
 
-Il est préférable d'utiliser ces points, car ils évitent les oscillations dues au phénomène de Runge, apparaissant lors de l'interpolation polynomiale sur grille uniforme. C'est la méthode de \textit{collocation}. Notre fonction interpolée s'écrit alors : 
+Il est préférable d'utiliser ces points, car ils évitent les oscillations dues au phénomène de Runge, qui apparaissent lors de l'interpolation polynomiale sur grille uniforme. C'est la méthode de \textit{collocation}. Notre fonction interpolée s'écrit alors : 
 \begin{align}
 	f(x_i) = \sum_{k=0}^N \hat{u_k} T_k(x_j)\\ T_k(x_j) = \cos\frac{k\pi j}{N}
 \end{align}
