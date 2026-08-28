@@ -8,15 +8,16 @@ De manière générale, nous allons résoudre les équations suivantes \textbf{R
 \end{align}
 Dans une configuration \guillemets{canal zonal}, seule la vitesse normale $v$ est nulle sur les bords méridionaux. Cela revient à fixer la valeur de $\psi$ : 
 \begin{align}
-	\psi(x, 0, t) = T_0(t) \\
-	\psi(x, L_y, t) = 0
+	\psi(x, 0, t) &= T_0(t) \\
+	\psi(x, L_y, t) &= 0
 \end{align} 
 Où $T_0(t) = \int_0^L u(x, y, t) \mathrm{d}y = -\int_0^L\partial_y u(x, y, t) \mathrm{d}y = -(\psi(x, L, t) - \psi(x, 0, t))$ est le transport zonal (que l'on fixera par défaut à zéro).
 Pour la température, soit nous imposons un flux de chaleur nul aux bords ($\partial_y \theta(x, 0, t) = \partial_y \theta(x, L_y, t) = 0$), soit nous la fixons tout simplement : 
-\begin{equation}
-	\theta(x, 0, t) = \Theta_0\,,\,\theta(x, L_y, t) = \Theta_1
-\end{equation}
-
+\begin{align}
+	\theta(x, 0, t) = \Theta_0\\
+	\theta(x, L_y, t) = \Theta_1
+\end{align}
+Étant donné que la vitesse normale est nulle aux bords, cela revient à fixer le flux de chaleur $F_{P, \perp} = -\Vec{u}\cdot\grad{\theta}$ à zéro \textbf{J'ai pas raison ?}. 
 
 Si l'on résume le système \ref{eq:sys_TQG}, pour une couche nous avons : 2 jacobiens (donc 4 dérivées d'ordre 1), une équation elliptique (Helmholtz) à inverser, et 2 intégrations temporelles. Le traitement numérique de ces termes sera expliqué plus en détail dans les paragraphes suivants
 
@@ -25,7 +26,7 @@ Si l'on résume le système \ref{eq:sys_TQG}, pour une couche nous avons : 2 jac
 \subsubsection{Généralités sur les méthodes pseudo-spectrales}
 De manière générale, pour calculer numériquement la dérivée d'une fonction définie sur un intervalle discrétisé, deux techniques existent : les différences finies, et les méthodes  pseudo-spectrales.
 
- La méthode des différences finies consiste à estimer localement la dérivée par un développement de Taylor. Par exemple, un schéma centré (avec un développement de Taylor à l'ordre 2) donne, pour les dérivées premières et secondes :  
+La méthode des différences finies consiste à estimer localement la dérivée par un développement de Taylor. Par exemple, un schéma centré (avec un développement de Taylor à l'ordre 2) donne, pour les dérivées premières et secondes :  
 \begin{align}
 	\frac{\partial f}{\partial x}|_{x_i}\approx\frac{f(x_{i+1}) -f(x_{i-1})}{2\Delta x} \\
 	\frac{\partial^2 f}{\partial x^2}|_{x_i}\approx\frac{f(x_{i+1}) + f(x_{i-1}) - 2f(x_i)}{\Delta x^2}
@@ -66,11 +67,12 @@ Enfin, on reviens dans la base de départ, ce qui donne :
 \begin{equation}
 	\frac{\partial f(x_j)}{\partial x} = \mathrm{FFT^{-1}}\[ik \mathrm{FFT}(f(x_j))\]
 \end{equation} 
-Le résultat étant un nombre complexe, on ne prends que la partie réelle. 
+Le résultat étant un nombre complexe, on ne prends que la partie réelle. \textbf{Là encore, je ne sais pas si il faut parler des produits de termes, et des méthodes d'intégration} 
+
 \subsubsection{Base de Chebyshev}
 La base de Fourier n'est pas adaptée aux CLs non périodiques : la fonction devient discontinue aux bords. L'interpolation fait apparaitre des modes parasites, de haute fréquence et d'amplitude élevée (phénomène de Gibbs).  Une solution possible  est d'interpoler notre fonction par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
 \begin{equation}
-	T_n(x) = \cos(n\arccos{x})\, x\in [-1, 1]
+	T_n(x) = \cos(n\arccos{x})\,, \, x\in [-1, 1]
 \end{equation}
 En posant $x$ = $\cos z$, on en déduit les premiers polynômes : 
 \begin{align}
@@ -80,13 +82,13 @@ En posant $x$ = $\cos z$, on en déduit les premiers polynômes :
 \end{align}
 Les extremas $x_i$ tels que 
 \begin{equation}
-	x_i = \cos(\frac{\pi i}{N})\, i =0, 1, ..., N
+	x_i = \cos(\frac{\pi i}{N})\,,\,\, i =0, 1, ..., N
 \end{equation}
 Sont appelés \textit{points de Gauss-Lobatto} (figure \ref{fig:Cheb_points}).
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{Figures/Cheb_06_GL.png}
-	\caption{Premiers polynomes de Chebyshev et points de Gauss-Lobatto }
+	\caption{Premiers polynômes de Chebyshev et points de Gauss-Lobatto }
 	\label{fig:Cheb_points}
 \end{figure}
 
@@ -97,7 +99,7 @@ Il est préférable d'utiliser ces points, car ils évitent les oscillations due
 \end{align}
 Dans cette approche, les dérivées sont calculées directement à partir des valeurs aux points de Gauss-Lobatto, sans calculer explicitement les coefficients spectraux. Cela conduit néanmoins à une grille irrégulière, car les points $x_i$ sont concentrés sur les bords du domaine.
 
-La dérivation est considérée comme une application linéaire, agissant sur les valeurs de la fonction aux points de grille.  On montre que la dérivée d'ordre $p$ s'écrit sous forme matricielle  : 
+On montre que la dérivée d'ordre $p$ s'écrit sous forme matricielle  : 
 \begin{equation}
 	f^{p}(x_i) = D^{p} f(x_i)
 \end{equation}
@@ -112,7 +114,23 @@ Avec $D$ la matrice de différenciation de Chebyshev, de taille $(N+1)\times (N+
 		1&\text{sinon}	
 	\end{cases}
 \end{align}
-Les conditions aux limites seront imposées lors de la construction des systèmes linéaires associés aux équations à résoudre.
+
+Pour résoudre un problème 1D avec CLs de Dirichlet (donc $f(x_0) = a$ et $f(x_{N+1}) = b$), la matrice peux s'utiliser de deux manières. Soit le problème n'est résolu que sur les points intérieurs (en excluant $x_0$ et $x_{N+1}$), ce qui donne une matrice de taille $(N-1)\times(N-1)$. Soit le problème est résolu sur l'ensemble des points, mais en gardant $f(x_0) = a$ et $f(x_{N+1}) = b$. Notre matrice de différenciation deviens ainsi : 
+\begin{equation}
+	D^p=
+	\begin{bmatrix}
+		1 & 0 & 0 &...&0\\
+		a_{10} & a_{11} & a_{12} &... &a_{1N}\\
+		.&.&.&.&.\\
+		a_{j0}& ...&a_{jl}&...&a_{jN}\\
+		.&.&.&.&.\\
+		0&0&0&...& 1
+	\end{bmatrix}
+\end{equation}
+Le cas des CLs de Neumann ne sera pas traité ici.
+
+\textbf{Peut-être traiter le cas de la dérivation en plusieurs dimensions, et aussi les liens avec la FFT (utile pour le déaliasing, car j'utilise une DCT) !!}
+
 \subsubsection{Inversion de l'équation de Poisson/Helmholtz}
 Nous cherchons ici à résoudre l'équation de Helmholtz, pour une configuration \guillemets{canal zonal} : 
 \begin{align}
@@ -187,8 +205,32 @@ Avec $a_{jl} = D^2_{jl}-(k_{x,i}+\alpha^2)\delta_{jl}$. Les valeurs de $\widehat
 	\end{bmatrix}
 	\label{eq:Helmh_sys}
 \end{equation}
-Le problème est ainsi mieux conditionné, dans le sens où il est moins sensible aux erreurs numériques. Le système précédent peut être résolu à l'aide de la fonction \verb|numpy.linalg.solve|, qui utilise la méthode d'élimination de Gauss-Jordan. Afin de gagner du temps, les $Nx$ matrices de taille $Ny\times Ny$ sont factorisées par décomposition LU et stockées en mémoire lors de l'initialisation. Le système \ref{eq:Helmh_sys} est résolu $Nx$ fois à chaque pas de temps, à l'aide de la fonction \verb|scipy.linalg.lu_solve|. Nous avons ainsi gagné un facteur 3 en temps.
+Le problème est ainsi mieux conditionné, dans le sens où il est moins sensible aux erreurs numériques. Le système précédent peut être résolu à l'aide de la fonction \verb|numpy.linalg.solve|, qui utilise la méthode d'élimination de Gauss-Jordan. Afin de gagner du temps, les $Nx$ matrices de taille $Ny\times Ny$ sont factorisées par décomposition LU et stockées en mémoire lors de l'initialisation. Le système \ref{eq:Helmh_sys} est résolu $Nx$ fois à chaque pas de temps, à l'aide de la fonction \verb|scipy.linalg.lu_solve|. 
 \subsubsection{Equations d'advection}
-\textbf{Pas encore trop bossé là dessus. Essentiellement : Impositions des CLs, stabilité du schéma temporel, adaptation du pas de temps, dealiasing}
+\paragraph{Généralités}~\\
+Nous exposons ici la résolution numérique d'une équation parabolique non-linéaire de la forme \textbf{C'est un exemple \guillemets{pédagogique} !!}\footnote{Il s'agit de l'équation de Burgers 1D} : 
+\begin{align}
+	\dT{u} = -u\frac{\partial u}{\partial x}+\nu\frac{\partial^2 u}{\partial x^2}\\
+	x\in [0, 2\pi]\\
+	u(x, 0) = u_0\\
+	u(0, t) = u(2\pi, t)\, \textrm{si CLs périodiques}\\
+	u(0, t) = u(2\pi, t) = 0\, \textrm{si CLs de Dirichlet}
+	\label{eq:Bu}
+\end{align}
+Pour des CLs périodiques, nous calculons les dérivées dans la base de Fourier. Pour des CLs de Dirichlet, nous utilisons les matrices de différenciation de Chebyshev. L'équation aux dérivées partielles \ref{eq:Bu} se ramène alors à un système d'équations différentielles ordinaires couplées. L'intégration se fait en utilisant un schéma explicite : la solution en $t+\Delta t$ ne dépend que de celle en $t$ \textbf{peut-être mal formulé} : 
+\begin{equation}
+	u^{t+\Delta t} = f(u^t)
+\end{equation} 
+Les schémas d'Euler, RK2 et RK4 sont explicites. \textbf{Mettre ça en annexe, j'hésite à parler du schéma LeapFrog, c'est un peu plus compliqué, et je m'en suis pas trop servi jusque là (je préfère RK2/RK4). Mais ça a un intérêt historique.}
+\paragraph{Stabilité du schéma explicite}~\\
+\textbf{Théorie de la stabilité (tant qu'à faire, tes calculs effectués avec ton usine à gaz de géométrie numérique serviront à quelque chose), puis ce bon vieux CFL. Insister que la contrainte qu'induisent les points de Gauss-Lobatto : le pas de grille deviens très petit aux bords.}
+\paragraph{Effet des termes non-linéaires}~\\
+\textbf{Effet des produits de termes : génère des instabilités ; dé-aliasing : règle des 2/3, filtre exponentiel}
 \subsubsection{Architecture du code}
-\textbf{Courte section sur le code Python développé : modules principaux, lien vers un dépot git, diagnostics, sorties}
+\textbf{Où l'on parle de génie logiciel : 
+\begin{itemize}
+	\item Architecture générale (+lien vers dépôt Git), philosophie (cf Fluid2D et pyRSW). En gros: séparer haut niveau du bas-niveau, encapsulation (ne pas oublier que \guillemets{l'utilisateur est un c*n, même qu'il s'appelle Régis} (référence à l'émission des Nuls)) ;  diagramme de classes.
+	\item Format des sorties (NETCDF)
+	\item méthodes d'intégrations  (Clenshaw-Curtis pour Chebyshev, trapèzes pour Fourier); diagnostics, performances (vectoriser un max, faire le moins de boucles for possible)
+\end{itemize}
+}
