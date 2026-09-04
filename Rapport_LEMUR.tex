@@ -7,9 +7,10 @@
 \usepackage{mathtools}
 \usepackage{mathrsfs}
 \usepackage{amsmath}%Pour équations multi-lignes
+\usepackage{mathbbol}
 \usepackage{envmath}%Pour système d'équations
 \usepackage{esint}
-
+\usepackage{amsthm}
 \usepackage{appendix}%Pour les annexes
 \usepackage{enumerate}%Pour les énumérations
 \usepackage{hyperref}%Pour les liens
@@ -51,6 +52,10 @@ bibstyle=apa,citestyle=apa,sorting=anyt]{biblatex}%Pour la biblio C'EST ICI QU'O
 
 \numberwithin{equation}{section}%Pour numéroter les équations par section
 
+
+\theoremstyle{definition} % Style avec texte normal (pas en italique)
+\newtheorem{defit}{Définition}[section]
+
 \title{ Rapport de stage M2 }
 \author{Evan \textsc{LEMUR} }
 \date{Mai-octobre 2026}
@@ -78,4 +83,7 @@ bibstyle=apa,citestyle=apa,sorting=anyt]{biblatex}%Pour la biblio C'EST ICI QU'O
 	\subfile{Conclusion}
 	\newpage
 	\printbibliography
+	\newpage
+	\appendix
+	\subfile{Annexe_Schemas_temporels}
 \end{document}

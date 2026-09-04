@@ -19,10 +19,8 @@ On peut montrer que par un développement de $u$ et $b$ en puissances de $\mathr
 &q = \triangle_\mathrm{h} \psi +\frac{1}{\rho}\frac{\partial}{\partial z}\(\frac{f_0}{N^2}\rho \dZ{\psi}\)+f
 \label{eq:QG}
 \end{align}
-Où $J(A, B)= \frac{\partial A}{\partial x}\frac{\partial B}{\partial y} - \frac{\partial A}{\partial y}\frac{\partial B}{\partial x}$ et $\triangle_\mathrm{h} = \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}$ est le laplacien 2D. L'écoulement étant non divergent horizontalement, on définit la fonction de courant $\psi$ telle que $u = -\frac{\partial \psi}{\partial y}, \, v = \frac{\partial \psi}{\partial x} $. La flottabilité $b$ se déduit directement à partir de $\psi$ : $b = -f_0\frac{\partial \psi}{\partial z}$. Le terme avec la dérivée en $z$ tiens compte de la compression/dilatation du fluide avec la stratification. \textbf{Détaille un peu. Bordel, faut connaitre un peu son cours de GFD parce que là ...}
-
-Le paramètre de Coriolis varie avec la latitude. Pour une échelle horizontale \guillemets{pas trop grande}, on peut effectuer un développement limité au premier ordre  : $f \approx f_0 + \beta y$. Où $f_0 = 2\Omega \sin(\lambda)$ et $\beta = \frac{2\Omega\cos \lambda}{R_T}$. \textbf{Celui là tu peux le mettre au début, limite dans l'intro quand tu introduis les equations primitives}.
-
+Où $J(A, B)= \frac{\partial A}{\partial x}\frac{\partial B}{\partial y} - \frac{\partial A}{\partial y}\frac{\partial B}{\partial x}$ et $\triangle_\mathrm{h} = \frac{\partial^2}{\partial x^2}+ \frac{\partial^2}{\partial y^2}$ est le laplacien 2D. L'écoulement étant non divergent horizontalement, on définit la fonction de courant $\psi$ telle que $u = -\frac{\partial \psi}{\partial y}, \, v = \frac{\partial \psi}{\partial x} $. La flottabilité $b$ se déduit directement à partir de $\psi$ : $b = -f_0\frac{\partial \psi}{\partial z}$. Le terme avec la dérivée en $z$ tiens compte de la compression/dilatation du fluide avec la stratification.
+Le paramètre de Coriolis varie avec la latitude. Pour une échelle horizontale \guillemets{pas trop grande}, on peut effectuer un développement limité au premier ordre  : $f \approx f_0 + \beta y$. Où $f_0 = 2\Omega \sin(\lambda)$ et $\beta = \frac{2\Omega\cos \lambda}{R_T}$. 
 Les quantités totales (intégrées sur tout l'espace) conservées dans ce modèle sont la vorticité potentielle $Q = \iiint_V q \mathrm{d}V$, l'enstrophie potentielle $Z = \iiint_V q^2\mathrm{d}V$ \textbf{A voir si je trouve une autre notation}. En l'absence de dissipation, l'énergie totale $E = E_c +APE = \iiint_V\(\rho_0\ |\grad\psi |^2 +\frac{1}{2}\rho_0\frac{f_0^2}{N^2}\( \frac{\partial \psi}{\partial z}\)^2\)\mathrm{d}V$ (où $E_c$ est l'énergie cinétique et $APE$ l'énergie potentielle disponible \textbf{On va pas rentrer dans la subtilité}) est conservée.
 
 La conservation de la vorticité potentielle implique l'existence d'ondes de Rossby  : 
@@ -36,7 +34,7 @@ La conservation de la vorticité potentielle implique l'existence d'ondes de Ros
 	\begin{equation}
 		\omega  = -\frac{\beta k }{k^2 + l^2 + \Gamma}
 	\end{equation}
-	Avec $\Gamma > 0$. Leurs propriétés sont grandement similaires à celles des ondes de Rossby barotropes, mais leur vitesse de propagation à grande longueur d'onde est limitée par le terme $\Gamma$ \textbf{Explique pourquoi tant qu'à faire !} 
+	Avec $\Gamma > 0$. Leurs propriétés sont grandement similaires à celles des ondes de Rossby barotropes, mais leur vitesse de propagation à grande longueur d'onde est limitée par le terme $\Gamma$.
 \end{itemize}
 Dans ce cadre, deux types d'instabilité (figure \ref{fig:Instab_QG}) peuvent apparaitre : 
 \begin{itemize}
@@ -75,7 +73,7 @@ Comme pour le modèle QG, la vorticité potentielle est conservée, mais sa vale
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{Figures/Fig5_Held.png}
-	\caption{Instabilité d'un filament de flottabilité. Tiré de \cite{Held1995}}
+	\caption{Instabilité d'un filament de flottabilité dans le modèle SQG. Tiré de \cite{Held1995}}
 	\label{fig:SQG_Held}
 \end{figure}
 Le modèle SQG tend donc à favoriser l’émergence de structures frontales fines et de filaments de flottabilité (exemple figure \ref{fig:SQG_Held}). Contrairement au cadre barotrope, cette dynamique conduit fréquemment à des structures de petite échelle et à l’apparition d’instabilités secondaires.
@@ -195,7 +193,7 @@ q &= \triangle_{\mathrm{h}}\psi - \frac{\psi - \theta}{\mathrm{Bu}} + \tilde{\be
 \end{align}
 Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ est le Jacobien 2D et $\Delta_{\mathrm{h}}= \partial_x^2+\partial_y^2$ le Laplacien 2D.
 \subsubsection{Propriétés}
-Contrairement au modèle QG, la vorticité potentielle n'est pas conservée. Celle-ci est couplée à la flottabilité, qui n'est donc plus un scalaire passif. Comme pour le modèle SQG, la flottabilité joue donc un rôle actif, mais ne dérive plus de la vorticité potentielle. \textbf{Phrase à améliorer}
+Contrairement au modèle QG, la vorticité potentielle n'est pas conservée. Celle-ci est couplée à la flottabilité, qui n'est donc plus un scalaire passif. Comme pour le modèle SQG, la flottabilité joue donc un rôle actif, mais ne dérive plus directement de la vorticité potentielle. \textbf{Phrase à améliorer}
 
 Deux grandeurs intégrées sont conservées :
 \begin{itemize}
@@ -209,7 +207,7 @@ Deux grandeurs intégrées sont conservées :
 	\end{equation}
 \end{itemize}
 
-\parencite{Carton2025} a utilisé ce modèle pour étudier la stabilité d'un vortex, avec des profils gaussiens de flottabilité  et de vorticité. Comme dans le modèle SQG, l'instabilité est plus marquée à petite échelle\textbf{Franchement, je vois pas quoi dire de plus, ça ne s'applique qu'aux vortex !!}.
+\parencite{Carton2025} a utilisé ce modèle pour étudier la stabilité d'un vortex, avec des profils gaussiens de flottabilité  et de vorticité. Comme dans le modèle SQG, l'instabilité est plus marquée à petite échelle\textbf{Franchement, je vois pas quoi dire de plus, ça ne s'applique qu'aux vortex !!}. \textbf{C'est le moment de dire sur quoi va porter notre étude ?}
 \subsubsection{Modèle TQG couplé océan-atmosphère}
 Afin d'étendre le modèle TQG à un système couplé océan-atmosphère, Xavier Carton \textbf{cf mail du 30 Avril 2026 ; mettre \guillemets{communication personnelle à la place}} a proposé deux types de couplages : thermiques et mécaniques (comme dans \parencite{Vic2024}). Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
 \begin{align}
@@ -229,4 +227,4 @@ Au final, les équations de conservation de la PV s'écrivent :
 	\dT{q_a}+\mathrm{J}(\psi_a, q_a) &= \frac{1}{R_{d,\,a}^2}\mathrm{J}(\psi_a, \theta_a)-\frac{\mathrm{rot}_z\tau}{\rho_a H_a}\\
 	\dT{q_o}+\mathrm{J}(\psi_o, q_o) &= \frac{1}{R_{d,\,o}^2}\mathrm{J}(\psi_o, \theta_o)-\frac{\mathrm{rot}_z\tau}{\rho_a H_a}
 \end{align}
-Où $\mathrm{rot}_z\tau = \partial_x\tau_y - \partial_y\tau_x = \Delta_{\mathrm{h}}(\psi_a - \psi_o)$, $H_o$ et $H_a$ les échelles verticales caractéristiques de l'océan et de l'atmosphère.A noter qu'aucun terme de couplage n'apparait dans les équations elliptiques. Par soucis de simplicité, nous n'étudierons que le couplage thermique. Enfin, nous ne traiterons que de la stabilité d'un jet zonal soumis à un gradient méridien de température.
+Où $\mathrm{rot}_z\tau = \partial_x\tau_y - \partial_y\tau_x = \Delta_{\mathrm{h}}(\psi_a - \psi_o)$, $H_o$ et $H_a$ les échelles verticales caractéristiques de l'océan et de l'atmosphère. A noter qu'aucun terme de couplage n'apparait dans les équations elliptiques. Par soucis de simplicité, nous n'étudierons que le couplage thermique.

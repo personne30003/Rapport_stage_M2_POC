@@ -28,8 +28,8 @@ De manière générale, pour calculer numériquement la dérivée d'une fonction
 
 La méthode des différences finies consiste à estimer localement la dérivée par un développement de Taylor. Par exemple, un schéma centré (avec un développement de Taylor à l'ordre 2) donne, pour les dérivées premières et secondes :  
 \begin{align}
-	\frac{\partial f}{\partial x}|_{x_i}\approx\frac{f(x_{i+1}) -f(x_{i-1})}{2\Delta x} \\
-	\frac{\partial^2 f}{\partial x^2}|_{x_i}\approx\frac{f(x_{i+1}) + f(x_{i-1}) - 2f(x_i)}{\Delta x^2}
+	\frac{\partial f}{\partial x}|_{x_i} &\approx \frac{f(x_{i+1}) -f(x_{i-1})}{2\Delta x} \\
+	\frac{\partial^2 f}{\partial x^2}|_{x_i} &\approx \frac{f(x_{i+1}) + f(x_{i-1}) - 2f(x_i)}{\Delta x^2}
 \end{align}
 Aux bords du domaine, les opérateurs sont approximés différemment (par exemple à l'aide de points fictifs), en tenant compte des conditions aux limites.La précision d'un schéma en différences finies dépend de l'ordre du développement de Taylor utilisé. L'obtention d'une forte précision nécessite généralement d'augmenter l'ordre du schéma ou de diminuer $\Delta x$.
 
@@ -47,7 +47,9 @@ Selon la base choisie, les fonctions $\psi_k$ peuvent être définies par récur
 	\label{eq:spec_D_f}
 \end{equation}
 Où $D$ est une matrice de différenciation.
-La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes). Les fonctions de base sont définies dans un domaine $x_i \in [a, b]$. Si nous travaillons dans un domaine quelconque $x'_i \in [a', b']$, nous pouvons passer d'un domaine à l'autre par transformation linéaire.
+La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes).\textbf{NB ici, nous n'avons pas parlé de convergence}
+
+ Les fonctions de base sont définies dans un domaine $x_i \in [a, b]$. Si nous travaillons dans un domaine quelconque $x'_i \in [a', b']$, nous pouvons passer d'un domaine à l'autre par transformation linéaire.
 L'équation\ref{eq:spec_D_f} devient donc : 
 \begin{equation}
 	\frac{\partial f(x'_i)}{\partial x'} = \frac{\partial f(x_i)}{\partial x}\frac{\mathrm{d}x}{\mathrm{d}x'} = \frac{a-b}{a'-b'}D(x_i) f(x_i)
@@ -55,51 +57,61 @@ L'équation\ref{eq:spec_D_f} devient donc :
 
 \subsubsection{Base de Fourier}
 Sur un domaine périodique composé de $N$ points équidistants $x_j$ ($N$ où est pair, et $x_j \in [0,2\pi]$), une fonction discrète $f(x_j)$ (elle aussi périodique) peut être représentée dans la base de Fourier par ses coefficients spectraux $\hat{f_k}$ : 
-\begin{equation}
-	\hat{f_k} = \sum_{j=1}^{N} e^{-ik x_j} f(x_j)
-\end{equation}
-Où $k = -\frac{N}{2}+1, ... , \frac{N}{2}$, $x_j =  \frac{2\pi}{N} ... 2\pi$. En pratique, le passage dans cette base s'effectue avec l'algorithme de la transformée de Fourier Rapide (FFT).
+\begin{align}
+	\hat{f_k} &= \sum_{j=1}^{N} e^{-ik x_j} f(x_j)\\
+	k &= -\frac{N}{2}+1, ... , \frac{N}{2}\\
+	x_j &=  \frac{2\pi}{N}, ... ,2\pi
+\end{align}
+En pratique, le passage dans cette base s'effectue avec l'algorithme de la transformée de Fourier Rapide (FFT).
 La dérivée dans la base de Fourier se calcule alors assez facilement : 
 \begin{equation}
-	\frac{\hat{\partial f_k}}{\partial x} = ik\hat{f_k}
+	\widehat{\frac{\partial^p f_k}{\partial x^p}} = {(ik)}^p\hat{f_k}
 \end{equation}
 Enfin, on reviens dans la base de départ, ce qui donne : 
 \begin{equation}
-	\frac{\partial f(x_j)}{\partial x} = \mathrm{FFT^{-1}}\[ik \mathrm{FFT}(f(x_j))\]
+	\frac{\partial^p f(x_j)}{\partial x^p} = \mathrm{FFT^{-1}}\[{(ik)}^p \mathrm{FFT}(f(x_j))\]
 \end{equation} 
 Le résultat étant un nombre complexe, on ne prends que la partie réelle. \textbf{Là encore, je ne sais pas si il faut parler des produits de termes, et des méthodes d'intégration} 
 
 \subsubsection{Base de Chebyshev}
-La base de Fourier n'est pas adaptée aux CLs non périodiques : la fonction devient discontinue aux bords. L'interpolation fait apparaitre des modes parasites, de haute fréquence et d'amplitude élevée (phénomène de Gibbs).  Une solution possible  est d'interpoler notre fonction par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
-\begin{equation}
-	T_n(x) = \cos(n\arccos{x})\,, \, x\in [-1, 1]
-\end{equation}
-En posant $x$ = $\cos z$, on en déduit les premiers polynômes : 
+\paragraph{Définition}~\\
+La base de Fourier n'est pas adaptée aux CLs non périodiques : la fonction devient discontinue aux bords. L'interpolation fait apparaitre des modes parasites, de haute fréquence et d'amplitude élevée (phénomène de Gibbs).  Une solution possible  est d'interpoler notre fonction (discrétisée sur une grille de taille $N+1$) par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
 \begin{align}
-	T_0(x) = 1\\
-	T_1(x) = \cos z = x \\
-	T_2(x) = \cos2z = 2\cos^2z - 1 = 2x^2-1\\
+	T_n(x) &= \cos(n\arccos{x})\\ x &\in [-1, 1]
+\end{align}
+En posant $x$ = $\cos \theta,\mathrm{  }\theta\in\mathbb{R}$, on en déduit les premiers polynômes : 
+\begin{align}
+	&T_0(x) = \cos{0} &= 1\\
+	&T_1(x) = \cos \theta &= x \\
+	&T_2(x) = \cos2\theta = 2\cos^2\theta - 1 &= 2x^2-1\\
 \end{align}
 Les extremas $x_i$ tels que 
-\begin{equation}
-	x_i = \cos(\frac{\pi i}{N})\,,\,\, i =0, 1, ..., N
-\end{equation}
+\begin{align}
+	x_i &= \cos(\frac{\pi i}{n})\\
+	i &= 0, 1, ..., n
+\end{align}
 Sont appelés \textit{points de Gauss-Lobatto} (figure \ref{fig:Cheb_points}).
 \begin{figure}
 	\centering
-	\includegraphics[width=0.4\linewidth]{Figures/Cheb_06_GL.png}
+	\includegraphics[width=0.8\linewidth]{Figures/Cheb_06_GL.png}
 	\caption{Premiers polynômes de Chebyshev et points de Gauss-Lobatto }
 	\label{fig:Cheb_points}
 \end{figure}
 
-
 Il est préférable d'utiliser ces points, car ils évitent les oscillations dues au phénomène de Runge, qui apparaissent lors de l'interpolation polynomiale sur grille uniforme. C'est la méthode de \textit{collocation}. Notre fonction interpolée s'écrit alors : 
 \begin{align}
-	f(x_i) = \sum_{k=0}^N \hat{u_k} T_k(x_j)\\ T_k(x_j) = \cos\frac{k\pi j}{N}
+	f(x_i) &= \sum_{k=0}^N \hat{u_k} T_k(x_i)\\ 
+	x_i &= \cos\frac{k\pi i}{N}\\
+	i &= 0, 1, ..., N
 \end{align}
-Dans cette approche, les dérivées sont calculées directement à partir des valeurs aux points de Gauss-Lobatto, sans calculer explicitement les coefficients spectraux. Cela conduit néanmoins à une grille irrégulière, car les points $x_i$ sont concentrés sur les bords du domaine.
-
-On montre que la dérivée d'ordre $p$ s'écrit sous forme matricielle  : 
+Cela conduit néanmoins à une grille irrégulière, car les points $x_i$ sont concentrés sur les bords du domaine. Si le nombre de points sur la grille est $\gg 1$, le plus petit pas de grille peut s'exprimer simplement : 
+\begin{equation}
+	\Delta x_{min} = 1-\cos{\frac{\pi}{N}}\approx 1-(1-\frac{\pi^2}{2N^2}) \approx \frac{\pi^2}{2N^2}
+\end{equation}
+Ce qui est bien plus petit que le pas de grille utilisé dans la base de Fourier, qui varie comme $N^{-1}$.
+\paragraph{Différenciation}~\\
+Il est possible de calculer les dérivées directement à partir des valeurs aux points de Gauss-Lobatto, sans utiliser explicitement les coefficients spectraux.
+On montre ainsi que la dérivée d'ordre $p$ s'écrit sous forme matricielle  : 
 \begin{equation}
 	f^{p}(x_i) = D^{p} f(x_i)
 \end{equation}
@@ -114,8 +126,10 @@ Avec $D$ la matrice de différenciation de Chebyshev, de taille $(N+1)\times (N+
 		1&\text{sinon}	
 	\end{cases}
 \end{align}
-
-Pour résoudre un problème 1D avec CLs de Dirichlet (donc $f(x_0) = a$ et $f(x_{N+1}) = b$), la matrice peux s'utiliser de deux manières. Soit le problème n'est résolu que sur les points intérieurs (en excluant $x_0$ et $x_{N+1}$), ce qui donne une matrice de taille $(N-1)\times(N-1)$. Soit le problème est résolu sur l'ensemble des points, mais en gardant $f(x_0) = a$ et $f(x_{N+1}) = b$. Notre matrice de différenciation deviens ainsi : 
+Contrairement à la méthode des différences finies, la matrice de différenciation est dense.
+\textbf{Parler de la dérivation en plusieurs dimensions}
+\paragraph{Conditions aux limites}~\\
+Pour résoudre un problème 1D avec CLs de Dirichlet (donc $f(x_0) = a$ et $f(x_{N+1}) = b$), il existe deux manières possible. Soit le problème n'est résolu que sur les points intérieurs (en excluant $x_0$ et $x_{N+1}$), ce qui donne une matrice de taille $(N-1)\times(N-1)$. Soit le problème est résolu sur l'ensemble des points, mais en gardant $f(x_0) = a$ et $f(x_{N+1}) = b$. Notre matrice de différenciation deviens ainsi : 
 \begin{equation}
 	D^p=
 	\begin{bmatrix}
@@ -128,8 +142,8 @@ Pour résoudre un problème 1D avec CLs de Dirichlet (donc $f(x_0) = a$ et $f(x_
 	\end{bmatrix}
 \end{equation}
 Le cas des CLs de Neumann ne sera pas traité ici.
-
-\textbf{Peut-être traiter le cas de la dérivation en plusieurs dimensions, et aussi les liens avec la FFT (utile pour le déaliasing, car j'utilise une DCT) !!}
+\paragraph{Intégration}~\\
+\textbf{Utile pour les diagnostics. Parle de la méthode de Clenshaw-Curtis. Après c'est un sujet compliqué ...}
 
 \subsubsection{Inversion de l'équation de Poisson/Helmholtz}
 Nous cherchons ici à résoudre l'équation de Helmholtz, pour une configuration \guillemets{canal zonal} : 
@@ -217,19 +231,39 @@ Nous exposons ici la résolution numérique d'une équation parabolique non-lin�
 	u(0, t) = u(2\pi, t) = 0\, \textrm{si CLs de Dirichlet}
 	\label{eq:Bu}
 \end{align}
-Pour des CLs périodiques, nous calculons les dérivées dans la base de Fourier. Pour des CLs de Dirichlet, nous utilisons les matrices de différenciation de Chebyshev. L'équation aux dérivées partielles \ref{eq:Bu} se ramène alors à un système d'équations différentielles ordinaires couplées. L'intégration se fait en utilisant un schéma explicite : la solution en $t+\Delta t$ ne dépend que de celle en $t$ \textbf{peut-être mal formulé} : 
+Le terme à droite du signe \guillemets{égal} est appelé \textit{RHS}. Pour des CLs périodiques, nous calculons les dérivées dans la base de Fourier. Pour des CLs de Dirichlet, nous utilisons les matrices de différenciation de Chebyshev. L'équation aux dérivées partielles \ref{eq:Bu} se ramène alors à un système d'équations différentielles ordinaires couplées. L'intégration se fait en utilisant un schéma explicite : la solution en $t+\Delta t$ ne dépend que de celles aux temps précédents : 
 \begin{equation}
-	u^{t+\Delta t} = f(u^t)
+	u^{t+\Delta t} = L(u^t, u^{t-\Delta t}, ...,u^{t-i\Delta t})
 \end{equation} 
-Les schémas d'Euler, RK2 et RK4 sont explicites. \textbf{Mettre ça en annexe, j'hésite à parler du schéma LeapFrog, c'est un peu plus compliqué, et je m'en suis pas trop servi jusque là (je préfère RK2/RK4). Mais ça a un intérêt historique.}
-\paragraph{Stabilité du schéma explicite}~\\
-\textbf{Théorie de la stabilité (tant qu'à faire, tes calculs effectués avec ton usine à gaz de géométrie numérique serviront à quelque chose), puis ce bon vieux CFL. Insister que la contrainte qu'induisent les points de Gauss-Lobatto : le pas de grille deviens très petit aux bords.}
+Les schémas d'Euler et Runge-Kutta sont explicites à un pas, car ils ne dépendent que de la solution en $t$. Les schémas de Runge-Kutta sont plus précis que celui d'Euler (pour un schéma d'ordre $p$ convergence en $\Delta t^p$ contre $\Delta t$ pour le schéma d'Euler), mais nécessitent d'évaluer plusieurs fois le \textit{RHS}, ce qui peut être coûteux en temps. Le schéma LeapFrog est un schéma explicite à deux pas, c'est à dire que la solution en $t+\Delta t$ dépend des solutions aux deux pas précédents. Leurs expressions sont détaillées en annexe \ref{section:Schemas_temporels}.
+\paragraph{Critère de stabilité}~\\
+\begin{defit}[Notion de stabilité]
+	Soit $\epsilon = u^t_{\mathrm{ana}}-u^t_{\mathrm{num}}$ l'erreur entre solution analytique $u^t_{\mathrm{ana}}$ et solution numérique $u^t_{\mathrm{num}}$, au pas de temps $t$. Un schéma est dit \textbf{stable} si l'erreur reste bornée quand $t\rightarrow+\infty$
+\end{defit}
+Il existe plusieurs manière d'obtenir des critères de stabilité : analyse de stabilité absolue, analyse de Von Neumann \textbf{mettre référence et détailler succinctement}. Ici, nous utilisons un critère purement physique : 
+\begin{defit}[Critère de stabilité physique]
+	Un schéma est supposé stable si les perturbations numériques se propagent moins vite que les perturbations physiques. Cela implique donc :
+	\begin{align}
+		\Delta t_{\mathrm{adv}} &\leq CFL_{\mathrm{adv}} \frac{\Delta x_{min}}{\lvert \Vec{u}\rvert_{\mathrm{max}}}\\
+		\Delta t_{\mathrm{diff}} &\leq CFL_{\mathrm{diff}}\frac{\Delta x_{min}^2}{\nu}\\
+		\Delta t &= \min\left(\Delta t_{\mathrm{adv}}, \Delta t_{\mathrm{diff}}\right)
+	\end{align}
+Où $CFL_{\mathrm{adv}}$ et $ CFL_{\mathrm{diff}}$ sont des coefficients sans dimensions, appelés \textit{coefficients de Courant-Friedrich-Lévy}. Ils peuvent être déterminés soit analytiquement (par analyse de Von Neumann), soit de manière purement empirique.
+\end{defit}
+Les coefficients CFL dépendent des schémas utilisés. Avec les méthodes pseudo-spectrales, ils sont en général inférieurs à 1. Ce critère ne garantit pas nécessairement la stabilité quand $t\rightarrow+\infty$, mais sur un temps limité, il suffit largement.
+
 \paragraph{Effet des termes non-linéaires}~\\
-\textbf{Effet des produits de termes : génère des instabilités ; dé-aliasing : règle des 2/3, filtre exponentiel}
+\textbf{Effet des produits de termes : génère des instabilités ; dé-aliasing : règle des 2/3, filtre exponentiel. Je ne sais pas si j'en aurais besoin}
 \subsubsection{Architecture du code}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\linewidth]{Figures/pyTQG.png}
+	\caption{Diagramme de classe de notre code}
+	\label{fig:diagramme_classes}
+\end{figure}
 \textbf{Où l'on parle de génie logiciel : 
 \begin{itemize}
-	\item Architecture générale (+lien vers dépôt Git), philosophie (cf Fluid2D et pyRSW). En gros: séparer haut niveau du bas-niveau, encapsulation (ne pas oublier que \guillemets{l'utilisateur est un c*n, même qu'il s'appelle Régis} (référence à l'émission des Nuls)) ;  diagramme de classes.
+	\item Architecture générale (+lien vers dépôt Git), philosophie (cf Fluid2D et pyRSW). En gros: séparer haut niveau du bas-niveau, encapsulation;  diagramme de classes.
 	\item Format des sorties (NETCDF)
 	\item méthodes d'intégrations  (Clenshaw-Curtis pour Chebyshev, trapèzes pour Fourier); diagnostics, performances (vectoriser un max, faire le moins de boucles for possible)
 \end{itemize}
