@@ -1,0 +1,37 @@
+\section{Schémas d'intégration temporels implémentés}
+\label{section:Schemas_temporels}
+On résout une équation différentielle ordinaire de la forme
+\begin{align}
+	\frac{\mathrm{d}u(t)}{\mathrm{d}t} &= \mathrm{RHS}(u, t)\\
+	u(0) = u^0
+\end{align}
+Le pas de temps est noté $\Delta t$.\textbf{Peut-etre préciser ce qu'est un schéma explicite : Euler, RK2 et RK4 ne diffèrent que par la façon d'intégrer le RHS. Euler utilise la méthode des rectangles (sur un coté), RK2 utilise la méthode des trapèzes, RK4 utilise celle de Simpson.}
+\paragraph{Schéma d'Euler}~\\
+\begin{equation}
+	u^{n+1} = u^n+\Delta t\times \mathrm{RHS}(u^n, t^n)
+\end{equation}
+\paragraph{Schéma de Runge-Kutta d'ordre 2 (RK2)}~\\
+\begin{align}
+	u^{n+1} &= u^n+\frac{\Delta t}{2}(k_1+k_2)\\
+	k_1 &= \mathrm{RHS}(u^n, t^n)\\
+	k_2 &= \mathrm{RHS}(u^n +\Delta t k_1, t^n+\Delta t)
+\end{align}
+\paragraph{Schéma de Runge-Kutta d'ordre 4 (RK4)}~\\
+\begin{align}
+	u^{n+1} &= u^n+\frac{\Delta t}{3}(\frac{k_1}{2}+k_2+k_3+\frac{k_4}{2})\\
+	k_1 &= \mathrm{RHS}(u^n, t^n)\\
+	k_2 &= \mathrm{RHS}(u^n +\frac{\Delta t}{2}k_1, t^n+\frac{\Delta t}{2})\\
+	k_3 &= \mathrm{RHS}(u^n+\frac{\Delta t}{2}k_2, t^n+\frac{\Delta t}{2})\\
+	k_4 &= \mathrm{RHS}(u^n+\Delta t k_3, t^n+\Delta t)
+\end{align}
+
+\paragraph{Schéma Leap-Frog}~\\
+\begin{align}
+	u^{n+1} = u^{n-1}+2\Delta t \mathrm{RHS}(u^n, t^n)
+\end{align}
+Le premier pas ($u^1$) doit être calculé soit avec la méthode d'Euler, soit avec la méthode RK2. L'avantage de ce schéma est que le RHS n'est calculé qu'une fois par pas de temps, tout en offrant une meilleure précision que celui d'Euler. L'inconvénient est que ce schéma comporte un mode parasite (mode computationnel). Pour le retirer, on y applique un filtre passe-bas (filtre d'Asselin) : 
+\begin{align}
+	u^{n+1} &= u^{n-1}+2\Delta t \mathrm{RHS}(\overline{u^n}, t^n)\\
+	\overline{u^n} &= u^{n} + \alpha(u^{n+1}+2u^n+u^{n-1})\\
+	\alpha &\approx 0.05
+\end{align}

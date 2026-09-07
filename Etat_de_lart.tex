@@ -195,16 +195,21 @@ Où $\mathrm{J}(A, B) = \partial_x A \partial_y B - \partial_y A \partial_x B$ e
 \subsubsection{Propriétés}
 Contrairement au modèle QG, la vorticité potentielle n'est pas conservée. Celle-ci est couplée à la flottabilité, qui n'est donc plus un scalaire passif. Comme pour le modèle SQG, la flottabilité joue donc un rôle actif, mais ne dérive plus directement de la vorticité potentielle. \textbf{Phrase à améliorer}
 
-Deux grandeurs intégrées sont conservées :
+Trois grandeurs intégrées sont conservées :
 \begin{itemize}
 	\item L'énergie totale dans la limite QG \textbf{Franchement, je suis pas sûr !!}: 
 	 \begin{equation}
 	 	E = E_C + E_P = \iint_S (\frac{\lvert \grad{\psi}\rvert^2}{2}+\frac{\psi^2}{2R_d^2})\mathrm{d}x\mathrm{d}y 
 	 \end{equation}
+	 Où $E_C$ est l'énergie cinétique, et $E_P$ est l'énergie potentielle de déformation. Cette dernière tiens compte de la dé-formation de la couche. Dans le modèle TQG, elle est due à la fois à la déformation de la surface libre, et au gradient de flottabilité.
 	\item Comme pour le modèle TRSW, la vorticité potentielle totale, intégrée sur un contour isotherme: 
 	\begin{equation}
 		\frac{\mathrm{D} \oiint_{S(\theta)} q \mathrm{d}x\mathrm{d}y}{\mathrm{D} t} = 0
 	\end{equation}
+	\item En l'absence de transfert thermique, la flottabilité totale est conservée : 
+	\begin{equation}
+		\iint_S \frac{\mathrm{D}\theta(x, y)}{\mathrm{D} t} \mathrm{d}x\mathrm{d}y = 0
+\end{equation}
 \end{itemize}
 
 \parencite{Carton2025} a utilisé ce modèle pour étudier la stabilité d'un vortex, avec des profils gaussiens de flottabilité  et de vorticité. Comme dans le modèle SQG, l'instabilité est plus marquée à petite échelle\textbf{Franchement, je vois pas quoi dire de plus, ça ne s'applique qu'aux vortex !!}. \textbf{C'est le moment de dire sur quoi va porter notre étude ?}
