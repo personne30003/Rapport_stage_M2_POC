@@ -1,5 +1,5 @@
-\subsection{Problème à résoudre}
-De manière générale, nous allons résoudre les équations suivantes \textbf{Remettre en forme !!} : 
+\subsection{Formulation du problème}
+De manière générale, nous allons résoudre les équations suivantes \textbf{Mettre TQG 1 couche, ce sera moins lourd} : 
 \begin{align}
 	\dT{q_o}+\mathrm{J}(\psi_o, q_o) = \frac{1}{R_{d, o}^2}\mathrm{J}(\psi_o, \theta_o)  \\ \dT{q_a}+\mathrm{J}(\psi_a, q_a) = \frac{1}{R_{d, a}^2}\mathrm{J}(\psi_a, \theta_a) \\
 	\dT{\theta_o} + \mathrm{J}(\psi_o, \theta_o) = -C_t(\theta_a -\theta_o) \\ \dT{\theta_a} + \mathrm{J}(\psi_a, \theta_a) = -C_t(\theta_o -\theta_a) \\
@@ -19,7 +19,7 @@ Pour la température, soit nous imposons un flux de chaleur nul aux bords ($\par
 \end{align}
 Étant donné que la vitesse normale est nulle aux bords, cela revient à fixer le flux de chaleur $F_{P, \perp} = -\Vec{u}\cdot\grad{\theta}$ à zéro \textbf{J'ai pas raison ?}. 
 
-Si l'on résume le système \ref{eq:sys_TQG}, pour une couche nous avons : 2 jacobiens (donc 4 dérivées d'ordre 1), une équation elliptique (Helmholtz) à inverser, et 2 intégrations temporelles. Le traitement numérique de ces termes sera expliqué plus en détail dans les paragraphes suivants
+Si l'on résume le système \ref{eq:sys_TQG}, pour une couche nous avons : 2 jacobiens (donc 4 dérivées d'ordre 1), une équation elliptique (Helmholtz) à inverser, et 2 intégrations temporelles. Le traitement numérique de ces termes sera explicité dans les paragraphes suivants
 
 \subsection{Résolution numérique du système}
 
@@ -33,7 +33,7 @@ La méthode des différences finies consiste à estimer localement la dérivée 
 \end{align}
 Aux bords du domaine, les opérateurs sont approximés différemment (par exemple à l'aide de points fictifs), en tenant compte des conditions aux limites.La précision d'un schéma en différences finies dépend de l'ordre du développement de Taylor utilisé. L'obtention d'une forte précision nécessite généralement d'augmenter l'ordre du schéma ou de diminuer $\Delta x$.
 
-Les méthodes pseudo-spectrales \cite{Trefethen2000} \cite{Boyd} \cite{Peyret2001},  consistent au contraire à interpoler une fonction $f$ sur une base de fonctions $\psi_k$ (supposées orthogonales) : 
+Les méthodes pseudo-spectrales \parencite{Trefethen2000} \parencite{Boyd} \parencite{Peyret2001},  consistent au contraire à interpoler une fonction $f$ sur une base de fonctions $\psi_k$ (supposées orthogonales) : 
 \begin{equation}
 	f(x) \approx \sum_{k=0}^N \hat{f}_k \psi_k(x_i)
 \end{equation}
@@ -75,7 +75,7 @@ Le résultat étant un nombre complexe, on ne prends que la partie réelle. \tex
 
 \subsubsection{Base de Chebyshev}
 \paragraph{Définition}~\\
-La base de Fourier n'est pas adaptée aux CLs non périodiques : la fonction devient discontinue aux bords. L'interpolation fait apparaitre des modes parasites, de haute fréquence et d'amplitude élevée (phénomène de Gibbs).  Une solution possible  est d'interpoler notre fonction (discrétisée sur une grille de taille $N+1$) par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
+La base de Fourier n'est pas adaptée aux CLs non périodiques : la fonction devient discontinue aux bords. L'interpolation fait apparaitre des modes parasites, de haute fréquence et d'amplitude élevée (phénomène de Gibbs). Une solution possible est d'interpoler notre fonction (discrétisée sur une grille de taille $N+1$) par un polynôme algébrique, de degré $N$. On définit les polynômes de Chebyshev $T_n(x)$ tels que  :
 \begin{align}
 	T_n(x) &= \cos(n\arccos{x})\\ x &\in [-1, 1]
 \end{align}
@@ -129,9 +129,9 @@ Avec $D$ la matrice de différenciation de Chebyshev, de taille $(N+1)\times (N+
 Contrairement à la méthode des différences finies, la matrice de différenciation est dense.
 \textbf{Parler de la dérivation en plusieurs dimensions}
 \paragraph{Conditions aux limites}~\\
-Pour résoudre un problème 1D avec CLs de Dirichlet (donc $f(x_0) = a$ et $f(x_{N+1}) = b$), il existe deux manières possible. Soit le problème n'est résolu que sur les points intérieurs (en excluant $x_0$ et $x_{N+1}$), ce qui donne une matrice de taille $(N-1)\times(N-1)$. Soit le problème est résolu sur l'ensemble des points, mais en gardant $f(x_0) = a$ et $f(x_{N+1}) = b$. Notre matrice de différenciation deviens ainsi : 
+Pour résoudre un problème 1D avec conditions aux limites de Dirichlet (donc $f(x_0) = a$ et $f(x_{N+1}) = b$), il existe deux manières possible. Soit le problème n'est résolu que sur les points intérieurs (en excluant $x_0$ et $x_{N+1}$), ce qui donne une matrice de taille $(N-1)\times(N-1)$. Soit le problème est résolu sur l'ensemble des points, mais en gardant $f(x_0) = a$ et $f(x_{N+1}) = b$. Notre matrice de différenciation deviens ainsi : 
 \begin{equation}
-	D^p=
+	D^p_{BC}=
 	\begin{bmatrix}
 		1 & 0 & 0 &...&0\\
 		a_{10} & a_{11} & a_{12} &... &a_{1N}\\
@@ -140,8 +140,9 @@ Pour résoudre un problème 1D avec CLs de Dirichlet (donc $f(x_0) = a$ et $f(x_
 		.&.&.&.&.\\
 		0&0&0&...& 1
 	\end{bmatrix}
+	\label{eq:mat_Cheb_BCs}
 \end{equation}
-Le cas des CLs de Neumann ne sera pas traité ici.
+Le cas des conditions aux limites de Neumann ne sera pas traité ici.
 \paragraph{Intégration}~\\
 \textbf{Utile pour les diagnostics. Parle de la méthode de Clenshaw-Curtis. Après c'est un sujet compliqué ...}
 
@@ -220,9 +221,9 @@ Avec $a_{jl} = D^2_{jl}-(k_{x,i}+\alpha^2)\delta_{jl}$. Les valeurs de $\widehat
 	\label{eq:Helmh_sys}
 \end{equation}
 Le problème est ainsi mieux conditionné, dans le sens où il est moins sensible aux erreurs numériques. Le système précédent peut être résolu à l'aide de la fonction \verb|numpy.linalg.solve|, qui utilise la méthode d'élimination de Gauss-Jordan. Afin de gagner du temps, les $Nx$ matrices de taille $Ny\times Ny$ sont factorisées par décomposition LU et stockées en mémoire lors de l'initialisation. Le système \ref{eq:Helmh_sys} est résolu $Nx$ fois à chaque pas de temps, à l'aide de la fonction \verb|scipy.linalg.lu_solve|. 
-\subsubsection{Equations d'advection}
+\subsubsection{Intégration temporelle}
 \paragraph{Généralités}~\\
-Nous exposons ici la résolution numérique d'une équation parabolique non-linéaire de la forme \textbf{C'est un exemple \guillemets{pédagogique} !!}\footnote{Il s'agit de l'équation de Burgers 1D} : 
+Nous exposons ici la résolution numérique d'une équation parabolique non-linéaire (équation de Burgers) : 
 \begin{align}
 	\dT{u} = -u\frac{\partial u}{\partial x}+\nu\frac{\partial^2 u}{\partial x^2}\\
 	x\in [0, 2\pi]\\
@@ -231,16 +232,17 @@ Nous exposons ici la résolution numérique d'une équation parabolique non-lin�
 	u(0, t) = u(2\pi, t) = 0\, \textrm{si CLs de Dirichlet}
 	\label{eq:Bu}
 \end{align}
-Le terme à droite du signe \guillemets{égal} est appelé \textit{RHS}. Pour des CLs périodiques, nous calculons les dérivées dans la base de Fourier. Pour des CLs de Dirichlet, nous utilisons les matrices de différenciation de Chebyshev. L'équation aux dérivées partielles \ref{eq:Bu} se ramène alors à un système d'équations différentielles ordinaires couplées. L'intégration se fait en utilisant un schéma explicite : la solution en $t+\Delta t$ ne dépend que de celles aux temps précédents : 
+Cette équation nous a servi dans un premier temps, afin de choisir un critère de stabilité. Le terme à droite du signe \guillemets{égal} est appelé \textit{RHS}. Pour des CLs périodiques, nous calculons les dérivées dans la base de Fourier. Pour des CLs de Dirichlet, nous utilisons les matrices de différenciation de Chebyshev. L'équation aux dérivées partielles \ref{eq:Bu} se ramène alors à un système d'équations différentielles ordinaires couplées. L'intégration se fait en utilisant un schéma explicite : la solution en $t+\Delta t$ ne dépend que de celles aux temps précédents : 
 \begin{equation}
 	u^{t+\Delta t} = L(u^t, u^{t-\Delta t}, ...,u^{t-i\Delta t})
 \end{equation} 
-Les schémas d'Euler et Runge-Kutta sont explicites à un pas, car ils ne dépendent que de la solution en $t$. Les schémas de Runge-Kutta sont plus précis que celui d'Euler (pour un schéma d'ordre $p$ convergence en $\Delta t^p$ contre $\Delta t$ pour le schéma d'Euler), mais nécessitent d'évaluer plusieurs fois le \textit{RHS}, ce qui peut être coûteux en temps. Le schéma LeapFrog est un schéma explicite à deux pas, c'est à dire que la solution en $t+\Delta t$ dépend des solutions aux deux pas précédents. Leurs expressions sont détaillées en annexe \ref{section:Schemas_temporels}.
+Les schémas d'Euler et Runge-Kutta sont explicites à un pas, car ils ne dépendent que de la solution en $t$. Les schémas de type Runge-Kutta sont plus précis que celui d'Euler (pour un schéma d'ordre $p > 1 $ convergence en $\Delta t^p$ contre $\Delta t$ pour le schéma d'Euler), mais nécessitent d'évaluer plusieurs fois le \textit{RHS}, ce qui peut être coûteux en temps. Le schéma \guillemets{LeapFrog} est un schéma explicite à deux pas, c'est à dire que la solution en $t+\Delta t$ dépend des solutions aux deux pas précédents. Leurs expressions sont détaillées en annexe \ref{section:Schemas_temporels}.
 \paragraph{Critère de stabilité}~\\
+\textbf{Attention, le style de rédaction n'est pas (selon moi) adapté} En analyse numérique, on définit la stabilité de la manière suivante : 
 \begin{defit}[Notion de stabilité]
 	Soit $\epsilon = u^t_{\mathrm{ana}}-u^t_{\mathrm{num}}$ l'erreur entre solution analytique $u^t_{\mathrm{ana}}$ et solution numérique $u^t_{\mathrm{num}}$, au pas de temps $t$. Un schéma est dit \textbf{stable} si l'erreur reste bornée quand $t\rightarrow+\infty$
 \end{defit}
-Il existe plusieurs manière d'obtenir des critères de stabilité : analyse de stabilité absolue, analyse de Von Neumann \textbf{mettre référence et détailler succinctement}. Ici, nous utilisons un critère purement physique : 
+Il existe plusieurs méthodes pour obtenir des critères de stabilité. Le critère de stabilité absolue (\guillemets{A-stability theory} ) indique que le schéma est stable si les valeurs propres $\lambda_j$ de l'opérateur de discrétisation spatiale linéarisé se trouvent dans la zone de stabilité du schéma temporel (cf Annexe). Cela permet ainsi d'avoir un critère de stabilité géométrique. Nous avons essayé cette solution au début, mais elle a été abandonnée pour plusieurs raisons. Premièrement, les valeurs propres $\lambda_j$ sont amenées dans la zone de stabilité du schéma temporel par simple homothétie (quand c'est possible), ce qui implique de lourds calculs de géométrie numérique. Deuxièmement, cela implique d'obtenir les équations linéarisées et de les avoir dans une base commune. Si c'est évident pour l'équation de Burgers, cela l'est moins pour le modèle TQG. Enfin, nos essais sur l'équation de Burgers ont montré que non seulement ce critère était trop restrictif (donc avec un pas de temps très faible), mais qu'en plus il n'empêchait pas la solution d'\guillemets{exploser}. Finalement, nous préférons utiliser un critère purement physique : 
 \begin{defit}[Critère de stabilité physique]
 	Un schéma est supposé stable si les perturbations numériques se propagent moins vite que les perturbations physiques. Cela implique donc :
 	\begin{align}
@@ -248,23 +250,25 @@ Il existe plusieurs manière d'obtenir des critères de stabilité : analyse de 
 		\Delta t_{\mathrm{diff}} &\leq CFL_{\mathrm{diff}}\frac{\Delta x_{min}^2}{\nu}\\
 		\Delta t &= \min\left(\Delta t_{\mathrm{adv}}, \Delta t_{\mathrm{diff}}\right)
 	\end{align}
-Où $CFL_{\mathrm{adv}}$ et $ CFL_{\mathrm{diff}}$ sont des coefficients sans dimensions, appelés \textit{coefficients de Courant-Friedrich-Lévy}. Ils peuvent être déterminés soit analytiquement (par analyse de Von Neumann), soit de manière purement empirique.
+Où $CFL_{\mathrm{adv}}$ et $ CFL_{\mathrm{diff}}$ sont des coefficients sans dimensions, appelés \textit{coefficients de Courant-Friedrich-Lévy}. Ils peuvent être déterminés soit analytiquement (par analyse de Von Neumann), soit de manière purement empirique. 
 \end{defit}
-Les coefficients CFL dépendent des schémas utilisés. Avec les méthodes pseudo-spectrales, ils sont en général inférieurs à 1. Ce critère ne garantit pas nécessairement la stabilité quand $t\rightarrow+\infty$, mais sur un temps limité, il suffit largement.
+Les coefficients CFL dépendent des schémas utilisés. Avec les méthodes pseudo-spectrales, ils sont en général de l'ordre de 1. Ce critère ne garantit pas nécessairement la stabilité quand $t\rightarrow+\infty$, mais sur un temps limité, il suffit largement. Pour la base de Chebyshev, il faut tenir compte du fait que les points situés sur les bords de la grille sont très resserrés, donc nous prenons $\Delta x = \Delta x_{min}$.
 
 \paragraph{Effet des termes non-linéaires}~\\
 \textbf{Effet des produits de termes : génère des instabilités ; dé-aliasing : règle des 2/3, filtre exponentiel. Je ne sais pas si j'en aurais besoin}
-\subsubsection{Architecture du code}
+\paragraph{Application au modèle TQG en configuration \guillemets{canal zonal}}~\\
+Pour le modèle TQG (et tout modèle QG en général), la fonction de courant $\psi$ est calculée au début du $RHS$ par inversion de l'équation elliptique. La vorticité potentielle ne nécessite pas de conditions aux limites en $y$, puisqu'elles sont indirectement imposées par la fonction de courant et la flottabilité. Le Jacobien $\mathrm{J}(\psi, \theta)$ est calculé de deux manières. Dans l'équation de conservation de la vorticité potentielle, il joue le rôle de terme source et n'a donc pas besoin de prendre en compte les conditions aux limites de Dirichlet imposées sur la flottabilité. Ce n'est pas le cas dans l'équation de conservation de la flottabilité. Au final, en termes d'opérateurs spatiaux, le modèle TQG discrétisé s'écrit \textbf{Reformuler équation elliptique} : 
+\begin{align}
+	&\(D^2_{x, F}+D^2_{y, BC} - \frac{1}{R_d^2}\)\psi_{ij} = q_{ij}- \frac{\theta_{ij}}{R_d^2} -\beta y_{j} \\
+ &\frac{\mathrm{d}q_{ij}}{\mathrm{d}t} = -\underbrace{\left( D_{x, F}\psi_{ij} D_{y}q_{ij} - D_{y}\psi_{ij}D_{x, F}q_{ij}\right)}_{\mathrm{J}\(\psi_{ij}, q_{ij}\)} +\frac{1}{R_d^2} \underbrace{\left( D_{x, F}\psi_{ij} D_{y}\theta_{ij} - D_{y}\psi_{ij}D_{x, F}\theta_{ij}\right)}_{\mathrm{J}\(\psi_{ij}, \theta_{ij}\)}\\
+	&\frac{\mathrm{d}\theta_{i,j}}{\mathrm{d}t} =  -\underbrace{\left( D_{x, F}\psi_{ij} D_{y, BC}\theta_{ij} - D_{y}\psi_{i,j}D_{x, F}\theta_{ij}\right)}_{\mathrm{J}\(\psi_{ij}, \theta_{ij}\)}
+\end{align}
+Où $D_{x, F}$ est l'opérateur de différenciation dans la base de Fourier, $D_{y}$ l'opérateur de différenciation dans la base de Chebyshev, et $D_{y, BC}$ le même opérateur tenant compte des conditions aux limites de Dirichlet (équation \ref{eq:mat_Cheb_BCs}).
+\subsubsection{Implémentation}
+Les méthodes décrites plus haut ont été implémentées dans un code \footnote{Disponible sur gitbub \url{https://github.com/personne30003/pyTQG/tree/main}} écrit en langage Python. La conception est largement inspirée par les principes décrits dans \parencite{Roullet2024} \textbf{Cite tant qu'à faire Fluid2d et pyRSW ! }. Python étant un langage orienté-objet, nous avons séparé chaque type de fonction dans des classes (figure \ref{fig:diagramme_classes}). Les fonctions de différenciation/intégration de bas-niveau sont implémentées dans les modules \verb|Fourier| et \verb|Chebyshev|. Celles faisant intervenir la base de Chebyshev ont été librement adaptées des codes MATLAB de \parencite{Trefethen2000}. La classe \verb|Grid| sert d'intermédiaire, afin de ne pas avoir à manipuler directement des fonctions de bas-niveau. La classe \verb|Params| regroupe l'ensemble des paramètres généraux (taille de la grille ainsi que son nombre de points, CFL, durée de la simulation etc...). Celles de type \verb|Model| regroupent les paramètres et fonctions liés à la physique du modèle. La classe \verb|Variable|. L'état de la simulation (ensemble d'objets de type \verb|Variable|) est stocké dans un objet de type \verb|State|, et l'intégration des variables se fait dans la classe \verb|TimeScheme|. La boucle principale s'effectue dans la classe \verb|pyTQG|. Un paramètre \verb|max_speed| permet de détecter une instabilité numérique et arrête la simulation en cas de dépassement. Les sorties du modèle sont des fichiers NETCDF mis à jours régulièrement pendant la simulation.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\linewidth]{Figures/pyTQG.png}
 	\caption{Diagramme de classe de notre code}
 	\label{fig:diagramme_classes}
 \end{figure}
-\textbf{Où l'on parle de génie logiciel : 
-\begin{itemize}
-	\item Architecture générale (+lien vers dépôt Git), philosophie (cf Fluid2D et pyRSW). En gros: séparer haut niveau du bas-niveau, encapsulation;  diagramme de classes.
-	\item Format des sorties (NETCDF)
-	\item méthodes d'intégrations  (Clenshaw-Curtis pour Chebyshev, trapèzes pour Fourier); diagnostics, performances (vectoriser un max, faire le moins de boucles for possible)
-\end{itemize}
-}

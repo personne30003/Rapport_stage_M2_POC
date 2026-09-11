@@ -53,7 +53,7 @@ Dans ce cadre, deux types d'instabilité (figure \ref{fig:Instab_QG}) peuvent ap
 		\caption{}
 		\label{fig:BC_Instab_Illig}
 	\end{subfigure}
-	\caption{\ref{fig:Instab_BT_Cushman} : instabilité barotrope (tiré de \cite{CushmanRoisin2011}) ; \ref{fig:BC_Instab_Illig} : instabilité barocline (tiré de \cite{Illig2025})}
+	\caption{\ref{fig:Instab_BT_Cushman} : instabilité barotrope (tiré de \parencite{CushmanRoisin2011}) ; \ref{fig:BC_Instab_Illig} : instabilité barocline (tiré de \parencite{Illig2025})}
 	\label{fig:Instab_QG}
 \end{figure}
 Le modèle Quasi-Géostrophique repose sur l'hypothèse que les termes de gradients horizontaux soient du même ordre de grandeur que le terme de Coriolis. Si ils sont trop élevés (présence de fronts), l'approximation n'est plus valable. Enfin, ce modèle néglige complètement le rôle actif que joue la flottabilité, qui n'est réduite qu'à une variable diagnostique. C'est pour cela qu'a été développé le modèle Surface-Quasi-Geostrophic (SQG).
@@ -73,7 +73,7 @@ Comme pour le modèle QG, la vorticité potentielle est conservée, mais sa vale
 \begin{figure}
 	\centering
 	\includegraphics[width=0.4\linewidth]{Figures/Fig5_Held.png}
-	\caption{Instabilité d'un filament de flottabilité dans le modèle SQG. Tiré de \cite{Held1995}}
+	\caption{Instabilité d'un filament de flottabilité dans le modèle SQG. Tiré de \parencite{Held1995}}
 	\label{fig:SQG_Held}
 \end{figure}
 Le modèle SQG tend donc à favoriser l’émergence de structures frontales fines et de filaments de flottabilité (exemple figure \ref{fig:SQG_Held}). Contrairement au cadre barotrope, cette dynamique conduit fréquemment à des structures de petite échelle et à l’apparition d’instabilités secondaires.
@@ -82,17 +82,17 @@ Là encore, ce modèle reste limité : certes, la flottabilité joue un rôle ac
 
 \subsection{Modèle Thermal Quasi-Geostrophic (TQG)}
 \subsubsection{Introduction}
-Les modèles QG et SQG reposent sur l'hypothèse d'un équilibre géostrophique permanent, mais négligent complètement les gradients horizontaux de flottabilité. Certes le modèle SQG permet d'obtenir l'évolution de la flottabilité en surface, mais au prix d'une forte contrainte sur la vorticité potentielle intérieure. Dans le modèle Thermal-Quasi-Geostrocphic (TQG)\cite{Warneford2013}\cite{Crisan2021}, l'équilibre géostrophique est modifié par la prise en compte du gradient horizontal de flottabilité. Cela conduit à deux équations séparées pour la vorticité potentielle et la flottabilité. Ce modèle peut être dérivé à partir des équations Thermal-Rotating-Shallow-Water \cite{Zeitlin2018}. \textbf{Peut-etre préciser un peu l'historique, histoire de dire que ce modèle a tout de meme été utilisé quelquefois}. Après avoir explicité ces équations, nous nous placerons dans la limite quasi-géostrophique. Enfin, nous aborderons brièvement quelque propriétés du modèle TQG.
+Les modèles QG et SQG reposent sur l'hypothèse d'un équilibre géostrophique permanent, mais négligent complètement les gradients horizontaux de flottabilité. Certes le modèle SQG permet d'obtenir l'évolution de la flottabilité en surface, mais au prix d'une forte contrainte sur la vorticité potentielle intérieure. Dans le modèle Thermal-Quasi-Geostrocphic (TQG)\parencite{Warneford2013} \parencite{Crisan2021}, l'équilibre géostrophique est modifié par la prise en compte du gradient horizontal de flottabilité. Cela conduit à deux équations séparées pour la vorticité potentielle et la flottabilité. Ce modèle peut être dérivé à partir des équations Thermal-Rotating-Shallow-Water \parencite{Zeitlin2018}. \textbf{Peut-etre préciser un peu l'historique, histoire de dire que ce modèle a tout de meme été utilisé quelquefois}. Après avoir explicité ces équations, nous nous placerons dans la limite quasi-géostrophique. Enfin, nous aborderons brièvement quelque propriétés du modèle TQG.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ùù
 \subsubsection{Modèle Thermal Rotating Shallow Water}
-\textbf{Pour une dérivation complète des équations RSW et TRSW, voir \cite{Zeitlin2018} et \cite{Gouzien2016}. Ici, je me base sur \cite{Warneford2013}}
+\textbf{Pour une dérivation complète des équations RSW et TRSW, voir \parencite{Zeitlin2018} et \parencite{Gouzien2016}. Ici, je me base sur \parencite{Warneford2013}}
 
 Les équations Rotating Shallow Water sont obtenues en moyennant verticalement les équations primitives sur des couches de densité constante. Elles supposent que l'équilibre hydrostatique est vérifié, et que les échelles de longueur verticales sont bien inférieures à celles horizontales.. Pour une couche de densité constante $\rho_0$, elles s'écrivent : 
 \begin{align}
 	\dT{h}+\div _\mathrm{h}{h\Vec{u}} &= 0 \\
 	\dT{\Vec{u}}+(\Vec{u}\cdot \grad_h)\Vec{u} +f\Vec{z}\VecProd\ \Vec{u} &= -g\grad_h h\\
 \end{align}
-\textbf{Demonstration adaptée de \cite{Warneford2013}, avec un modèle 1.5 couches}. Dans le modèle Thermal-Rotating-Shallow-Water (TRSW), on considère que la densité reste constante selon la verticale, mais varie horizontalement. On définit la flottabilité $\Theta = g\frac{\Delta\rho(\Vec{x}, t)}{\rho_0}$. On considère ici un modèle avec une couche active de densité $\rho(\Vec{x}, t) = \rho_0+\Delta \rho(\Vec{x}, t)$, d'épaisseur $h(x, y, t)$ (figure \ref{fig:Warneford2013}). La surface est supposée rigide. En dessous de la couche active se trouve une couche passive d'épaisseur $H_0\gg h$ et de densité $\rho_0$.
+\textbf{Demonstration adaptée de \parencite{Warneford2013}, avec un modèle 1.5 couches}. Dans le modèle Thermal-Rotating-Shallow-Water (TRSW), on considère que la densité reste constante selon la verticale, mais varie horizontalement. On définit la flottabilité $\Theta = g\frac{\Delta\rho(\Vec{x}, t)}{\rho_0}$. On considère ici un modèle avec une couche active de densité $\rho(\Vec{x}, t) = \rho_0+\Delta \rho(\Vec{x}, t)$, d'épaisseur $h(x, y, t)$ (figure \ref{fig:Warneford2013}). La surface est supposée rigide. En dessous de la couche active se trouve une couche passive d'épaisseur $H_0\gg h$ et de densité $\rho_0$.
 Avec la loi de l'hydrostatique, on obtient les pressions dans les couches actives et passives (notées $P$ et $P_0$) : 
 \begin{align}
 	P(x,y, z, t) &= P_{surf}(x, y, t) - g (\rho_0 - \Delta \rho(x, y, t))z \\
@@ -118,7 +118,7 @@ Et en moyennant sur la hauteur de la couche active \textbf{Erreur de signe, je c
 \begin{figure}
 	\centering
 	\includegraphics[width=0.7\linewidth]{Figures/Warneford2013_fig1}
-	\caption{Tiré de \cite{Warneford2013}}
+	\caption{Tiré de \parencite{Warneford2013}}
 	\label{fig:Warneford2013}
 \end{figure}
 Le reste de la dérivation est identique à celle pour le modèle RSW \textbf{Mettre une interprétation physique du terme de pression! en gros, le terme en $-\frac{h}{2}\grad_h\Theta$ est associé aux fronts thermiques, tandis que celui en $\grad_h \Theta h$ est similaire au gradient de pression dans RSW, mais tiens compte de la dilatation/compression de la couche}. En l'absence de dissipation, la flottabilité est conservée. On obtiens alors les équations TRSW : 
@@ -142,7 +142,7 @@ L'équilibre géostrophique est modifié par rapport au modèle RSW :
 	-f v &= -\partial_x h\Theta +\frac{1}{2} h \partial_x \Theta \\
 	f u &= -\partial_y h\Theta +\frac{1}{2} h \partial_y \Theta\\
 \end{align} 
-A notre connaissance, la seule étude d'instabilités date de 2016 (stage de M2 de Elie Gouzien \cite{Gouzien2017} \cite{Gouzien2016}). Pour le cas le plus simple, c'est à dire un jet uniforme soumis à un gradient de flottabilité constant (et sans gradient de hauteur), celui-ci a pour effet de créer un gradient de vorticité potentielle, donc une instabilité barotrope. \textbf{A étayer peut-être ?}
+A notre connaissance, la seule étude d'instabilités date de 2016 (stage de M2 de Elie Gouzien \parencite{Gouzien2017} \parencite{Gouzien2016}). Pour le cas le plus simple, c'est à dire un jet uniforme soumis à un gradient de flottabilité constant (et sans gradient de hauteur), celui-ci a pour effet de créer un gradient de vorticité potentielle, donc une instabilité barotrope. \textbf{A étayer peut-être ?}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Dérivation à partir du modèle TRSW}
 Comme les modèles QG et SQG, le modèle TQG est construit à partir d'un développement en puissance du nombre de Rossby. Mais contrairement à QG et TQG, seule la vitesse fait l'objet d'un développement asymptotique. Nous proposons ici une dérivation simple, basée sur \parencite{Warneford2013}. 
@@ -212,9 +212,9 @@ Trois grandeurs intégrées sont conservées :
 \end{equation}
 \end{itemize}
 
-\parencite{Carton2025} a utilisé ce modèle pour étudier la stabilité d'un vortex, avec des profils gaussiens de flottabilité  et de vorticité. Comme dans le modèle SQG, l'instabilité est plus marquée à petite échelle\textbf{Franchement, je vois pas quoi dire de plus, ça ne s'applique qu'aux vortex !!}. \textbf{C'est le moment de dire sur quoi va porter notre étude ?}
+\parencite{Carton2025} a utilisé ce modèle pour étudier la stabilité d'un vortex, avec des profils gaussiens de flottabilité  et de vorticité. Comme dans le modèle SQG, l'instabilité est plus marquée à petite échelle\textbf{Franchement, je vois pas quoi dire de plus, ça ne s'applique qu'aux vortex !! Il n'y a (à ma connaissance) pas encore d'étude sur les jets TQG}.
 \subsubsection{Modèle TQG couplé océan-atmosphère}
-Afin d'étendre le modèle TQG à un système couplé océan-atmosphère, Xavier Carton \textbf{cf mail du 30 Avril 2026 ; mettre \guillemets{communication personnelle à la place}} a proposé deux types de couplages : thermiques et mécaniques (comme dans \parencite{Vic2024}). Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
+\textbf{A voir si je laisse ou pas. Disons que c'était le but initial du stage... }Afin d'étendre le modèle TQG à un système couplé océan-atmosphère, Xavier Carton \textbf{cf mail du 30 Avril 2026 ; mettre \guillemets{communication personnelle à la place}} a proposé deux types de couplages : thermiques et mécaniques (comme dans \parencite{Vic2024}). Le couplage thermique est représenté sous forme d'un flux turbulent de chaleur latente : 
 \begin{align}
 	\frac{D_h \theta_a}{Dt} &= C_o(\theta_o - \theta_a)\\
 	\frac{D_h \theta_o}{Dt} &= C_a(\theta_a - \theta_o)
