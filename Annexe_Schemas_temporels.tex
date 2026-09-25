@@ -29,9 +29,9 @@ Le pas de temps est noté $\Delta t$.\textbf{Peut-etre préciser ce qu'est un sc
 \begin{align}
 	u^{n+1} = u^{n-1}+2\Delta t \mathrm{RHS}(u^n, t^n)
 \end{align}
-Le premier pas ($u^1$) doit être calculé soit avec la méthode d'Euler, soit avec la méthode RK2. L'avantage de ce schéma est que le RHS n'est calculé qu'une fois par pas de temps, tout en offrant une meilleure précision que celui d'Euler. L'inconvénient est que ce schéma comporte un mode parasite (mode computationnel). Pour le retirer, on y applique un filtre passe-bas (filtre d'Asselin) : 
+Le premier pas ($u^1$) doit être calculé soit avec la méthode d'Euler, soit avec la méthode RK2. Ce schéma comporte un mode parasite (mode computationnel). Pour le retirer, on y applique un filtre passe-bas (filtre d'Asselin) : 
 \begin{align}
 	u^{n+1} &= u^{n-1}+2\Delta t \mathrm{RHS}(\overline{u^n}, t^n)\\
-	\overline{u^n} &= u^{n} + \alpha(u^{n+1}+2u^n+u^{n-1})\\
+	\overline{u^n} &= u^{n} + \alpha(u^{n+1}-2u^n+u^{n-1})\\
 	\alpha &\approx 0.05
 \end{align}
