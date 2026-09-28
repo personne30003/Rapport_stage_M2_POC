@@ -17,7 +17,7 @@ Pour la température, soit nous imposons un flux de chaleur nul aux bords ($\par
 	\theta(x, 0, t) = \Theta_0\\
 	\theta(x, L_y, t) = \Theta_1
 \end{align}
-Étant donné que la vitesse normale est nulle aux bords, cela revient à fixer le flux de chaleur $F_{P, \perp} = -\Vec{u}\cdot\grad{\theta}$ à zéro \textbf{J'ai pas raison ?}. 
+Étant donné que la vitesse normale est nulle aux bords, cela revient à fixer le flux de chaleur $F_{P, \perp} = -\Vec{u}\cdot\grad{\theta}$ à zéro. 
 
 Si l'on résume le système \ref{eq:sys_TQG}, nous avons : 2 jacobiens (donc 4 dérivées d'ordre 1), une équation elliptique (Helmholtz) à inverser, et 2 intégrations temporelles. Le traitement numérique de ces termes sera explicité dans les paragraphes suivants
 
@@ -25,7 +25,7 @@ Si l'on résume le système \ref{eq:sys_TQG}, nous avons : 2 jacobiens (donc 4 d
 
 \subsubsection{Généralités sur les méthodes pseudo-spectrales}
 \label{subsection:generalites_PS}
-De manière générale, pour calculer numériquement la dérivée d'une fonction définie sur un intervalle discrétisé, deux techniques existent : les différences finies, et les méthodes  spectrales.
+De manière générale, pour calculer numériquement la dérivée d'une fonction définie sur un intervalle discrétisé, deux techniques existent (le cas des éléments et volumes finis n'est pas traité) : les différences finies, et les méthodes  spectrales.
 
 La méthode des différences finies consiste à estimer localement la dérivée par un développement de Taylor. Par exemple, un schéma centré (avec un développement de Taylor à l'ordre 2) donne, pour les dérivées premières et secondes :  
 \begin{align}
@@ -48,7 +48,7 @@ Selon la base choisie, les fonctions $\psi_k$ peuvent être définies par récur
 	\label{eq:spec_D_f}
 \end{equation}
 Où $D$ est une matrice de différenciation.
-La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes).\textbf{NB ici, nous n'avons pas parlé de convergence}
+La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes).
 
  Les fonctions de base sont définies dans un domaine $x_i \in [a, b]$. Si nous travaillons dans un domaine quelconque $x'_i \in [a', b']$, nous pouvons passer d'un domaine à l'autre par transformation linéaire.
 L'équation\ref{eq:spec_D_f} devient donc : 
@@ -159,7 +159,7 @@ Dans la base de Chebyshev, l'intégrale d'une fonction sur un intervalle $[a, b]
 \begin{equation}
 	\int_a^b f(x) \mathrm{d}x \approx \frac{b-a}{2}\sum_{k=0}^{N-1} w_k f(x_k)
 \end{equation}
-Où les coefficients $w_k$ sont appelés \guillemets{poids de Clenshaw-Curtis}. Ils sont calculés avec la fonction \verb|clencurt| du livre de \cite{Trefethen2000} (chapitre 12)
+Où les coefficients $w_k$ sont appelés \guillemets{poids de Clenshaw-Curtis}. Ils sont calculés avec la fonction \verb|clencurt| du livre de \cite{Trefethen2000} (chapitre 12). Nous ne donnons pas directement leur expression car elle n'est pas explicite.
 \subsubsection{Inversion de l'équation de Poisson/Helmholtz}
 Nous cherchons ici à résoudre l'équation de Helmholtz, pour une configuration \guillemets{canal zonal} : 
 \begin{align}
@@ -295,11 +295,11 @@ La fonction de courant $\psi$  (variable diagnostique) étant reliée à la vort
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Implémentation}
-Les méthodes décrites plus haut ont été implémentées dans un code \footnote{Disponible sur gitbub \url{https://github.com/personne30003/pyTQG/tree/main}} écrit en langage Python. La conception est largement inspirée par les principes décrits dans \parencite{Roullet2024} \textbf{Cite tant qu'à faire Fluid2d et pyRSW ! }. Python étant un langage orienté-objet, nous avons séparé chaque type de fonction dans des classes (figure \ref{fig:diagramme_classes}). Les fonctions de différenciation/intégration de bas-niveau sont implémentées dans les modules \verb|Fourier| et \verb|Chebyshev|. Celles faisant intervenir la base de Chebyshev ont été librement adaptées des codes MATLAB de \parencite{Trefethen2000}. La classe \verb|Grid| sert d'intermédiaire, afin de ne pas avoir à manipuler directement des fonctions de bas-niveau. La classe \verb|Params| regroupe l'ensemble des paramètres généraux (taille de la grille ainsi que son nombre de points, CFL, durée de la simulation etc...). Celles de type \verb|Model| regroupent les paramètres et fonctions liés à la physique du modèle. La classe \verb|Variable|. L'état de la simulation (ensemble d'objets de type \verb|Variable|) est stocké dans un objet de type \verb|State|, et l'intégration des variables se fait dans la classe \verb|TimeScheme|. La boucle principale s'effectue dans la classe \verb|pyTQG|. Un paramètre \verb|max_speed| permet de détecter une instabilité numérique et arrête la simulation en cas de dépassement. Les sorties du modèle se présentent sous forme de fichiers NETCDF mis à jours régulièrement pendant la simulation. Le post-traitement se fait sous Jupyter Notebook, à l'aide de la librairie \verb|xarray|.
+Les méthodes décrites plus haut ont été implémentées dans un code \footnote{Disponible sur github \url{https://github.com/personne30003/pyTQG/tree/main}} écrit en langage Python. La conception est largement inspirée par les principes décrits dans \parencite{Roullet2024} . Python étant un langage orienté-objet, nous avons séparé chaque type de fonction dans des classes (figure \ref{fig:diagramme_classes}). Les fonctions de différenciation/intégration de bas-niveau sont implémentées dans les modules \verb|Fourier| et \verb|Chebyshev|. Celles faisant intervenir la base de Chebyshev ont été librement adaptées des codes MATLAB de \parencite{Trefethen2000}. La classe \verb|Grid| sert d'intermédiaire, afin de ne pas avoir à manipuler directement des fonctions de bas-niveau. La classe \verb|Params| regroupe l'ensemble des paramètres généraux (taille de la grille ainsi que son nombre de points, CFL, durée de la simulation etc...). Celles de type \verb|Model| regroupent les paramètres et fonctions liés à la physique du modèle. La classe \verb|Variable|. L'état de la simulation (ensemble d'objets de type \verb|Variable|) est stocké dans un objet de type \verb|State|, et l'intégration des variables se fait dans la classe \verb|TimeScheme|. La boucle principale s'effectue dans la classe \verb|pyTQG|. Un paramètre \verb|max_speed| permet de détecter une instabilité numérique et arrête la simulation en cas de dépassement. Les sorties du modèle se présentent sous forme de fichiers NETCDF mis à jours régulièrement pendant la simulation. Le post-traitement se fait sous Jupyter Notebook, à l'aide de la librairie \verb|xarray|.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\linewidth]{Figures/pyTQG.png}
 	\caption{Diagramme de classe de notre code}
 	\label{fig:diagramme_classes}
 \end{figure}
-En complément, nous avons aussi implémenté la configuration bi-périodique, mais nous ne l'avons pas utilisée \textbf{A supprimer peut etre !}
+En complément, nous avons aussi implémenté la configuration bi-périodique, mais nous ne l'avons pas utilisée.

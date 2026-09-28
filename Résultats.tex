@@ -1,4 +1,89 @@
-\textbf{Plan probable}
-\subsection{Instabilité d'un jet de Bickley dans le modèle barotrope}
-Ces simulations ont pour but de calibrer les paramètres de dissipation et de dé-aliasing
+\subsection{Validation et comportement du modèle QG barotrope}
+Afin de valider le fonctionnement général de notre code, nous avons d'abord simulé l'évolution d'un jet dans le cadre du modèle QG barotrope. Les équations s'écrivent : 
+\begin{align}
+	&\dT{q}+\mathrm{J}\(\psi,q\)  = \nu \Delta_{\mathrm{h}}q \\
+	&\Delta_{\mathrm{h}} \psi = q
+\end{align}
+Le profil de vitesse initial (figure \ref{fig:Bickley_U}) est de la forme\footnote{Ce profil est appelé \guillemets{Jet de Bickley}} : 
+\begin{equation}
+	U(y) = \frac{U_0}{\cosh^2\frac{y}{\gamma}}
+\end{equation}
+Où $U_0 = 1$ et $\gamma = 0.2$. Le transport total $T_0$ est imposé non-nul, et vaut $T_0 = 1$. Le champ de vorticité initial est perturbé par un bruit à distribution uniforme. Le gradient de vorticité potentielle  \ref{fig:Bickley_grad_vort}change de signe sur le domaine, donc l'écoulement est bien instable en vertu du critère de Rayleigh-Kuo.
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Figures/Bickley_U.png}
+		\caption{}
+		\label{fig:Bickley_U}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Figures/Bickley_grad_vort.png}
+		\caption{}
+		\label{fig:Bickley_grad_vort}
+	\end{subfigure}
+	\caption{Profils méridionaux initiaux de vitesse zonale \ref{fig:Bickley_U} et de gradient de vorticité \ref{fig:Bickley_grad_vort}}
+	\label{fig:Bickley_init_field}
+\end{figure}
+La grille est de taille $128\times128$, pour $\Delta x_{min} \approx 10^{-4}$ et un schéma d'intégration de RK4. Le CFL a été pris égal à 1, et l'intégration s'est effectuée sur $t=15$ unités de temps. Lors des premières simulations, la viscosité était nulle. Sans dé-aliasing, la simulation s'arrête peu après $t=6$ car la vitesse maximale deviens trop élevée \textbf{mettre une figure}.
+
+ Avec un faible dé-aliasing \textbf{mettre figure}, certes le champ de vitesse \guillemets{n'explose} pas, mais des modes de petite échelle apparaissent progressivement . En 2D, l'énergie est transférée vers les grandes échelles (cascade inverse), ce qui doit mener à la formation progressive de structures de grandes échelles. Ce n'est pas ce que nous observons ici, ce qui implique que ces modes ne sont pas physiques \textbf{mettre figures avec les modes}.
+ 
+  Nous avons ensuite effectués plusieurs essais (non montrés ici), où nous avons diminué le pas de temps (en posant $CFL = 0.5, 0.2$) sans succès.
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Figures/Bickley_U.png}
+		\caption{}
+		%\label{fig:Bickley_U}
+	\end{subfigure}
+	\begin{subfigure}{0.49\textwidth}
+		\includegraphics[width=\textwidth]{Figures/Bickley_vort.png}
+		\caption{}
+		%\label{fig:Bickley_grad_vort}
+	\end{subfigure}
+	\caption{Profils méridionaux initiaux de vitesse zonale \ref{fig:Bickley_U} et de gradient de vorticité \ref{fig:Bickley_grad_vort}}
+	%\label{fig:Bickley_init_field}
+\end{figure}
+
+Finalement, nous avons augmenté fortement le dé-aliasing selon $y$ ($\alpha = 500$, $p=5$) et selon $x$ (coefficient de 0.5 au lieu de $\frac{2}{3}$), et introduit de la dissipation. Les essais effectués avec et sans dissipation montrent que le dé-aliasing à lui tout seul ne permets pas d'éliminer les modes parasites. La viscosité est toujours choisie de telle sorte à ce que $\Delta t_{adv} < \Delta t_{diff}$. Il faut qu'elle soit suffisamment grande pour avoir un effet significatif, sans pour autant provoquer une dissipation excessive. Finalement, nous avons pris $\nu = 4\times 10^{-9}$. \textbf{montrer figures}. Certes, les modes parasites ne disparaissent pas complètement, mais leur influence n'est significative que sur des temps très longs. C'est pour cela que nous avons gardé ces paramètres pour le modèle TQG.
+
 \subsection{Instabilité d'un jet uniforme dans le modèle TQG}
+\paragraph{Théorie}~\\
+Nous nous intéressons ici à un jet zonal uniforme de vitesse $U_0$ soumis à un gradient méridional constant de flottabilité : 
+\begin{align}
+	\theta_0(y) = a\times y + b
+\end{align} 
+Nous ne tenons pas compte de la force de Coriolis ($\beta = 0$). Quelque éléments sur le comportement attendu ont été déterminés par \cite{Carton2026_JTQG}, dans un article non encore publié. Premièrement, l'écoulement est instable si 
+\begin{equation}
+	\moy{U}\frac{\mathrm{d} \moy{T}}{\mathrm{d}y} < \frac{1}{4}{\left(\frac{\mathrm{d} \moy{U}}{\mathrm{d}y}\right)}^2
+\end{equation}
+Ici, nous avons $\frac{\mathrm{d} \moy{U}}{\mathrm{d}y} = 0$, ce qui implique que pour $\moy{U} > 0$, l'écoulement sera instable si le gradient de flottabilité est négatif. Plus le gradient  (en valeur absolue) sera élevé, plus le taux de croissance de l'instabilité sera élevé. C'est pour cela que nous avons pris une valeur de gradient $a = -20$. 
+
+Plus $\frac{1}{R_d^2}$ est élevé, plus le taux de croissance est faible \textbf{Attention, c'est valable pour jet gaussien !}, c'est pour cela que nous avons pris $\frac{1}{R_d^2} = 10^{-2}$. De manière générale, les modes de petite échelle sont atténués, car la stratification amortit l'instabilité de cisaillement horizontal.
+\paragraph{Simulation}~\\
+Pour cette simulation, nous reprenons les paramètres précédents (grille et dé-aliasing). Pour les viscosités, nous avons pris $\nu = \nu_{\theta} = 4\times 10^{-9}$. Le champ de vorticité initial (qui est nulle) est perturbé par un bruit aléatoire uniforme. 
+\begin{figure}[!h]
+	\centering
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/PV_diags.png}
+		\caption{}
+		\label{fig:PV_diags}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/enstrophy_diags.png}
+		\caption{}
+		\label{fig:enstrophy_diags}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/energy_diags.png}
+		\caption{}
+		\label{fig:energy_diags}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/theta_diags.png}
+		\caption{}
+		\label{fig:theta_diags}
+	\end{subfigure}
+	\caption{}
+	\label{fig:TQG_diags}
+\end{figure}
