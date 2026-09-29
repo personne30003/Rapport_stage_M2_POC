@@ -32,9 +32,9 @@ La méthode des différences finies consiste à estimer localement la dérivée 
 	\frac{\partial f}{\partial x}|_{x_i} &\approx \frac{f(x_{i+1}) -f(x_{i-1})}{2\Delta x} \\
 	\frac{\partial^2 f}{\partial x^2}|_{x_i} &\approx \frac{f(x_{i+1}) + f(x_{i-1}) - 2f(x_i)}{\Delta x^2}
 \end{align}
-Aux bords du domaine, les opérateurs sont approximés différemment (par exemple à l'aide de points fictifs), en tenant compte des conditions aux limites.La précision d'un schéma en différences finies dépend de l'ordre du développement de Taylor utilisé. L'obtention d'une forte précision nécessite généralement d'augmenter l'ordre du schéma ou de diminuer $\Delta x$.
+Aux bords du domaine, les opérateurs sont approximés différemment (par exemple à l'aide de points fictifs), en tenant compte des conditions aux limites. La précision d'un schéma en différences finies dépend de l'ordre du développement de Taylor utilisé. L'obtention d'une forte précision nécessite généralement d'augmenter l'ordre du schéma ou de diminuer $\Delta x$.
 
-Les méthodes spectrales \parencite{Trefethen2000} \parencite{Boyd} \parencite{Peyret2001},  consistent au contraire à interpoler une fonction $f$ sur une base de fonctions $\psi_k$ (supposées orthogonales) : 
+Les méthodes spectrales \parencite{Trefethen2000} \parencite{Boyd} \parencite{Peyret2001}, consistent au contraire à interpoler une fonction $f$ sur une base de fonctions $\psi_k$ (supposées orthogonales) : 
 \begin{equation}
 	f(x) \approx \sum_{k=0}^N \hat{f}_k \psi_k(x_i)
 \end{equation}
@@ -50,12 +50,12 @@ Selon la base choisie, les fonctions $\psi_k$ peuvent être définies par récur
 Où $D$ est une matrice de différenciation.
 La difficulté consiste à savoir quelle base utiliser, et comment déterminer les coefficients $\hat{f_k}$. Ceux-ci dépendent notamment des conditions aux bords. Ces méthodes restent néanmoins plus performantes que les différences finies, tant en rapidité qu'en précision. C'est pour cela que nous avons choisi de les utiliser. Pour des frontières périodiques, nous utilisons la base de Fourier (fonctions trigonométriques), tandis que pour des frontières bornées, nous utilisons la base de Chebyshev (polynômes).
 
- Les fonctions de base sont définies dans un domaine $x_i \in [a, b]$. Si nous travaillons dans un domaine quelconque $x'_i \in [a', b']$, nous pouvons passer d'un domaine à l'autre par transformation linéaire.
+Les fonctions de base sont définies dans un domaine $x_i \in [a, b]$. Si nous travaillons dans un domaine quelconque $x'_i \in [a', b']$, nous pouvons passer d'un domaine à l'autre par transformation linéaire.
 L'équation\ref{eq:spec_D_f} devient donc : 
 \begin{equation}
 	\frac{\partial f(x'_i)}{\partial x'} = \frac{\partial f(x_i)}{\partial x}\frac{\mathrm{d}x}{\mathrm{d}x'} = \frac{a-b}{a'-b'}D(x_i) f(x_i)
 \end{equation}
-Lorsque l'on est amené à calculer un terme non linéaire comme un terme d'advection, il est préférable de le calculer dans l'espace réel afin d'éviter d'avoir à effectuer un produit de convolution. C'est pour cela qu'on parle plutôt de méthodes pseudo-spectrales. Le passage dans la base 
+Lorsque l'on est amené à calculer un terme non linéaire comme un terme d'advection, il est préférable de le calculer dans l'espace réel afin d'éviter d'avoir à effectuer un produit de convolution. C'est pour cela qu'on parle plutôt de méthodes pseudo-spectrales. 
 \subsubsection{Base de Fourier}
 Sur un domaine périodique composé de $N$ points équidistants $x_j$ ($N$ où est pair, et $x_j \in [0,2\pi]$), une fonction discrète $f(x_j)$ (elle aussi périodique) peut être représentée dans la base de Fourier par ses coefficients spectraux $\hat{f_k}$ : 
 \begin{align}
@@ -68,7 +68,7 @@ La dérivée dans la base de Fourier se calcule alors assez facilement :
 \begin{equation}
 	\widehat{\frac{\partial^p f_k}{\partial x^p}} = {(ik)}^p\hat{f_k}
 \end{equation}
-Enfin, on reviens dans la base de départ, ce qui donne : 
+Enfin, on revient dans la base de départ, ce qui donne : 
 \begin{equation}
 	\frac{\partial^p f(x_j)}{\partial x^p} = \mathrm{FFT^{-1}}\[{(ik)}^p \mathrm{FFT}(f(x_j))\]
 \end{equation} 
@@ -80,11 +80,11 @@ La base de Fourier n'est pas adaptée aux CLs non périodiques : la fonction dev
 \begin{align}
 	T_n(x) &= \cos(n\arccos{x})\\ x &\in [-1, 1]
 \end{align}
-En posant $x$ = $\cos \theta,\mathrm{  }\in\mathbb{R}$, on en déduit les premiers polynômes : 
+En posant $x$ = $\cos \phi,\mathrm{  } \phi\in[0,2\pi]$, on en déduit les premiers polynômes : 
 \begin{align}
 	&T_0(x) = \cos{0} &= 1\\
-	&T_1(x) = \cos \theta &= x \\
-	&T_2(x) = \cos2\theta = 2\cos^2\theta - 1 &= 2x^2-1\\
+	&T_1(x) = \cos \phi &= x \\
+	&T_2(x) = \cos2\phi = 2\cos^2\phi - 1 &= 2x^2-1\\
 \end{align}
 Les extremas $x_i$ tels que 
 \begin{align}
@@ -98,14 +98,13 @@ Sont appelés \textit{points de Gauss-Lobatto} (figure \ref{fig:Cheb_points}).
 	\caption{Premiers polynômes de Chebyshev et points de Gauss-Lobatto }
 	\label{fig:Cheb_points}
 \end{figure}
-
 Il est préférable d'utiliser ces points, car ils évitent les oscillations dues au phénomène de Runge, qui apparaissent lors de l'interpolation polynomiale sur grille uniforme. C'est la méthode de \textit{collocation}. Notre fonction interpolée s'écrit alors : 
 \begin{align}
 	f(x_i) &= \sum_{k=0}^N \hat{u_k} T_k(x_i)\\ 
-	x_i &= \cos\frac{k\pi i}{N}\\
+	x_i &= \cos\frac{\pi i}{N}\\
 	i &= 0, 1, ..., N
 \end{align}
-Étant donné que les $x_i$ correspondent aux extrêmas des polynômes de Chebyshev, il est possible de simplifier l'expression précédente, de telle sorte que $f(x_i) = f_i$ s'écrit : 
+Étant donné que les $x_i$ correspondent aux extrémums des polynômes de Chebyshev, il est possible de simplifier l'expression précédente, de telle sorte que $f(x_i) = f_i$ s'écrit : 
 \begin{align}
 	f_i &= \sum_{k=0}^N \hat{u_k} \cos{\theta_i}\\
 	\theta_i & = \frac{k\pi i}{N}\\
@@ -128,7 +127,7 @@ Avec $D$ la matrice de différenciation de Chebyshev, de taille $(N+1)\times (N+
 \begin{align}
 	D_{00} &= \frac{2N^2+1}{6} & D_{NN} = -\frac{2N^2+1}{6} \\
 	D_{jj} &= \frac{-x_j}{2(1-x_j^2)},& j = 1,...,N-1\\
-	D_{ij} &= \frac{c_i}{c_j}\frac{(-1)^{i+j}}{(x_i-x_j)}, & i\neq j \,\, i,j=1,...,N-1\\
+	D_{ij} &= \frac{c_i}{c_j}\frac{(-1)^{i+j}}{(x_i-x_j)}, & i\neq j, \text{   } i,j=1,...,N\\
 	c_i  &= 
 	\begin{cases}
 		2&\text{ si } i =0, N\\
@@ -152,8 +151,6 @@ Pour résoudre un problème 1D avec conditions aux limites de Dirichlet (donc $f
 	\label{eq:mat_Cheb_BCs}
 \end{equation}
 Le cas des conditions aux limites de Neumann ne sera pas traité ici.
-
-
 \paragraph{Intégration}~\\
 Dans la base de Chebyshev, l'intégrale d'une fonction sur un intervalle $[a, b]$ s'écrit : 
 \begin{equation}
@@ -167,7 +164,6 @@ Nous cherchons ici à résoudre l'équation de Helmholtz, pour une configuration
 \psi(x,\frac{L}{2}, t) = g_+(x, t)\\
 \psi(x,-\frac{L}{2}, t) = g_-(x, t)\\
 \end{align} 
-
 Nous passons ensuite dans la base de Fourier selon l'axe $x$. Le problème précédent deviens donc: 
 \begin{align}
 	\left(\partial_y^2 - k_x^2-\alpha^2 \right)\widehat{\psi}(k, y, t)=\widehat{S}(k, y, t)\\
@@ -254,7 +250,7 @@ Les schémas d'Euler et de Runge-Kutta explicites sont des schémas à un pas, p
 
 La stabilité numérique caractérise la capacité du schéma à contrôler l'amplification des erreurs et des perturbations numériques au cours de l'intégration temporelle. Plusieurs approches peuvent être utilisées pour déterminer une contrainte sur le pas de temps.
 
-Une première possibilité consiste à effectuer une analyse de stabilité absolue. Après linéarisation et discrétisation spatiale, le problème peut être écrit sous la forme $\mathrm{d}\mathbf{u}/\mathrm{d}t=\mathbf{A}\mathbf{u}$. Le pas de temps doit alors être choisi de telle sorte que $\Delta t\lambda_j$ appartienne à la région de stabilité du schéma temporel \textbf{A définir} pour toutes les valeurs propres $\lambda_j$ de $\mathbf{A}$. La variation de $\Delta t$ revient à effectuer une homothétie du spectre autour de l'origine. Cette approche a cependant été abandonnée dans notre cas. D'une part, elle conduit à des contraintes sur le pas de temps très restrictives dans les essais réalisés avec l'équation de Burgers. D'autre part, elle nécessite de déterminer l'opérateur linéarisé dans une représentation adaptée, ce qui devient nettement plus complexe pour le modèle TQG.
+Une première possibilité consiste à effectuer une analyse de stabilité absolue. Après linéarisation et discrétisation spatiale, le problème peut être écrit sous la forme $\frac{\mathrm{d}\mathbf{u}}{\mathrm{d}t}=[\mathbf{A}]\mathbf{u}$. Le pas de temps doit alors être choisi de telle sorte que $\Delta t\lambda_j$ appartienne à la région de stabilité du schéma temporel (voire Annexe \ref{section:Stabilite_explicite}) pour toutes les valeurs propres $\lambda_j$ de $[\mathbf{A}]$. La variation de $\Delta t$ revient à effectuer une homothétie du spectre autour de l'origine. Cette approche a cependant été abandonnée dans notre cas. D'une part, elle conduit à des contraintes sur le pas de temps très restrictives dans les essais réalisés avec l'équation de Burgers. D'autre part, elle nécessite de déterminer l'opérateur linéarisé dans une représentation adaptée, ce qui devient nettement plus complexe pour le modèle TQG.
 
 Nous avons donc retenu une approche fondée sur les contraintes CFL associées aux différents termes de l'équation. Pour l'équation de Burgers, le pas de temps est choisi de manière à respecter simultanément les contraintes advective et diffusive :
 
@@ -282,20 +278,20 @@ Les coefficients $\hat{u_k}$ sont obtenus par une Transformée en Cosinus Discr�
 Pour atténuer l'amplitude des modes aux petites échelles, nous ajoutons également un terme de diffusion de la forme $\kappa\Delta_{\mathrm{h}}$ dans les équations. Contrairement au dé-aliasing, qui n'intervient que dans le calculs des termes non-linéaires, la diffusion amortit directement les petites échelles. La valeur du coefficient $\kappa$ se règle de manière empirique. Il ne faut pas qu'il soit trop grand, afin de ne pas créer trop de dissipation (ce qui serait non physique), mais pas trop petit afin qu'il puisse jouer son rôle.\textbf{A améliorer}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{Application au modèle TQG en configuration \guillemets{canal zonal}}~\\
-Pour le modèle TQG (et tout modèle QG en général), la fonction de courant $\psi$ est calculée au début du $RHS$ par inversion de l'équation elliptique. La vorticité potentielle ne nécessite pas de conditions aux limites en $y$, puisqu'elles sont indirectement imposées par la fonction de courant et la flottabilité. Le Jacobien $\mathrm{J}(\psi, \theta)$ est calculé de deux manières. Dans l'équation de conservation de la vorticité potentielle, il joue le rôle de terme source et n'a donc pas besoin de prendre en compte les conditions aux limites de Dirichlet imposées sur la flottabilité. Ce n'est pas le cas dans l'équation de conservation de la flottabilité. Au final, en termes d'opérateurs spatiaux, le modèle TQG discrétisé spatialement s'écrit \textbf{Reformuler équation elliptique} : 
+Pour le modèle TQG (et tout modèle QG en général), la fonction de courant $\psi$ est calculée au début du $RHS$ par inversion de l'équation elliptique. La vorticité potentielle ne nécessite pas de conditions aux limites en $y$, puisqu'elles sont indirectement imposées par la fonction de courant et la flottabilité. Le Jacobien $\mathrm{J}(\psi, \theta)$ est calculé de deux manières. Dans l'équation de conservation de la vorticité potentielle, il joue le rôle de terme source et n'a donc pas besoin de prendre en compte les conditions aux limites de Dirichlet imposées sur la flottabilité. Ce n'est pas le cas dans l'équation de conservation de la flottabilité. Au final, en termes d'opérateurs spatiaux, le modèle TQG discrétisé spatialement s'écrit : 
 \begin{align}
 	&\(D^2_{x, F}+D^2_{y, BC} - \frac{1}{R_d^2}\)\psi_{ij} = q_{ij}- \frac{\theta_{ij}}{R_d^2} -\beta y_{j} \\
  &\frac{\mathrm{d}q_{ij}}{\mathrm{d}t} = -\underbrace{\left( D_{x, F}\psi_{ij} D_{y}q_{ij} - D_{y}\psi_{ij}D_{x, F}q_{ij}\right)}_{\mathrm{J}\(\psi_{ij}, q_{ij}\)} +\frac{1}{R_d^2} \underbrace{\left( D_{x, F}\psi_{ij} D_{y}\theta_{ij} - D_{y}\psi_{ij}D_{x, F}\theta_{ij}\right)}_{\mathrm{J}\(\psi_{ij}, \theta_{ij}\)}+\nu_q \left(D^2_{x, F}+D^2_{y, BC}\right)q_{ij}\\
 	&\frac{\mathrm{d}\theta_{ij}}{\mathrm{d}t} =  -\underbrace{\left( D_{x, F}\psi_{ij} D_{y, BC}\theta_{ij} - D_{y}\psi_{i,j}D_{x, F}\theta_{ij}\right)}_{\mathrm{J}\(\psi_{ij}, \theta_{ij}\)}+\nu_{\theta} \left(D^2_{x, F}+D^2_{y, BC}\right)\theta_{ij}
 \end{align}
-Où $D_{x, F}$ est l'opérateur de différenciation dans la base de Fourier, $D_{y}$ l'opérateur de différenciation dans la base de Chebyshev, et $D_{y, BC}$ le même opérateur tenant compte des conditions aux limites de Dirichlet (équation \ref{eq:mat_Cheb_BCs}).$\nu_q$ et $\nu_{\theta}$ sont les coefficients de diffusion associés à la vorticité potentielle et à la flottabilité. Ici, nous leur assignons la même valeur \textbf{Formulation à améliorer}. 
+Où $D_{x, F}$ est l'opérateur de différenciation dans la base de Fourier, $D_{y}$ l'opérateur de différenciation dans la base de Chebyshev, et $D_{y, BC}$ le même opérateur tenant compte des conditions aux limites de Dirichlet (équation \ref{eq:mat_Cheb_BCs}).$\nu_q$ et $\nu_{\theta}$ sont les coefficients de diffusion associés à la vorticité potentielle et à la flottabilité.
 
 La fonction de courant $\psi$  (variable diagnostique) étant reliée à la vorticité potentielle et à la flottabilité (variables prognostiques), l'équation elliptique est inclue dans le RHS. Cela implique qu'elle doit être résolue une fois par pas de temps, voire plus si l'on utilise un schéma de Runge-Kutta.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Implémentation}
-Les méthodes décrites plus haut ont été implémentées dans un code \footnote{Disponible sur github \url{https://github.com/personne30003/pyTQG/tree/main}} écrit en langage Python. La conception est largement inspirée par les principes décrits dans \parencite{Roullet2024} . Python étant un langage orienté-objet, nous avons séparé chaque type de fonction dans des classes (figure \ref{fig:diagramme_classes}). Les fonctions de différenciation/intégration de bas-niveau sont implémentées dans les modules \verb|Fourier| et \verb|Chebyshev|. Celles faisant intervenir la base de Chebyshev ont été librement adaptées des codes MATLAB de \parencite{Trefethen2000}. La classe \verb|Grid| sert d'intermédiaire, afin de ne pas avoir à manipuler directement des fonctions de bas-niveau. La classe \verb|Params| regroupe l'ensemble des paramètres généraux (taille de la grille ainsi que son nombre de points, CFL, durée de la simulation etc...). Celles de type \verb|Model| regroupent les paramètres et fonctions liés à la physique du modèle. La classe \verb|Variable|. L'état de la simulation (ensemble d'objets de type \verb|Variable|) est stocké dans un objet de type \verb|State|, et l'intégration des variables se fait dans la classe \verb|TimeScheme|. La boucle principale s'effectue dans la classe \verb|pyTQG|. Un paramètre \verb|max_speed| permet de détecter une instabilité numérique et arrête la simulation en cas de dépassement. Les sorties du modèle se présentent sous forme de fichiers NETCDF mis à jours régulièrement pendant la simulation. Le post-traitement se fait sous Jupyter Notebook, à l'aide de la librairie \verb|xarray|.
+Les méthodes décrites plus haut ont été implémentées dans un code \footnote{Disponible sur github \url{https://github.com/personne30003/pyTQG/tree/main}}écrit en langage Python. La conception est largement inspirée par les principes décrits dans \parencite{Roullet2024} . Python étant un langage orienté-objet, nous avons séparé chaque type de fonction dans des classes (figure \ref{fig:diagramme_classes}). Les fonctions de différenciation/intégration de bas-niveau sont implémentées dans les modules \verb|Fourier| et \verb|Chebyshev|. Celles faisant intervenir la base de Chebyshev ont été librement adaptées des codes MATLAB de \parencite{Trefethen2000}. La classe \verb|Grid| sert d'intermédiaire, afin de ne pas avoir à manipuler directement des fonctions de bas-niveau. La classe \verb|Params| regroupe l'ensemble des paramètres généraux (taille de la grille ainsi que son nombre de points, CFL, durée de la simulation etc...). Celles de type \verb|Model| regroupent les paramètres et fonctions liés à la physique du modèle. La classe \verb|Variable|. L'état de la simulation (ensemble d'objets de type \verb|Variable|) est stocké dans un objet de type \verb|State|, et l'intégration des variables se fait dans la classe \verb|TimeScheme|. La boucle principale s'effectue dans la classe \verb|pyTQG|. Un paramètre \verb|max_speed| permet de détecter une instabilité numérique et arrête la simulation en cas de dépassement. Les sorties du modèle se présentent sous forme de fichiers NETCDF mis à jours régulièrement pendant la simulation. Le post-traitement se fait sous Jupyter Notebook, à l'aide de la librairie \verb|xarray|.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\linewidth]{Figures/pyTQG.png}

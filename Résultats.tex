@@ -53,15 +53,17 @@ Nous nous intéressons ici à un jet zonal uniforme de vitesse $U_0$ soumis à u
 \begin{align}
 	\theta_0(y) = a\times y + b
 \end{align} 
-Nous ne tenons pas compte de la force de Coriolis ($\beta = 0$). Quelque éléments sur le comportement attendu ont été déterminés par \cite{Carton2026_JTQG}, dans un article non encore publié. Premièrement, l'écoulement est instable si 
+Nous ne tenons pas compte de la force de Coriolis ($\beta = 0$). Quelque éléments sur le comportement attendu ont été déterminés par \parencite{Carton2026_JTQG}, dans un article non encore publié. Premièrement, l'écoulement est instable si 
 \begin{equation}
 	\moy{U}\frac{\mathrm{d} \moy{T}}{\mathrm{d}y} < \frac{1}{4}{\left(\frac{\mathrm{d} \moy{U}}{\mathrm{d}y}\right)}^2
 \end{equation}
 Ici, nous avons $\frac{\mathrm{d} \moy{U}}{\mathrm{d}y} = 0$, ce qui implique que pour $\moy{U} > 0$, l'écoulement sera instable si le gradient de flottabilité est négatif. Plus le gradient  (en valeur absolue) sera élevé, plus le taux de croissance de l'instabilité sera élevé. C'est pour cela que nous avons pris une valeur de gradient $a = -20$. 
 
-Plus $\frac{1}{R_d^2}$ est élevé, plus le taux de croissance est faible \textbf{Attention, c'est valable pour jet gaussien !}, c'est pour cela que nous avons pris $\frac{1}{R_d^2} = 10^{-2}$. De manière générale, les modes de petite échelle sont atténués, car la stratification amortit l'instabilité de cisaillement horizontal.
+Plus $\frac{1}{R_d^2}$ est élevé, plus le taux de croissance est faible, c'est pour cela que nous avons pris $\frac{1}{R_d^2} = 10^{-2}$. De manière générale, les modes de petite échelle sont atténués, car la stratification amortit l'instabilité de cisaillement horizontal.
 \paragraph{Simulation}~\\
-Pour cette simulation, nous reprenons les paramètres précédents (grille et dé-aliasing). Pour les viscosités, nous avons pris $\nu = \nu_{\theta} = 4\times 10^{-9}$. Le champ de vorticité initial (qui est nulle) est perturbé par un bruit aléatoire uniforme. 
+Pour cette simulation, nous reprenons les paramètres précédents (grille, dé-aliasing et schéma RK4). Pour les viscosités, nous avons pris $\nu = \nu_{\theta} = 4\times 10^{-9}$.Cette fois-ci, le domaine méridional s'étend sur l'intervalle $[0, 1]$. Le champ de vorticité initial (qui est nulle) est perturbé par un bruit aléatoire uniforme. Puisque $U_0 = 1$, nous avons $psi_0(x, y) = -y$, ce qui donne un transport moyen $T_0 = 1$. La flottabilité est imposée aux bords, et garde ses valeurs initiales.
+
+Comme on peut le voir sur les diagnostics (figure \ref{fig:TQG_diags}), l'énergie et la flottabilité sont assez bien conservées, les variations ne se faisant que sur quelque décimales après la virgule. La PV et l'enstrophie potentielle ont tendance à \guillemets{exploser} à la fin de la simulation, mais cela est dû à aux fortes erreurs sur les bords verticaux du domaine. Ces erreurs ne restent localisées que sur quelque points et ne semblent pas avoir d'influence significative. Les champs instantanés (figure \ref{fig:TQG_his}) montrent que l'instabilité croit très lentement. Il y a assez peu de modes de petite échelle, avec une croissance lente, ce qui semble en accord avec la théorie du paragraphe précédent. 
 \begin{figure}[!h]
 	\centering
 	\begin{subfigure}[h]{0.48\textwidth}
@@ -86,4 +88,29 @@ Pour cette simulation, nous reprenons les paramètres précédents (grille et d�
 	\end{subfigure}
 	\caption{}
 	\label{fig:TQG_diags}
+\end{figure}
+\begin{figure}[!h]
+	\centering
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/PV_snap.png}
+		\caption{}
+		\label{fig:PV_his}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/U_snap.png}
+		\caption{}
+		\label{fig:U_his}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/vort_snap.png}
+		\caption{}
+		\label{fig:vort_his}
+	\end{subfigure}
+	\begin{subfigure}[h]{0.48\textwidth}
+		\includegraphics[width=\textwidth]{Figures/theta_snap.png}
+		\caption{}
+		\label{fig:theta_his}
+	\end{subfigure}
+	\caption{Instantanés de  : \ref{fig:PV_his} vorticité potentielle, \ref{fig:U_his} norme de la vitesse, \ref{fig:vort_his} vorticité relative et \ref{fig:theta_his} flottabilité}
+	\label{fig:TQG_his}
 \end{figure}

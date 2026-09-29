@@ -56,9 +56,6 @@ bibstyle=apa,citestyle=apa,sorting=anyt]{biblatex}%Pour la biblio C'EST ICI QU'O
 \theoremstyle{definition} % Style avec texte normal (pas en italique)
 \newtheorem{defit}{Définition}[section]
 
-\title{ Rapport de stage M2 }
-\author{Evan \textsc{LEMUR} }
-\date{Mai-octobre 2026}
 %\AtBeginDocument{\vspace*{1cm minus 1cm}}
 %\AtEndDocument{\vspace{1cm minus 1cm}}
 \begin{document}
@@ -74,16 +71,20 @@ bibstyle=apa,citestyle=apa,sorting=anyt]{biblatex}%Pour la biblio C'EST ICI QU'O
 	\section{Introduction}
 	\subfile{Introduction}
 	\section{État de l'art}
+	\label{section:Etat_art}
 	\subfile{Etat_de_lart}
 	\section{Méthodes}
+	\label{section:Méthodes}
 	\subfile{Méthodes}
 	\section{Résultats}
+	\label{section:resultats}
 	\subfile{Résultats}
-	\section{Conclusion}
+	\section{Conclusion et perspectives}
 	\subfile{Conclusion}
-	\newpage
+	\clearpage
 	\printbibliography
-	\newpage
+	\clearpage
 	\appendix
 	\subfile{Annexe_Schemas_temporels}
+	\subfile{Annexe_zones_stabilité}
 \end{document}

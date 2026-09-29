@@ -1,7 +1,5 @@
-\textbf{Principaux éléments (les seuls memes, vu qu'ils sont peu nombreux) :
-\begin{itemize}
-	\item Succès relatif de l'implémentation
-	\item Les premiers essais sur le modèle TQG suggèrent que les résultats sont en bon accord avec la théorie de Carton
-	\item Perspectives : simulation d'un jet de Bickley (ou Gaussien), modèle couplé océan-atmosphère (c'était l'idée initiale)
-\end{itemize}
-}
+Durant ce stage, la plupart du temps a été employé à implémenter le modèle TQG en configuration canal. Les simulations de la section \ref{section:resultats} n'ont été effectuées que pendant la dernière semaine du stage. Les premiers résultats tendent à montrer que notre implémentation a été menée avec succès. Néanmoins, le fait que plusieurs termes des équations soient non-linéaires tend à provoquer l'apparition de modes de petite échelle, de nature non physique. Ces modes peuvent fausser complètement les simulations, voire faire \guillemets{exploser} le champ de vitesse. C'est d'ailleurs le défaut principal des méthodes pseudo-spectrales. Pour pallier à cela, les paramètre de dé-aliasing et de dissipation nécessitent des réglages plus fins que ce qui a été effectué ici. Les simulations sont assez longues à mener (4 heures pour celle du modèle TQG, 1 heure pour le modèle barotrope), ce qui rend ces réglages assez chrono-phages. 
+
+Toutefois, pour le modèle TQG (jet uniforme soumis à un gradient de température constant), notre implémentation semble donner des résultats conformes à la théorie de \parencite{Carton2026_JTQG}.
+
+Plusieurs cas pourront être étudiés avec notre code : jet de Bickley soumis à un gradient méridien de flottabilité (que le gradient soit constant ou non), profils gaussiens de vorticité et de flottabilité. Le code en lui-même pourrait être amélioré, en particulier au niveau des performances, les simulations étant actuellement très longues. Cela pourrait être fait dans un premier temps, simplement en utilisant un ordinateur plus puissant que notre PC personnel. Il serait également possible d'étudier la configuration d'un bassin fermé. A ce stade, les opérateurs mathématiques sont déjà implémentés, seul le solveur elliptique doit être développé. Enfin, initialement, le but du stage était d'étudier la stabilité d'un tourbillon en interaction avec l'atmosphère, avec un modèle TQG 2 couches, celles-ci étant couplées via des flux turbulents (comme dans \parencite{Vic2024}). C'est une possibilité d'exploitation, l'architecture de notre code ayant initialement été conçue pour ce modèle. 
